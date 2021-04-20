@@ -33,3 +33,11 @@ node_modules/
 *.log
 *.sql
 *.sqlite
+
+#ignore server files
+.user.ini
+
+#wordfence
+wp-content/wflogs
+wp-content/wfcache
+wordfence-waf.php
