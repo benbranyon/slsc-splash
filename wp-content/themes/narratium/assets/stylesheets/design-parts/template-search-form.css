@@ -1,0 +1,21 @@
+#template-search-form .search-form {
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+}
+#template-search-form .search-form .screen-reader-text {
+  display: none;
+}
+#template-search-form .search-form input.search-field {
+  width: 100%;
+  max-width: 100%;
+  min-width: 100%;
+  padding: 15px;
+  font-size: 20px;
+  box-sizing: border-box;
+  border-style: solid;
+  border-width: 0;
+}
+#template-search-form .search-form input.search-submit {
+  display: none;
+}

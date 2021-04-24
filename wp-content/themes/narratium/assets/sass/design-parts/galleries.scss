@@ -1,0 +1,65 @@
+
+
+html #site-body .site-body-content-wrap .site-body-content .gallery {
+
+  max-width:none;
+  text-align:center;
+  margin-top:50px;
+  //margin-bottom:50px;
+  margin-left:auto;
+  margin-right:auto;
+
+  .blocks-gallery-image,
+  .gallery-item {
+
+    position:relative;
+    display:inline-block;
+    margin:0;
+    padding:0;
+    vertical-align:middle;
+
+    img {
+      width:100%;
+      display:block;
+      margin:0;
+    }
+
+    .wp-caption-text {
+      position:absolute;
+      display:block;
+      bottom:0;
+      background-color:rgba(0,0,0,0.4);
+      font-size:13px;
+      border-radius:2px;
+      color:#fff;
+      padding:5px 10px;
+      line-height:1.2em;
+      font-family:sans-serif;
+      cursor:default;
+      text-align:left;
+    }
+  }
+
+  .gallery-item:hover .wp-caption-text {background-color:rgba(0,0,0,0.9);}
+
+  &.gallery-columns-2.gallery-size-ktt_square500 {max-width:1200px;}
+  &.gallery-columns-3.gallery-size-ktt_square500 {max-width:1800px;}
+
+  &.gallery-columns-2 .gallery-item {width:50%;}
+  &.gallery-columns-3 .gallery-item {width:33.33%;}
+  &.gallery-columns-4 .gallery-item {width:25%;}
+  &.gallery-columns-5 .gallery-item {width:20%;}
+
+}
+
+html #site-body .site-body-content-wrap .site-body-content .gallery + .gallery {margin-top:0;}
+html #site-body .site-body-content-wrap .site-body-content .gallery:last-child {margin-bottom:50px;}
+
+@media only screen and (max-width: 600px) {
+    html #site-body .site-body-content-wrap .site-body-content .gallery .gallery-item,
+    html #site-body .site-body-content-wrap .site-body-content .gallery.gallery-columns-2 .gallery-item,
+    html #site-body .site-body-content-wrap .site-body-content .gallery.gallery-columns-3 .gallery-item,
+    html #site-body .site-body-content-wrap .site-body-content .gallery.gallery-columns-4 .gallery-item,
+    html #site-body .site-body-content-wrap .site-body-content .gallery.gallery-columns-5 .gallery-item
+     {width:100%}
+}

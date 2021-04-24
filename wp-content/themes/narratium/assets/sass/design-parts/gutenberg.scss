@@ -1,0 +1,246 @@
+
+/**
+* gutenberg elements
+*/
+html .site-body-content {
+
+  text-align:left;
+
+  .text-align-left {text-align: left;}
+  .text-align-right  {text-align: right;}
+  .text-align-center {text-align: center;}
+
+  /**
+  * Separator
+  */
+  .wp-block-separator {
+      margin: 2em auto 2em auto;
+      max-width: 400px;
+
+      p {
+        padding-left: 0px;
+      }
+  }
+
+  /**
+  * Button
+  */
+  .wp-block-button a {color:#fff;}
+
+
+  /**
+  * Image block
+  */
+  .wp-block-image {
+    width:auto;
+    figcaption {
+      display:block;
+      text-align:center;
+      font-size:0.8em;
+      margin-bottom:0.7em;
+    }
+    &.is-resized {width:max-content;}
+    &.width-50vw {width:100%; max-width:50vw;}
+    &.width-50vw.alignright {
+      text-align:left;
+      figcaption {width:max-content;max-width:100%;}
+    }
+    &.width-50vw.alignleft {
+      text-align:right;
+      figcaption {width:max-content;max-width:100%;}
+    }
+
+    img {
+      max-width:100%;
+    }
+  }
+
+
+  /**
+  * Galleries -----------------------------------------------
+  */
+  .wp-block-gallery {
+
+      padding:5px;
+      position:relative;
+      overflow:auto;
+      /* margin-top:2em; */
+
+      .blocks-gallery-image {
+          margin:0px;
+          padding:5px;
+          display:inline-block;
+          float:left;
+          img {
+            vertical-align:top;
+            margin:0;
+            display:block;
+          }
+      }
+
+      &.columns-2 .blocks-gallery-image {width:50%;}
+      &.columns-3 .blocks-gallery-image {width:33.33%;}
+      &.columns-4 .blocks-gallery-image {width:25%;}
+      &.columns-5 .blocks-gallery-image {width:20%;}
+
+  }
+
+
+
+  /**
+  * Text columns ---------------------------------------
+  */
+  .wp-block-columns {
+    padding-left: 40px;
+    padding-right: 40px;
+  }
+  @media only screen and (max-width: 960px) {
+    .wp-block-columns  {
+      display:block;
+      .wp-block-column {
+        width:100%;
+        max-width:100%;
+        min-width:100%;
+        margin:0px;
+        padding:0px;
+        margin-top:15px;
+        margin-bottom:15px;
+      }
+      .wp-block-column + .wp-block-column {margin-top:2em;}
+    }
+}
+
+/*
+* Social Buttons block
+*/
+ul.wp-block-social-links {
+  padding-left:30px;
+  padding-right:30px;
+
+  li.wp-social-link {
+    margin:5px;
+
+    a {
+      color:inherit;
+    }
+  }
+
+}
+
+
+
+
+
+
+/*
+* Block convers
+*/
+.wp-block-cover {
+  padding:20px;
+  margin-top:1.65em;
+  margin-bottom:1.65em;
+
+  p {padding:auto;}
+  &.alignleft {
+    float:left;
+    margin-right:40px;
+  }
+
+  &.alignright {
+    float:right;
+    margin-left:40px;
+  }
+
+  a {
+    color:#fff ;
+    text-decoration: underline;
+  }
+}
+
+
+
+
+/*
+* others
+*/
+.has-large-font-size {
+  font-size:1.8em;
+  line-height:1.5em;
+}
+
+
+
+
+  /*
+  .wp-block-gallery + .wp-block-gallery {
+      margin-top:0;
+  }
+  .wp-block-gallery:nth-last-child(1) {
+    margin-bottom:2em;
+  }
+  */
+
+
+
+
+
+  /* WIDGETS: latests posts */
+
+  .wp-block-latest-posts {
+      list-style-position: outside;
+      li {list-style-type: none;}
+      &.is-grid {padding: 20px;};
+  }
+
+  @media only screen and (max-width: 960px) {
+      .wp-block-latest-posts,
+      .wp-block-latest-posts.columns-2,
+      .wp-block-latest-posts.columns-3
+      .wp-block-latest-posts.columns-4,
+      .wp-block-latest-posts.columns-5
+        {
+        display:block;
+        li {
+          width:100%;
+          max-width:100%;
+          min-width:100%;
+          padding-left:20px;
+          padding-right:20px;
+        }
+      }
+  }
+
+  /* WIDGETS: categories */
+
+  .wp-block-categories {
+      list-style-position: outside;
+      &.alignright {text-align:right;}
+      &.aligncenter {text-align:center;}
+      &.alignleft {text-align:left;}
+  }
+
+
+}
+
+
+
+@media only screen and (max-width: 600px) {
+
+  html .site-body-content .wp-block-image.full-width-on-mobile {
+    width:100%;
+    text-align:center;
+    padding-right:0;
+    padding-left:0;
+    &.width-50vw {max-width:100%;width:100%;}
+    &.width-50vw.alignright {
+      text-align:center;
+      figcaption {margin-left:5px;margin-right:5px;width:100%;max-width:100%}
+    }
+    &.width-50vw.alignleft {
+      text-align:center;
+      figcaption {margin-left:5px;margin-right:5px;width:100%;max-width:100%;}
+    }
+    img {margin:auto;}
+  }
+
+}

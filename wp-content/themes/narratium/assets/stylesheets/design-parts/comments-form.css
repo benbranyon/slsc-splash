@@ -1,0 +1,31 @@
+/**
+* Styles related to the comment form
+*/
+.comments-area input {
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  outline: none;
+}
+.comments-area input:focus {
+  border-color: rgba(0, 0, 0, 0.3);
+}
+.comments-area input[type=checkbox] {
+  display: inline;
+  width: auto;
+}
+.comments-area button {
+  margin: 0;
+  padding: 5px 20px;
+  text-transform: none;
+}
+.comments-area button + button {
+  margin-left: 10px;
+}
+.comments-area small {
+  font-size: 0.5em;
+}

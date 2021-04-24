@@ -1,0 +1,70 @@
+@import "compass";
+@import "design-parts/sideheaders";
+
+
+
+
+/**
+Grid Template Style
+*/
+.template-grid-default {}
+.post-item {}
+
+/* Required */
+.sticky {
+  border-style:solid;
+  border-color:rgba(255,255,255, 0.4);
+  border-width:0px;
+  position:relative;
+
+  &:before {
+      display:block;
+      z-index:333;
+      right:0;
+      top:0;
+      content: "";
+      width: 40px;
+      position:absolute;
+      height: 40px;
+      border-style: solid;
+      border-width: 0px 70px 70px 0;
+      border-left-color: transparent;
+      border-top-color: transparent;
+      border-bottom-color: transparent;
+  }
+
+  &:after {
+      display:block;
+      z-index:444;
+      right:0;
+      top:0;
+      color:#755;
+      padding-top:8px;
+      font-family:"Material Icons";
+      font-size:1.2em;
+      content: "\E226";
+      width: 40px;
+      position:absolute;
+  }
+
+
+
+}
+.wp-caption-text {font-style:italic;}
+.gallery-caption {font-style:italic;}
+.bypostauthor {color:inherit}
+
+
+/**
+* Sideheader backgruond image effect
+*/
+html .site-body-content-wrap .basic-sideheader .bg-loady-large {
+  -webkit-transition: -webkit-transform 0.25s ease;
+	transition: transform 0.25s ease;
+  -webkit-transform: scale(1);
+	transform: scale(1);
+}
+html .site-body-content-wrap .basic-sideheader:hover .bg-loady-large {
+  -webkit-transform: scale(1.02);
+	transform: scale(1.02);
+}

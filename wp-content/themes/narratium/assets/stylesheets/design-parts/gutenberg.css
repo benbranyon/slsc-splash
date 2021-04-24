@@ -1,0 +1,251 @@
+/**
+* gutenberg elements
+*/
+html .site-body-content {
+  text-align: left;
+  /**
+  * Separator
+  */
+  /**
+  * Button
+  */
+  /**
+  * Image block
+  */
+  /**
+  * Galleries -----------------------------------------------
+  */
+  /**
+  * Text columns ---------------------------------------
+  */
+  /*
+  * Social Buttons block
+  */
+  /*
+  * Block convers
+  */
+  /*
+  * others
+  */
+  /*
+  .wp-block-gallery + .wp-block-gallery {
+      margin-top:0;
+  }
+  .wp-block-gallery:nth-last-child(1) {
+    margin-bottom:2em;
+  }
+  */
+  /* WIDGETS: latests posts */
+  /* WIDGETS: categories */
+}
+html .site-body-content .text-align-left {
+  text-align: left;
+}
+html .site-body-content .text-align-right {
+  text-align: right;
+}
+html .site-body-content .text-align-center {
+  text-align: center;
+}
+html .site-body-content .wp-block-separator {
+  margin: 2em auto 2em auto;
+  max-width: 400px;
+}
+html .site-body-content .wp-block-separator p {
+  padding-left: 0px;
+}
+html .site-body-content .wp-block-button a {
+  color: #fff;
+}
+html .site-body-content .wp-block-image {
+  width: auto;
+}
+html .site-body-content .wp-block-image figcaption {
+  display: block;
+  text-align: center;
+  font-size: 0.8em;
+  margin-bottom: 0.7em;
+}
+html .site-body-content .wp-block-image.is-resized {
+  width: max-content;
+}
+html .site-body-content .wp-block-image.width-50vw {
+  width: 100%;
+  max-width: 50vw;
+}
+html .site-body-content .wp-block-image.width-50vw.alignright {
+  text-align: left;
+}
+html .site-body-content .wp-block-image.width-50vw.alignright figcaption {
+  width: max-content;
+  max-width: 100%;
+}
+html .site-body-content .wp-block-image.width-50vw.alignleft {
+  text-align: right;
+}
+html .site-body-content .wp-block-image.width-50vw.alignleft figcaption {
+  width: max-content;
+  max-width: 100%;
+}
+html .site-body-content .wp-block-image img {
+  max-width: 100%;
+}
+html .site-body-content .wp-block-gallery {
+  padding: 5px;
+  position: relative;
+  overflow: auto;
+  /* margin-top:2em; */
+}
+html .site-body-content .wp-block-gallery .blocks-gallery-image {
+  margin: 0px;
+  padding: 5px;
+  display: inline-block;
+  float: left;
+}
+html .site-body-content .wp-block-gallery .blocks-gallery-image img {
+  vertical-align: top;
+  margin: 0;
+  display: block;
+}
+html .site-body-content .wp-block-gallery.columns-2 .blocks-gallery-image {
+  width: 50%;
+}
+html .site-body-content .wp-block-gallery.columns-3 .blocks-gallery-image {
+  width: 33.33%;
+}
+html .site-body-content .wp-block-gallery.columns-4 .blocks-gallery-image {
+  width: 25%;
+}
+html .site-body-content .wp-block-gallery.columns-5 .blocks-gallery-image {
+  width: 20%;
+}
+html .site-body-content .wp-block-columns {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+@media only screen and (max-width: 960px) {
+  html .site-body-content .wp-block-columns {
+    display: block;
+  }
+  html .site-body-content .wp-block-columns .wp-block-column {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    margin: 0px;
+    padding: 0px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }
+  html .site-body-content .wp-block-columns .wp-block-column + .wp-block-column {
+    margin-top: 2em;
+  }
+}
+html .site-body-content ul.wp-block-social-links {
+  padding-left: 30px;
+  padding-right: 30px;
+}
+html .site-body-content ul.wp-block-social-links li.wp-social-link {
+  margin: 5px;
+}
+html .site-body-content ul.wp-block-social-links li.wp-social-link a {
+  color: inherit;
+}
+html .site-body-content .wp-block-cover {
+  padding: 20px;
+  margin-top: 1.65em;
+  margin-bottom: 1.65em;
+}
+html .site-body-content .wp-block-cover p {
+  padding: auto;
+}
+html .site-body-content .wp-block-cover.alignleft {
+  float: left;
+  margin-right: 40px;
+}
+html .site-body-content .wp-block-cover.alignright {
+  float: right;
+  margin-left: 40px;
+}
+html .site-body-content .wp-block-cover a {
+  color: #fff;
+  text-decoration: underline;
+}
+html .site-body-content .has-large-font-size {
+  font-size: 1.8em;
+  line-height: 1.5em;
+}
+html .site-body-content .wp-block-latest-posts {
+  list-style-position: outside;
+}
+html .site-body-content .wp-block-latest-posts li {
+  list-style-type: none;
+}
+html .site-body-content .wp-block-latest-posts.is-grid {
+  padding: 20px;
+}
+@media only screen and (max-width: 960px) {
+  html .site-body-content .wp-block-latest-posts,
+  html .site-body-content .wp-block-latest-posts.columns-2,
+  html .site-body-content .wp-block-latest-posts.columns-3
+  .wp-block-latest-posts.columns-4,
+  html .site-body-content .wp-block-latest-posts.columns-5 {
+    display: block;
+  }
+  html .site-body-content .wp-block-latest-posts li,
+  html .site-body-content .wp-block-latest-posts.columns-2 li,
+  html .site-body-content .wp-block-latest-posts.columns-3
+  .wp-block-latest-posts.columns-4 li,
+  html .site-body-content .wp-block-latest-posts.columns-5 li {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+html .site-body-content .wp-block-categories {
+  list-style-position: outside;
+}
+html .site-body-content .wp-block-categories.alignright {
+  text-align: right;
+}
+html .site-body-content .wp-block-categories.aligncenter {
+  text-align: center;
+}
+html .site-body-content .wp-block-categories.alignleft {
+  text-align: left;
+}
+
+@media only screen and (max-width: 600px) {
+  html .site-body-content .wp-block-image.full-width-on-mobile {
+    width: 100%;
+    text-align: center;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  html .site-body-content .wp-block-image.full-width-on-mobile.width-50vw {
+    max-width: 100%;
+    width: 100%;
+  }
+  html .site-body-content .wp-block-image.full-width-on-mobile.width-50vw.alignright {
+    text-align: center;
+  }
+  html .site-body-content .wp-block-image.full-width-on-mobile.width-50vw.alignright figcaption {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
+    max-width: 100%;
+  }
+  html .site-body-content .wp-block-image.full-width-on-mobile.width-50vw.alignleft {
+    text-align: center;
+  }
+  html .site-body-content .wp-block-image.full-width-on-mobile.width-50vw.alignleft figcaption {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: 100%;
+    max-width: 100%;
+  }
+  html .site-body-content .wp-block-image.full-width-on-mobile img {
+    margin: auto;
+  }
+}

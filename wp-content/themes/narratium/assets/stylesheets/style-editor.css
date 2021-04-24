@@ -1,0 +1,24 @@
+html .editor-styles-wrapper p {
+  font-size: 21px;
+  font-family: 'pt serif';
+  line-height: 1.6em;
+}
+
+html .wp-block-cover a {
+  color: #fff;
+}
+
+.wp-block {
+  max-width: 760px;
+  font-size: 21px;
+}
+
+/* Width of "wide" blocks */
+.wp-block[data-align="wide"] {
+  max-width: 1080px;
+}
+
+/* Width of "full-wide" blocks */
+.wp-block[data-align="full"] {
+  max-width: none;
+}

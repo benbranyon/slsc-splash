@@ -1,0 +1,15 @@
+/**
+masonry!
+*/
+
+
+.masonry-layout {
+  column-count: 3;
+  -webkit-column-count: 3;
+  column-gap: 0;
+  -webkit-column-gap: 0;
+}
+.masonry-layout__panel {
+  break-inside: avoid;
+  -webkit-column-break-inside: avoid;
+}

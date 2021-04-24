@@ -1,0 +1,164 @@
+/**
+Colors
+*/
+
+
+
+/** yin colors example */
+//$site_palette_yin_1: #32325D; // oscuro
+//$site_palette_yin_2: #6767C8; // - oscuro
+//$site_palette_yin_3: #7C80FF; // - - oscuro
+//$site_palette_yin_4: #A983FF; // - - - oscuro
+
+/** Yang colors example */
+//$site_palette_yang_1: #F6F9FC; // claro
+//$site_palette_yang_2: #F3F6F8; // - claro
+//$site_palette_yang_3: #D0D8E0; // - - claro
+//$site_palette_yang_4: #C1CCD7; // - - - claro
+
+
+
+
+
+/**
+* We define yin colors
+*/
+$site_palette_yin_1: #4F3939; // dark
+$site_palette_yin_2: #694C4C; // - dark
+$site_palette_yin_3: #916D6E; // - - dark
+$site_palette_yin_4: #b18D8E; // - - - dark
+
+$site_palette_yin_special_1: #ab5d6a; // special color (for links, highlights, etc)
+$site_palette_yin_special_2: #4A3Ddd; // special color (for links, highlights, etc)
+
+
+
+/**
+* We define yang colors
+*/
+$site_palette_yang_1: #FCFAF5; // light
+$site_palette_yang_2: #F8F4E9; // - light
+$site_palette_yang_3: #F6F0E1; // - - light
+$site_palette_yang_4: #F3EAD6; // - - - light
+
+$site_palette_yang_special_1: #dfd8d9; // special color (for links, highlights, etc)
+$site_palette_yang_special_2: #efe8e9; // special color (for links, highlights, etc)
+
+
+
+
+
+
+
+
+
+//html .site-palette-yang-1-background-color,
+//html .site-palette-yang-2-background-color,
+//html .site-palette-yang-3-background-color,
+//html .site-palette-yang-4-background-color,
+
+.site-palette-yin-1-color,
+.site-palette-yin-2-color,
+.site-palette-yin-3-color,
+.site-palette-yin-4-color {
+
+    a { color:$site_palette_yin_special_1; }
+
+    .site-palette-special-1-color { color:$site_palette_yin_special_1; }
+    .site-palette-special-2-color { color:$site_palette_yin_special_2; }
+
+    .site-palette-special-1-background-color { background-color:$site_palette_yin_special_1; }
+    .site-palette-special-2-background-color { background-color:$site_palette_yin_special_2; }
+
+    .site-palette-special-1-border-color { border-color:$site_palette_yin_special_1; }
+    .site-palette-special-2-border-color { border-color:$site_palette_yin_special_2; }
+
+}
+
+
+
+/**
+* Based on the color background top the special colors change to fit the background color correctly
+*/
+
+//html .site-palette-yin-1-background-color,
+//html .site-palette-yin-2-background-color,
+//html .site-palette-yin-3-background-color,
+//html .site-palette-yin-4-background-color,
+
+.site-palette-yang-1-color,
+.site-palette-yang-2-color,
+.site-palette-yang-3-color,
+.site-palette-yang-4-color {
+
+    a { color:$site_palette_yang_special_1; }
+
+    .site-palette-special-1-color { color:$site_palette_yang_special_1; }
+    .site-palette-special-2-color { color:$site_palette_yang_special_2; }
+
+    .site-palette-special-1-background-color { background-color:$site_palette_yang_special_1; }
+    .site-palette-special-2-background-color { background-color:$site_palette_yang_special_2; }
+
+    .site-palette-special-1-border-color { border-color:$site_palette_yang_special_1; }
+    .site-palette-special-2-border-color { border-color:$site_palette_yang_special_2; }
+
+}
+
+
+
+
+
+
+
+
+/**
+* Classes for font colors
+*/
+html .site-palette-yin-1-color { color:$site_palette_yin_1; }
+html .site-palette-yin-2-color { color:$site_palette_yin_2; }
+html .site-palette-yin-3-color { color:$site_palette_yin_3; }
+html .site-palette-yin-4-color { color:$site_palette_yin_4; }
+
+html .site-palette-yang-1-color { color:$site_palette_yang_1; }
+html .site-palette-yang-2-color { color:$site_palette_yang_2; }
+html .site-palette-yang-3-color { color:$site_palette_yang_3; }
+html .site-palette-yang-4-color { color:$site_palette_yang_4; }
+
+
+/**
+* Classes for fund colors
+*/
+html .site-palette-yin-1-background-color { background-color:$site_palette_yin_1; }
+html .site-palette-yin-2-background-color { background-color:$site_palette_yin_2; }
+html .site-palette-yin-3-background-color { background-color:$site_palette_yin_3; }
+html .site-palette-yin-4-background-color { background-color:$site_palette_yin_4; }
+
+html .site-palette-yang-1-background-color { background-color:$site_palette_yang_1; }
+html .site-palette-yang-2-background-color { background-color:$site_palette_yang_2; }
+html .site-palette-yang-3-background-color { background-color:$site_palette_yang_3; }
+html .site-palette-yang-4-background-color { background-color:$site_palette_yang_4; }
+
+
+
+/**
+* Classes for border colors
+*/
+html .site-palette-yin-1-border-color { border-color:$site_palette_yin_1; }
+html .site-palette-yin-2-border-color { border-color:$site_palette_yin_2; }
+html .site-palette-yin-3-border-color { border-color:$site_palette_yin_3; }
+html .site-palette-yin-4-border-color { border-color:$site_palette_yin_4; }
+
+html .site-palette-yang-1-border-color { border-color:$site_palette_yang_1; }
+html .site-palette-yang-2-border-color { border-color:$site_palette_yang_2; }
+html .site-palette-yang-3-border-color { border-color:$site_palette_yang_3; }
+html .site-palette-yang-4-border-color { border-color:$site_palette_yang_4; }
+
+
+
+/**
+* Gradient
+*/
+html .site-palette-yang-1-gradient-bottom-to-top-50 {
+  background: linear-gradient(0deg, rgba(252,250,245,1) 20%, rgba(0,212,255,0) 100%);
+  background-color:Red;
+}

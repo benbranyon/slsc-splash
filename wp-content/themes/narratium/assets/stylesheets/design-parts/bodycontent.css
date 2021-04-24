@@ -1,0 +1,295 @@
+@charset "UTF-8";
+/**
+* Styles related to the content of the post and page
+*/
+html .site-body-content, html .comment {
+  /*
+  a span {padding-left:0;padding-right:0;}
+  p span {padding-left:0;padding-right:0;}
+  */
+  /**
+  * The figure is used for special things like images with captions
+  */
+  /**
+  * This code prevents our images from leaving the div if they are larger
+  */
+  /**
+  * Listas
+  */
+  /**
+  * Tables
+  */
+  /**
+  * Definition lists
+  */
+  /**
+  * Code
+  */
+  /**
+  * Address
+  */
+  /** sups **/
+  /* twitter widget */
+  /* pasword posts! */
+}
+html .site-body-content > *, html .comment > * {
+  margin: auto;
+}
+html .site-body-content > p,
+html .site-body-content > span,
+html .site-body-content > h1,
+html .site-body-content > h2,
+html .site-body-content > h3,
+html .site-body-content > h4,
+html .site-body-content > h5,
+html .site-body-content > h6,
+html .site-body-content > ul,
+html .site-body-content > ol,
+html .site-body-content > hr,
+html .site-body-content > table,
+html .site-body-content > dl,
+html .site-body-content > address,
+html .site-body-content > code,
+html .site-body-content > blockquote,
+html .site-body-content > section,
+html .site-body-content > pre,
+html .site-body-content > audio, html .comment > p,
+html .comment > span,
+html .comment > h1,
+html .comment > h2,
+html .comment > h3,
+html .comment > h4,
+html .comment > h5,
+html .comment > h6,
+html .comment > ul,
+html .comment > ol,
+html .comment > hr,
+html .comment > table,
+html .comment > dl,
+html .comment > address,
+html .comment > code,
+html .comment > blockquote,
+html .comment > section,
+html .comment > pre,
+html .comment > audio {
+  margin: auto;
+  padding-left: 40px;
+  padding-right: 40px;
+  text-align: left;
+  overflow-wrap: break-word;
+}
+html .site-body-content > div, html .comment > div {
+  max-width: 100%;
+  width: auto;
+}
+html .site-body-content .fullwidth, html .comment .fullwidth {
+  max-width: 100% !important;
+}
+html .site-body-content .size-auto,
+html .site-body-content .size-full,
+html .site-body-content .size-large,
+html .site-body-content .size-medium,
+html .site-body-content .size-thumbnail, html .comment .size-auto,
+html .comment .size-full,
+html .comment .size-large,
+html .comment .size-medium,
+html .comment .size-thumbnail {
+  max-width: 100%;
+  height: auto;
+}
+html .site-body-content figure, html .comment figure {
+  margin: auto;
+  display: block;
+  padding: 0;
+}
+html .site-body-content .wp-block-embed__wrapper, html .comment .wp-block-embed__wrapper {
+  padding: 0;
+}
+html .site-body-content figure.alignleft, html .site-body-content figure.alignright,
+html .site-body-content img.alignleft, html .site-body-content img.alignright, html .comment figure.alignleft, html .comment figure.alignright,
+html .comment img.alignleft, html .comment img.alignright {
+  margin: 0;
+  display: inline-block;
+  max-width: 50%;
+}
+html .site-body-content figure.alignleft,
+html .site-body-content img.alignleft, html .comment figure.alignleft,
+html .comment img.alignleft {
+  margin-right: 1.5em;
+  float: left;
+}
+html .site-body-content figure.alignright,
+html .site-body-content img.alignright, html .comment figure.alignright,
+html .comment img.alignright {
+  margin-left: 1.5em;
+  float: right;
+}
+html .site-body-content figcaption, html .comment figcaption {
+  font-size: 0.8em;
+}
+html .site-body-content img, html .site-body-content figure, html .comment img, html .comment figure {
+  max-width: 100%;
+  height: auto !important;
+}
+html .site-body-content iframe, html .comment iframe {
+  max-width: 100%;
+}
+html .site-body-content .link-chip, html .comment .link-chip {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+html .site-body-content .link-chip:hover, html .comment .link-chip:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+html .site-body-content ul, html .site-body-content ol, html .comment ul, html .comment ol {
+  padding: 12px;
+  list-style-position: inside;
+}
+html .site-body-content ul li, html .comment ul li {
+  list-style-type: disc;
+  margin-left: 50px;
+}
+html .site-body-content ol li, html .comment ol li {
+  list-style-type: decimal;
+  margin-left: 50px;
+}
+html .site-body-content ul li::before, html .site-body-content ol li::before, html .comment ul li::before, html .comment ol li::before {
+  opacity: 0.7;
+  display: inline-block;
+  font-size: 0.9em;
+  font-family: sans-serif;
+}
+html .site-body-content blockquote, html .comment blockquote {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  padding: 10px 30px;
+  border-style: solid;
+}
+html .site-body-content blockquote cite, html .comment blockquote cite {
+  font-size: 0.8em !important;
+  font-family: courier, sans-serif;
+}
+html .site-body-content blockquote cite:before, html .comment blockquote cite:before {
+  content: "— ";
+}
+html .site-body-content blockquote:before, html .site-body-content blockquote:after, html .comment blockquote:before, html .comment blockquote:after {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  font-size: 180px;
+  line-height: 1em;
+  text-align: left;
+  vertical-align: middle;
+  opacity: 0.2;
+  font-style: normal;
+}
+html .site-body-content blockquote:before, html .comment blockquote:before {
+  top: -20px;
+  left: -25px;
+  content: "\201C";
+}
+html .site-body-content blockquote:after, html .comment blockquote:after {
+  bottom: 20px;
+  right: 0;
+  content: "\201D";
+}
+html .site-body-content table td, html .site-body-content table th, html .comment table td, html .comment table th {
+  padding: 10px;
+  font-size: 0.9em;
+}
+html .site-body-content table tr:nth-child(even), html .comment table tr:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+html .site-body-content table tr, html .comment table tr {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+html .site-body-content table tbody, html .comment table tbody {
+  display: block;
+  padding: 0px 0px;
+  margin: 0 40px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+html .site-body-content dl dt, html .comment dl dt {
+  font-weight: 600;
+}
+html .site-body-content dl dd, html .comment dl dd {
+  margin-top: 4px;
+  margin-left: 20px;
+  font-size: 0.9em;
+}
+html .site-body-content dl dd + dt, html .comment dl dd + dt {
+  margin-top: 20px;
+}
+html .site-body-content code, html .site-body-content pre, html .comment code, html .comment pre {
+  font-family: courier, sans-serif;
+  padding: 0;
+  font-size: 0.9em;
+  border-radius: 3px;
+  overflow: scroll;
+  line-height: 1.3em;
+}
+html .site-body-content pre.wp-block-code, html .comment pre.wp-block-code {
+  display: block;
+  padding: 30px 35px;
+}
+html .site-body-content address, html .comment address {
+  text-align: left;
+}
+html .site-body-content sup, html .comment sup {
+  vertical-align: super;
+  font-size: 60%;
+  margin-left: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
+  font-family: sans-serif;
+  border-radius: 25px;
+  border-style: solid;
+  border-width: 1px;
+}
+html .site-body-content .twitter-tweet, html .comment .twitter-tweet {
+  margin-left: auto;
+  margin-right: auto;
+}
+html .site-body-content .wp-audio-shortcode, html .comment .wp-audio-shortcode {
+  max-width: 740px;
+  margin: auto;
+}
+html .site-body-content .post-password-form, html .comment .post-password-form {
+  max-width: 500px;
+  margin: auto;
+  padding: 40px;
+  text-align: left;
+}
+html .site-body-content .post-password-form label input, html .comment .post-password-form label input {
+  border-style: solid;
+  border-color: #ccc;
+  border-width: 1px 1px 1px 5px;
+  border-radius: 3px;
+  padding: 5px;
+  height: 50px;
+  margin: 0;
+  line-height: 50px;
+  outline: none;
+  text-align: center;
+}
+html .site-body-content .post-password-form label input:hover, html .comment .post-password-form label input:hover {
+  border-color: #999;
+}
+html .site-body-content .post-password-form label input:focus, html .comment .post-password-form label input:focus {
+  border-color: #353535;
+}
+html .site-body-content .post-password-form input[type=submit], html .comment .post-password-form input[type=submit] {
+  border-style: solid;
+  border-color: #c0c0c0;
+  border-width: 1px;
+  border-radius: 0 3px 3px 0;
+  padding: 5px 10px;
+  font-size: 14px;
+  height: 50px;
+  margin: 0;
+  line-height: 50px;
+  display: none;
+}

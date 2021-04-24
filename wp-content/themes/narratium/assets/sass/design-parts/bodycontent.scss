@@ -1,0 +1,290 @@
+
+
+
+/**
+* Styles related to the content of the post and page
+*/
+html .site-body-content, html .comment {
+
+       > * {margin:auto}
+
+       > p,
+       > span,
+       > h1,
+       > h2,
+       > h3,
+       > h4,
+       > h5,
+       > h6,
+       > ul,
+       > ol,
+       > hr,
+       > table,
+       > dl,
+       > address,
+       > code,
+       > blockquote,
+       > section,
+       > pre,
+       > audio {
+        margin:auto;
+        padding-left:40px;
+        padding-right: 40px;
+        text-align:left;
+        overflow-wrap: break-word;
+      }
+
+
+      > div {
+        //margin-left: 40px;
+        //margin-right: 40px;
+        //margin-bottom:1.8em;
+        max-width:100%;
+        width:auto;
+      }
+
+      .fullwidth {max-width:100% !important;}
+
+      .size-auto,
+      .size-full,
+      .size-large,
+      .size-medium,
+      .size-thumbnail {
+      	max-width: 100%;
+      	height: auto;
+      }
+
+
+      /*
+      a span {padding-left:0;padding-right:0;}
+      p span {padding-left:0;padding-right:0;}
+      */
+
+      /**
+      * The figure is used for special things like images with captions
+      */
+      figure {
+        margin:auto;
+        display:block;
+        padding:0;
+        a {
+          //display:block;
+        }
+      }
+
+      .wp-block-embed__wrapper {padding:0;}
+
+      figure.alignleft, figure.alignright,
+      img.alignleft, img.alignright {margin:0;display:inline-block;max-width:50%;}
+      figure.alignleft,
+      img.alignleft {margin-right:1.5em;float:left;}
+      figure.alignright,
+      img.alignright {margin-left:1.5em;float:right;}
+
+
+
+      figcaption {
+        //margin: 0.8em 20px;
+        font-size: 0.8em;
+        //padding-bottom:8px;
+      }
+
+      /**
+      * This code prevents our images from leaving the div if they are larger
+      */
+      img, figure {
+        max-width:100%;
+        height:auto !important;
+      }
+
+      iframe {max-width:100%;}
+
+      .link-chip {
+        background-color:rgba(0,0,0,0.05);
+        &:hover {background-color:rgba(0,0,0,0.10);}
+      }
+
+      /**
+      * Listas
+      */
+      ul, ol {padding:12px;list-style-position: inside;}
+      ul li {list-style-type: disc;margin-left:50px;}
+      ol li {list-style-type: decimal;margin-left:50px;}
+      ul li::before, ol li::before {
+         opacity:0.7;
+         display: inline-block;
+         font-size:0.9em;
+         font-family:sans-serif;
+      }
+
+      blockquote {
+          margin-top:20px;
+          margin-bottom:20px;
+          position: relative;
+          padding:10px 30px;
+          //border-color:rgba(0,0,0,0.5);
+          //background-color:rgba(0,0,0,0.03);
+          border-style:solid;
+          //border-width:0 0 0 4px;
+
+          cite {
+            font-size:0.8em !important;
+            font-family: courier, sans-serif;
+          }
+
+          cite:before {
+              //top: -20px;
+              //left: -25px;
+              content: "— ";
+          }
+      }
+
+      blockquote:before, blockquote:after {
+          position: absolute;
+          width: 60px;
+          height: 60px;
+          font-size: 180px;
+          line-height: 1em;
+          text-align:left;
+          vertical-align:middle;
+          opacity:0.2;
+          font-style:normal;
+      }
+      blockquote:before {
+          top: -20px;
+          left: -25px;
+          content: "\201C";
+      }
+      blockquote:after {
+          bottom: 20px;
+          right: 0;
+          content: "\201D";
+      }
+
+
+
+      /**
+      * Tables
+      */
+      table {
+        td, th {padding:10px;font-size:0.9em}
+        tr:nth-child(even) {background-color:rgba(0,0,0,0.05);}
+        tr {padding-left:20px;padding-right:20px;}
+        tbody {
+          display:block;
+          padding:0px 0px;
+          margin:0 40px;
+          border-style:solid;
+          border-width:1px;
+          border-color:rgba(0, 0, 0, 0.08);
+        }
+      }
+
+      /**
+      * Definition lists
+      */
+      dl {
+
+        dt {font-weight:600;}
+        dd {margin-top:4px;margin-left:20px;font-size:0.9em;}
+        dd + dt {margin-top:20px;}
+
+      }
+
+      /**
+      * Code
+      */
+      code, pre {
+        font-family:courier, sans-serif;
+        padding:0;
+
+        font-size:0.9em;
+
+        border-radius:3px;
+        overflow:scroll;
+        line-height:1.3em;
+      }
+
+      pre.wp-block-code {
+        display:block;
+        //background-color:black;
+        //color:white;
+        padding:30px 35px;
+      }
+
+      /**
+      * Address
+      */
+      address {
+        text-align:left;
+      }
+
+      /** sups **/
+      sup {
+        vertical-align:super;
+        font-size:60%;
+        margin-left:2px;
+        padding-left:4px;
+        padding-right:4px;
+        font-family:sans-serif;
+        border-radius:25px;
+        border-style:solid;
+        border-width:1px;
+      }
+
+
+
+      /* twitter widget */
+      .twitter-tweet {margin-left:auto;margin-right:auto;}
+      .wp-audio-shortcode {max-width:740px;margin:auto;}
+
+
+      /* pasword posts! */
+
+      .post-password-form {
+        max-width:500px;
+        margin:auto;
+        padding:40px;
+        text-align:left;
+
+        label {
+
+          input {
+            border-style:solid;
+            border-color:#ccc;
+            border-width:1px 1px 1px 5px;
+            border-radius:3px;
+            padding:5px;
+            height:50px;
+            margin:0;
+            line-height:50px;
+            outline:none;
+            text-align:center;
+          }
+
+          input:hover {
+            border-color:#999;
+          }
+
+          input:focus {
+            border-color:#353535;
+          }
+
+
+        }
+        input[type=submit] {
+          border-style:solid;
+          border-color: #c0c0c0;
+          border-width:1px;
+          border-radius:0 3px 3px 0;
+          padding:5px 10px;
+          font-size:14px;
+          height:50px;
+          margin:0;
+          line-height:50px;
+          display:none;
+        }
+
+      }
+
+}

@@ -1,0 +1,114 @@
+
+#site-header-wrap {
+
+  bottom:0;
+  position:relative;
+  z-index:1;
+
+}
+
+.menu-site-menu-container ul li {
+  position:relative;
+  display:inline-block;
+}
+.menu-site-menu-container ul li a {
+  color: #fff;
+  display:inline-block;
+  padding:5px;
+}
+.menu-site-menu-container ul li:before {
+  color: #fff;
+  margin-right: 5px;
+}
+.menu-site-menu-container ul li + li {
+  margin-left: 10px;
+}
+
+.menu-site-menu-container ul ul { /* this targets all sub menus */
+	position: absolute;
+  background-color:#232323;
+  color:#ccc;
+  text-align:left;
+  left:0;
+  z-index:-1;
+  border-radius:2px;
+  opacity:0;
+	bottom: 22px; /* this should be the same height as the top level menu -- height + padding + borders */
+  border-style:solid;
+  border-color:#ccc;
+  border-width:2px;
+  -webkit-transform: translate3d(0,-10px,0);
+	transform: translate3d(0,-10px,0);
+	-webkit-transition: opacity 0.3s, -webkit-transform 0.3s;
+	transition: opacity 0.3s, transform 0.3s;
+
+}
+
+.menu-site-menu-container ul ul ul {display:none !important;}
+
+
+
+.menu-site-menu-container ul ul::after {
+	content: '';
+	top: 100%;
+	left: 0%;
+	border: solid transparent;
+	height: 0;
+	width: 0;
+	position: absolute;
+	pointer-events: none;
+	border-color: transparent;
+	border-top-color: #ccc;
+	border-width: 10px;
+	margin-left: 10px;
+}
+
+.menu-site-menu-container ul ul li { /* this targets all submenu items */
+	float: none; /* overwriting our float up above */
+	width: 150px; /* set to the width you want your sub menus to be. This needs to match the value we set below */
+  margin:0;
+  font-size:14px;
+}
+
+.menu-site-menu-container ul ul li:before {
+  display:none;
+}
+
+.menu-site-menu-container ul ul li + li {
+  border-style:solid;border-width: 1px 0 0 0;
+  border-color:#121212;
+}
+.menu-site-menu-container ul ul li a { /* target all sub menu item links */
+  padding:10px 15px;
+  color:#ccc;
+  display:block;
+}
+
+.menu-site-menu-container ul ul li a:hover {
+  color:#fafafa;
+  background-color:#111;
+}
+
+
+
+/* trigger */
+.menu-site-menu-container ul li:hover > ul {
+	display: block; /* show sub menus when hovering over a parent */
+  pointer-events: auto;
+	opacity: 1;
+  z-index:0;
+	-webkit-transform: translate3d(0,0,0) rotate3d(0,0,0,0);
+	transform: translate3d(0,0,0) rotate3d(0,0,0,0);
+}
+.menu-site-menu-container ul ul li ul {
+	/* target all second, third, and deeper level sub menus */
+	left: 150px; /* this needs to match the sub menu width set above -- width + padding + borders */
+	top: 0; /* this ensures the sub menu starts in line with its parent item */
+}
+
+
+
+
+/*.menu-site-menu-container ul  ul {display:none}
+.bottom-menu-container ul ul {display:none}*/
+.bottom-menu-container ul li {margin:0 5px;}

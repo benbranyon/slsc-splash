@@ -1,0 +1,2139 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Narratium\n"
+"POT-Creation-Date: 2018-05-22 12:21+0200\n"
+"PO-Revision-Date: 2018-05-22 12:24+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.3\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: style.css\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.js\n"
+
+#: 404.php:21
+msgid "Page not found."
+msgstr "Página no encontrada."
+
+#: 404.php:26
+#, php-format
+msgid "Go back to %s."
+msgstr "Volver a %s."
+
+#: comments-wordpress.php:18 comments-wordpress.php:36
+msgid "Comment navigation"
+msgstr "Navegación de comentarios"
+
+#: comments-wordpress.php:19 comments-wordpress.php:37
+msgid "&larr; Older Comments"
+msgstr "&larr; Comentarios anteriores"
+
+#: comments-wordpress.php:20 comments-wordpress.php:38
+msgid "Newer Comments &rarr;"
+msgstr "Comentarios Recientes &rarr;"
+
+#: comments-wordpress.php:48
+msgid "Comments are closed."
+msgstr "Los comentarios están cerrados."
+
+#: index.php:13
+msgid "Please, select a template in Settings -> Reading"
+msgstr "Por favor, selecciona una plantilla en Settings -> Reading"
+
+#: kohette-framework/functions/basic-functions.php:530
+msgid "Invalid arguments."
+msgstr "Argumentos inválidos."
+
+#: kohette-framework/modules/admin-pages-creator/admin-pages-creator.php:162
+msgid "Settings saved."
+msgstr "Opciones guardadas."
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:35
+msgid "Normal"
+msgstr "Normal"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:36
+msgid "Italic"
+msgstr "Itálica"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:37
+msgid "Oblique"
+msgstr "Oblicua"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:150
+msgid "Unit"
+msgstr "Unidad"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:177
+#: post-types/post/post-features/post-color-scheme/post-color-scheme.php:62
+msgid "Default"
+msgstr "Por defecto"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:179
+msgid "Basic fonts"
+msgstr "Fuentes básicas"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:185
+msgid "Google fonts"
+msgstr "Fuentes Google"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:200
+msgid "Regular"
+msgstr "Regular"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:226
+msgid "Font style"
+msgstr "Estilo de fiente"
+
+#: kohette-framework/modules/settings-creator/options/option-font/option-font.php:245
+msgid "Line height"
+msgstr "Altura de línea"
+
+#: kohette-framework/modules/settings-creator/options/option-image/option-image.php:42
+#: kohette-framework/modules/taxonomy-controls/taxonomy-controls.php:348
+#: taxonomies/user/user-features/user-profile-avatar/user-profile-avatar.php:46
+#: taxonomies/user/user-features/user-profile-background/user-profile-background.php:50
+msgid "Select image"
+msgstr "Selecciona imagen"
+
+#: kohette-framework/modules/settings-creator/options/option-image/option-image.php:51
+#: kohette-framework/modules/taxonomy-controls/taxonomy-controls.php:357
+#: taxonomies/user/user-features/user-profile-avatar/user-profile-avatar.php:55
+#: taxonomies/user/user-features/user-profile-background/user-profile-background.php:59
+msgid "Remove"
+msgstr "Eliminar"
+
+#: kohette-framework/modules/widget-creator/widget-creator.php:123
+msgid "Title:"
+msgstr "Titulo:"
+
+#: post-types/page/page-features/page-breadcrumbs/page-breadcrumbs.php:213
+msgid "Page"
+msgstr "Página"
+
+#: post-types/post/post-features/post-co-authors/post-co-authors-columns.php:29
+msgid "Co-Authors"
+msgstr "Co-autores"
+
+#: post-types/post/post-features/post-co-authors/post-co-authors.php:12
+msgid "Post Co-Authors"
+msgstr "Co-autores del post"
+
+#: post-types/post/post-features/post-co-authors/post-co-authors.php:48
+msgid "Here you can add users as co-authors of the post."
+msgstr "Aquí puedes añadir usuarios que aparecerán como co-autores del post."
+
+#: post-types/post/post-features/post-color-scheme/post-color-scheme.php:16
+msgid "Color Scheme"
+msgstr "Esquema de colores"
+
+#: post-types/post/post-features/post-color-scheme/post-color-scheme.php:45
+msgid "Color schemes not found."
+msgstr "Esquemas de color no encontrados."
+
+#: post-types/post/post-features/post-color-scheme/post-color-scheme.php:59
+msgid "Select a color scheme for this posts."
+msgstr "Seleccione una combinación de colores."
+
+#: post-types/post/post-features/post-color-scheme/post-color-scheme.php:69
+msgid "Color schemes allow you to display the post with custom color schemes."
+msgstr ""
+"Esquemas de color le permite mostrar los posts con esquemas de color "
+"personalizados."
+
+#: post-types/post/post-features/post-credits/post-credits.php:16
+msgid "Post Credits"
+msgstr "Créditos del post"
+
+#: post-types/post/post-features/post-credits/post-credits.php:51
+msgid ""
+"If necessary, insert credits for this post. This field is useful to add "
+"image credits and post's copyright related stuff."
+msgstr ""
+"Si es necesario, introduce créditos por este post. Este campo es útil para "
+"añadir créditos de imagen o informacion de copyright sobre el post."
+
+#: post-types/post/post-features/post-custom-comments-form/post-custom-comments-form.php:31
+msgid "Leave your comment here..."
+msgstr "Escribe tu comentario aquí…"
+
+#: post-types/post/post-features/post-custom-comments-form/post-custom-comments-form.php:51
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: post-types/post/post-features/post-custom-subtitle-metabox/post-custom-subtitle-metabox.php:8
+msgid "Subtitle"
+msgstr "Subtítulo"
+
+#: post-types/post/post-features/post-custom-subtitle-metabox/post-custom-subtitle-metabox.php:54
+msgid "Insert a subtitle for your post. You can use format tags."
+msgstr ""
+"Introduce un subtítulo para tu post. Puedes utilizar etiquetas de formato."
+
+#: post-types/post/post-features/post-custom-title-metabox/post-custom-title-metabox.php:12
+msgid "Title"
+msgstr "Título"
+
+#: post-types/post/post-features/post-custom-title-metabox/post-custom-title-metabox.php:52
+msgid "Insert a title for your post. You can use format tags."
+msgstr ""
+"Introduce un título para tu post. Puedes utilizar etiquetas de formato."
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:26
+msgid "Featured video"
+msgstr "Video destacado"
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:61
+msgid "Remove featured video"
+msgstr "Eliminar video destacado"
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:68
+msgid "Select a video from the Media library or upload a new one."
+msgstr "Selecciona un video de la librería de medios o sube uno nuevo."
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:68
+msgid "Also you can use a YouTube video url."
+msgstr "También puedes usar una url de video de Youtube."
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:70
+msgid "Introduce the URL of the video file or a YouTube video url."
+msgstr "Introduce una url de archivo de video o una url de video de YouTube."
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:87
+msgid "Select from library"
+msgstr "Seleccionar de la librería"
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:90
+msgid "Use URL"
+msgstr "Usar URL"
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:94
+msgid "Available formats:"
+msgstr "Formatos disponibles:"
+
+#: post-types/post/post-features/post-featured-video/post-featured-video.php:153
+msgid ""
+"The introduced URL does not seem as a valid video file. Please, introduce a "
+"valid video file URL."
+msgstr ""
+"La url introducida no parece una url de video válida. Por favor, introduce "
+"una url correcta."
+
+#: post-types/post/post-features/post-share-vars/share-to-facebook.php:17
+msgid "Facebook App ID"
+msgstr "App ID de Facebook"
+
+#: post-types/post/post-features/post-share-vars/share-to-facebook.php:19
+#, php-format
+msgid "Add the Facebook app ID of %s in Facebook."
+msgstr "Introduce el App ID de %s en Facebook."
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:16
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:18
+msgid "Read Time"
+msgstr "Tiempo de Lectura"
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:31
+msgid "Read Time for articles"
+msgstr "Tiempo de lectura de artículos"
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:32
+msgid "Configure the Read Time option for articles."
+msgstr "Configurar la opción de tiempo de lectura de artículos."
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:44
+msgid "Display Read Time"
+msgstr "Mostrar tiempo de lectura"
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:45
+msgid "Active the display of the read time option in the articles."
+msgstr ""
+"Activa la visualización de la opción de tiempo de lectura de los artículos."
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:46
+msgid "Check this option if you want to active read time"
+msgstr "Selecciona esta opción para activa el tiempo de lectura"
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:62
+msgid "Display Type"
+msgstr "Tipo de Visualización"
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:63
+msgid "Choose display type."
+msgstr "Elige modo de visualización."
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:64
+msgid "Select between display the read time or the number of words."
+msgstr ""
+"Seleccionar entre mostrar el tiempo de lectura o el número de palabras."
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:67
+msgid "Read time"
+msgstr "Tiempo de lectura"
+
+#: post-types/post/post-features/post-words-counter/post-words-counter.php:68
+msgid "Words count"
+msgstr "Recuento de palabras"
+
+#: taxonomies/category/category-features/category-featured-image/category-featured-image.php:12
+#: taxonomies/tag/tag-features/tag-featured-image/tag-featured-image.php:12
+msgid "Featured Image"
+msgstr "Imagen Destacada"
+
+#: taxonomies/category/category-features/category-featured-image/category-featured-image.php:13
+msgid "Attach a featured image for the category."
+msgstr "Adjuntar una imagen destacada para la categoría."
+
+#: taxonomies/category/category-features/category-templates/category-templates.php:16
+#: taxonomies/category/category-features/category-templates/category-templates.php:36
+#: taxonomies/tag/tag-features/tag-templates/tag-templates.php:16
+#: taxonomies/tag/tag-features/tag-templates/tag-templates.php:32
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:218
+msgid "Template"
+msgstr "Plantilla"
+
+#: taxonomies/category/category-features/category-templates/category-templates.php:17
+msgid "Select a template for this category."
+msgstr "Seleccione una plantilla para esta categoría."
+
+#: taxonomies/tag/tag-features/tag-featured-image/tag-featured-image.php:13
+msgid "Attach a featured image for the tag."
+msgstr "Adjuntar una imagen destacada para la etiqueta."
+
+#: taxonomies/tag/tag-features/tag-templates/tag-templates.php:17
+msgid "Select a template for this tag."
+msgstr "Seleccione una plantilla para esta etiqueta."
+
+#: taxonomies/user/user-features/user-profile-avatar/user-profile-avatar.php:30
+msgid "Profile avatar"
+msgstr "Avatar de perfil"
+
+#: taxonomies/user/user-features/user-profile-avatar/user-profile-avatar.php:38
+#: taxonomies/user/user-features/user-profile-avatar/user-profile-avatar.php:43
+msgid "Profile avatar image"
+msgstr "Imagen de avatar de perfil"
+
+#: taxonomies/user/user-features/user-profile-avatar/user-profile-avatar.php:112
+msgid "Select or upload an image to show as profile avatar."
+msgstr "Seleccionar o subir una imagen para mostrar como avatar de perfil."
+
+#: taxonomies/user/user-features/user-profile-background/user-profile-background.php:34
+msgid "Profile background"
+msgstr "Fondo de perfil"
+
+#: taxonomies/user/user-features/user-profile-background/user-profile-background.php:47
+msgid "Profile background image"
+msgstr "Imagen de fondo de perfil"
+
+#: taxonomies/user/user-features/user-profile-background/user-profile-background.php:116
+msgid "Select or upload an image to show as profile background."
+msgstr "Seleccionar o subir una imagen para mostrar como fondo de perfil."
+
+#: taxonomies/user/user-features/user-profile-template/user-profile-template.php:39
+msgid "Profile template"
+msgstr "Plantilla de perfil"
+
+#: taxonomies/user/user-features/user-profile-template/user-profile-template.php:50
+msgid "Select a template to use in the profile page of this user."
+msgstr ""
+"Seleccione una plantilla para utilizar en la página de Perfil de este "
+"usuario."
+
+#: template-grid-sidebar.php:12
+msgid "Image Placeholders"
+msgstr "Placeholders Imagen"
+
+#: template-grid-sidebar.php:13
+msgid ""
+"Select a placeholder source to display images in posts without featured "
+"image."
+msgstr ""
+"Selecciona una imagen por defecto para mostrar en las entradas que no tienen "
+"imagen destacada."
+
+#: template-grid-sidebar.php:17
+msgid "Disabled"
+msgstr "Desabilitado"
+
+#: template-grid-sidebar.php:18
+msgid "Use Unsplash source API"
+msgstr "Utilizar API de fuente Unsplash"
+
+#: template-grid-sidebar.php:19
+msgid "Use Unsplash source API with post tags filter"
+msgstr "Uso Unsplash fuente API con filtro de etiquetas"
+
+#: template-grid-sidebar.php:28 template-simple-featured-image.php:46
+msgid "Items Image Overlay"
+msgstr "Estilo de superposición de imagen"
+
+#: template-grid-sidebar.php:29 template-simple-featured-image.php:47
+msgid "Select an overlay style to display in post items."
+msgstr ""
+"Seleccione un estilo de superposición para mostrar en los elementos post de "
+"esta template."
+
+#: template-grid-sidebar.php:33 template-grid-sidebar.php:61
+#: template-masonry-sidebar.php:48 template-simple-featured-image.php:51
+msgid "None"
+msgstr "Ninguno"
+
+#: template-grid-sidebar.php:35 template-simple-featured-image.php:53
+msgid "Dark Gradient Subtle"
+msgstr "Gradiente oscuro sutil"
+
+#: template-grid-sidebar.php:36 template-simple-featured-image.php:54
+msgid "Dark Gradient Light"
+msgstr "Gradiente oscuro ligero"
+
+#: template-grid-sidebar.php:37 template-simple-featured-image.php:55
+msgid "Dark Gradient Medium"
+msgstr "Gradiente oscuro medio"
+
+#: template-grid-sidebar.php:38 template-simple-featured-image.php:56
+msgid "Dark Gradient High"
+msgstr "Gradiente oscuro alto"
+
+#: template-grid-sidebar.php:40 template-simple-featured-image.php:58
+msgid "Dark Flat 10%"
+msgstr "Oscuro uniforme 10%"
+
+#: template-grid-sidebar.php:41 template-simple-featured-image.php:59
+msgid "Dark Flat 20%"
+msgstr "Oscuro uniforme 20%"
+
+#: template-grid-sidebar.php:42 template-simple-featured-image.php:60
+msgid "Dark Flat 30%"
+msgstr "Oscuro uniforme 30%"
+
+#: template-grid-sidebar.php:43 template-simple-featured-image.php:61
+msgid "Dark Flat 40%"
+msgstr "Oscuro uniforme 40%"
+
+#: template-grid-sidebar.php:44 template-simple-featured-image.php:62
+msgid "Dark Flat 50%"
+msgstr "Oscuro uniforme 50%"
+
+#: template-grid-sidebar.php:45 template-simple-featured-image.php:63
+msgid "Dark Flat 60%"
+msgstr "Oscuro uniforme 60%"
+
+#: template-grid-sidebar.php:46 template-simple-featured-image.php:64
+msgid "Dark Flat 70%"
+msgstr "Oscuro uniforme 70%"
+
+#: template-grid-sidebar.php:47 template-simple-featured-image.php:65
+msgid "Dark Flat 80%"
+msgstr "Oscuro uniforme 80%"
+
+#: template-grid-sidebar.php:56 template-masonry-sidebar.php:43
+msgid "Items CSSGram Effects"
+msgstr "Efectos CSSGram por los elementos"
+
+#: template-grid-sidebar.php:57 template-masonry-sidebar.php:44
+msgid ""
+"Select an image effect to display in post items featured images. See https://"
+"una.im/CSSgram/"
+msgstr ""
+"Selecciona un efecto para aplicar a las imágenes destacadas de los posts . "
+"Ver https://una.im/CSSgram/"
+
+#: template-grid-sidebar.php:97 template-masonry-sidebar.php:11
+#: template-search.php:12 template-simple-featured-image.php:14
+#: template-simple-sidebar-v2.php:15 template-simple-sidebar.php:12
+#: template-simple.php:12
+msgid "Display / Hide Elements"
+msgstr "Mostrar / Esconder Elementos"
+
+#: template-grid-sidebar.php:98 template-masonry-sidebar.php:12
+#: template-search.php:13 template-simple-featured-image.php:15
+#: template-simple-sidebar-v2.php:16 template-simple-sidebar.php:13
+#: template-simple.php:13
+msgid "Check the elements to display in this template."
+msgstr "Marca los elementos que se deberían mostrar en esta plantilla."
+
+#: template-grid-sidebar.php:102 template-masonry-sidebar.php:17
+#: template-search.php:18 template-simple-featured-image.php:20
+#: template-simple-sidebar-v2.php:21 template-simple-sidebar.php:18
+#: template-simple.php:18
+msgid "Post author"
+msgstr "Autor de la entrada"
+
+#: template-grid-sidebar.php:103 template-masonry-sidebar.php:18
+#: template-search.php:19 template-simple-featured-image.php:21
+#: template-simple-sidebar-v2.php:22 template-simple-sidebar.php:19
+#: template-simple.php:19
+msgid "Post comments count"
+msgstr "Número de comentarios de la entrada"
+
+#: template-grid-sidebar.php:113 template-masonry-sidebar.php:33
+#: template-search.php:32 template-simple-featured-image.php:36
+#: template-simple-sidebar-v2.php:35 template-simple-sidebar.php:32
+#: template-simple.php:32
+msgid "Post read time"
+msgstr "Tiempo de lectura de la entrada"
+
+#: template-grid-sidebar.php:124 template-masonry-sidebar.php:86
+#: template-simple-sidebar-v2.php:45 template-simple-sidebar.php:42
+#: template-simple.php:44
+msgid "Posts per page"
+msgstr "Publicaciones por página"
+
+#: template-grid-sidebar.php:125 template-masonry-sidebar.php:87
+#: template-simple-sidebar-v2.php:46 template-simple-sidebar.php:43
+#: template-simple.php:45
+msgid ""
+"You can select how many posts per page are going to be shown by this "
+"template."
+msgstr ""
+"Puede seleccionar el número de mensajes por página que se mostrarán en esta "
+"plantilla."
+
+#: template-grid-sidebar.php:129 template-masonry-sidebar.php:91
+#: template-simple-sidebar-v2.php:49 template-simple-sidebar.php:46
+#: template-simple.php:48
+#: theme-features/site-template-settings-posts-order-option/site-template-settings-posts-order-option.php:29
+msgid "default"
+msgstr "Por defecto "
+
+#: template-grid-sidebar.php:183 template-masonry-sidebar.php:168
+#: template-simple.php:73
+msgid "Sorry, no results found."
+msgstr "Lo siento, no se han encontrado resultados."
+
+#: template-masonry-sidebar.php:16 template-masonry-sidebar.php:19
+#: template-search.php:17 template-search.php:20
+#: template-simple-featured-image.php:19 template-simple-featured-image.php:22
+#: template-simple-sidebar-v2.php:20 template-simple-sidebar-v2.php:23
+#: template-simple-sidebar.php:17 template-simple-sidebar.php:20
+#: template-simple.php:17 template-simple.php:20
+msgid "Post categories"
+msgstr "Categorías de post"
+
+#: template-masonry-sidebar.php:20 template-search.php:21
+#: template-simple-featured-image.php:23 template-simple-sidebar-v2.php:24
+#: template-simple-sidebar.php:21 template-simple.php:21
+msgid "Post date"
+msgstr "Fecha de la entrada"
+
+#: template-masonry-sidebar.php:21
+msgid "Extra navigation controls"
+msgstr "Controles de navegación adicionales"
+
+#: template-masonry-sidebar.php:239 template-simple-featured-image.php:132
+#: template-simple-sidebar.php:114 template-simple.php:121
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:242
+#: widgets/featured-post/featured-post.php:38
+#: widgets/posts-column/posts-column.php:295
+#: widgets/posts-list/posts-list.php:221
+msgid "By"
+msgstr "Por"
+
+#: template-masonry-sidebar.php:261 template-simple-featured-image.php:154
+#: template-simple-sidebar.php:136 template-simple.php:143
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:264
+msgid "Posted"
+msgstr "Publicado"
+
+#: template-masonry-sidebar.php:267 template-simple-featured-image.php:160
+#: template-simple-sidebar.php:142 template-simple.php:149
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:270
+msgid "in"
+msgstr "en"
+
+#: template-masonry-sidebar.php:275 template-simple-featured-image.php:168
+#: template-simple-sidebar.php:150 template-simple.php:157
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:278
+#, php-format
+msgid "on %s"
+msgstr "en %s"
+
+#: template-masonry-sidebar.php:288 template-simple-featured-image.php:181
+#: template-simple-sidebar.php:163 template-simple.php:170
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:291
+#: widgets/posts-column/posts-column.php:313
+#: widgets/posts-list/posts-list.php:239
+#, php-format
+msgctxt "comments title"
+msgid "One Comment"
+msgid_plural "%1$s Comments"
+msgstr[0] "Un comentario"
+msgstr[1] "%1$s Comentarios"
+
+#: template-masonry-sidebar.php:300 template-simple-featured-image.php:193
+#: template-simple-sidebar.php:175 template-simple.php:182
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:177
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:303
+#, php-format
+msgid "%s min read"
+msgstr "%s min lectura"
+
+#: template-masonry-sidebar.php:305 template-simple-sidebar-v2.php:131
+#: template-simple-sidebar.php:230
+msgid "Continue reading"
+msgstr "Continuar leyendo"
+
+#: template-search.php:59
+#, php-format
+msgid "Search in %s"
+msgstr "Buscar en %s"
+
+#: template-search.php:65
+msgid "Enter a keyword to search and press enter"
+msgstr "Ingrese solicitud de búsqueda y presione Enter"
+
+#: template-search.php:77
+msgid ""
+"Sorry, but nothing matched your search criteria. Please try again with some "
+"different keywords."
+msgstr ""
+"No se encontraron resultados para tu búsqueda. Por favor intenta de nuevo "
+"con una búsqueda diferente."
+
+#: template-search.php:78
+#, php-format
+msgid "%s search results found for: %s"
+msgstr "%s Resultados de Búsqueda para: %s"
+
+#: template-simple.php:232
+msgid "Read more"
+msgstr "Leer más"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:334
+msgid "Install Required Plugins"
+msgstr "Instalar plugins requeridos"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:335
+msgid "Install Plugins"
+msgstr "Instalar Plugins"
+
+#. translators: %s: plugin name.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:337
+#, php-format
+msgid "Installing Plugin: %s"
+msgstr "Instalando Plugin: %s"
+
+#. translators: %s: plugin name.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:339
+#, php-format
+msgid "Updating Plugin: %s"
+msgstr "Actualizando el complemento: %s"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:340
+msgid "Something went wrong with the plugin API."
+msgstr "Algo salió mal con la API de complemento."
+
+#. translators: 1: plugin name(s).
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:343
+#, php-format
+msgid "This theme requires the following plugin: %1$s."
+msgid_plural "This theme requires the following plugins: %1$s."
+msgstr[0] "Este tema necesita el siguiente plugin: %1$s."
+msgstr[1] "Este tema necesita los siguientes plugins: %1$s."
+
+#. translators: 1: plugin name(s).
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:349
+#, php-format
+msgid "This theme recommends the following plugin: %1$s."
+msgid_plural "This theme recommends the following plugins: %1$s."
+msgstr[0] "Este tema recomienda el siguiente complemento: %1$s."
+msgstr[1] "Este tema requiere los siguientes plugins: %1$s."
+
+#. translators: 1: plugin name(s).
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:355
+#, php-format
+msgid ""
+"The following plugin needs to be updated to its latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgid_plural ""
+"The following plugins need to be updated to their latest version to ensure "
+"maximum compatibility with this theme: %1$s."
+msgstr[0] ""
+"El siguiente plugin debe actualizarse a su última versión para garantizar la "
+"máxima compatibilidad con este tema: %1$s."
+msgstr[1] ""
+"Los siguientes plugins deben actualizarse a su última versión para "
+"garantizar la máxima compatibilidad con este tema: %1$s."
+
+#. translators: 1: plugin name(s).
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:361
+#, php-format
+msgid "There is an update available for: %1$s."
+msgid_plural "There are updates available for the following plugins: %1$s."
+msgstr[0] "Hay una actualización disponible para: %1$s."
+msgstr[1] "Hay una actualización disponible para: %1$s."
+
+#. translators: 1: plugin name(s).
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:367
+#, php-format
+msgid "The following required plugin is currently inactive: %1$s."
+msgid_plural "The following required plugins are currently inactive: %1$s."
+msgstr[0] "El siguiente complemento requerido está inactivo: %1$s."
+msgstr[1] ""
+"Los siguientes plugins recomendados están actualmente inactivos: %1$s."
+
+#. translators: 1: plugin name(s).
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:373
+#, php-format
+msgid "The following recommended plugin is currently inactive: %1$s."
+msgid_plural "The following recommended plugins are currently inactive: %1$s."
+msgstr[0] "El siguiente plugin recomendado esta actualmente inactivo: %1$s."
+msgstr[1] ""
+"Los siguientes plugins recomendados están actualmente inactivos: %1$s."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:378
+msgid "Begin installing plugin"
+msgid_plural "Begin installing plugins"
+msgstr[0] "Comenzar a instalar el plugin"
+msgstr[1] "Comenzar a instalar el plugins"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:383
+msgid "Begin updating plugin"
+msgid_plural "Begin updating plugins"
+msgstr[0] "Comenzar a actualizar el plugin"
+msgstr[1] "Comenzar a actualizar plugins"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:388
+msgid "Begin activating plugin"
+msgid_plural "Begin activating plugins"
+msgstr[0] "Comenzar a activar el plugin"
+msgstr[1] "Comenzar a activar los plugins"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:392
+msgid "Return to Required Plugins Installer"
+msgstr "Volver al instalador de complementos necesarios"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:393
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:912
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2618
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3665
+msgid "Return to the Dashboard"
+msgstr "Regreso al panel de control"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:394
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3244
+msgid "Plugin activated successfully."
+msgstr "Complemento activado correctamente."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:395
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3037
+msgid "The following plugin was activated successfully:"
+msgid_plural "The following plugins were activated successfully:"
+msgstr[0] "El siguiente plugin se ha activado correctamente:"
+msgstr[1] "Los siguientes plugins se han activado correctamente:"
+
+#. translators: 1: plugin name.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:397
+#, php-format
+msgid "No action taken. Plugin %1$s was already active."
+msgstr "No se ha realizado ninguna acción. El plugin %1$s ya estaba activo."
+
+#. translators: 1: plugin name.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:399
+#, php-format
+msgid ""
+"Plugin not activated. A higher version of %s is needed for this theme. "
+"Please update the plugin."
+msgstr ""
+"Complemento no activado. Se necesita una versión mas reciente de %s para "
+"esta plataforma. Por favor actualice el complemento."
+
+#. translators: 1: dashboard link.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:401
+#, php-format
+msgid "All plugins installed and activated successfully. %1$s"
+msgstr "Todos los plugins han sido instalados y activados con éxito. %1$s"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:402
+msgid "Dismiss this notice"
+msgstr "Descartar este aviso"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:403
+msgid ""
+"There are one or more required or recommended plugins to install, update or "
+"activate."
+msgstr ""
+"Hay uno o más plugins necesarios o recomendados para instalar, actualizar o "
+"activar."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:404
+msgid "Please contact the administrator of this site for help."
+msgstr ""
+"Por favor, póngase en contacto con el administrador de este sitio para "
+"obtener ayuda."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:608
+msgid "Update Required"
+msgstr "Actualización necesaria"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:1019
+msgid ""
+"The remote plugin package does not contain a folder with the desired slug "
+"and renaming did not work."
+msgstr ""
+"El paquete de plugin remoto no contiene una carpeta con el slug deseado y el "
+"cambio de nombre no funcionó."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:1019
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:1022
+msgid ""
+"Please contact the plugin provider and ask them to package their plugin "
+"according to the WordPress guidelines."
+msgstr ""
+"Póngase en contacto con el proveedor de plugins y pídales que empaqueten su "
+"complemento de acuerdo con las directrices de WordPress."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:1022
+msgid ""
+"The remote plugin package consists of more than one file, but the files are "
+"not packaged in a folder."
+msgstr ""
+"El paquete de plugin remoto consta de más de un archivo, pero los archivos "
+"no están empaquetados en una carpeta."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:1206
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3033
+msgctxt "plugin A *and* plugin B"
+msgid "and"
+msgstr "y"
+
+#. translators: %s: version number
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2067
+#, php-format
+msgid "TGMPA v%s"
+msgstr "TGMPA v%s"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2358
+msgid "Required"
+msgstr "Requerido"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2361
+msgid "Recommended"
+msgstr "Recomendado"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2377
+msgid "WordPress Repository"
+msgstr "Repositorio de WordPress"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2380
+msgid "External Source"
+msgstr "Fuente externa"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2383
+msgid "Pre-Packaged"
+msgstr "Pre-Empaquetado"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2400
+msgid "Not Installed"
+msgstr "No instalado"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2404
+msgid "Installed But Not Activated"
+msgstr "Instalado pero no activado"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2406
+msgid "Active"
+msgstr "Activo"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2412
+msgid "Required Update not Available"
+msgstr "Actualización necesaria no disponible"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2415
+msgid "Requires Update"
+msgstr "Requiere actualización"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2418
+msgid "Update recommended"
+msgstr "Actualización recomendable"
+
+#. translators: 1: install status, 2: update status
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2427
+#, php-format
+msgctxt "Install/Update Status"
+msgid "%1$s, %2$s"
+msgstr "%1$s, %2$s"
+
+#. translators: 1: number of plugins.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2473
+#, php-format
+msgctxt "plugins"
+msgid "All <span class=\"count\">(%s)</span>"
+msgid_plural "All <span class=\"count\">(%s)</span>"
+msgstr[0] "Todo <span class=\"count\">(%s)</span>"
+msgstr[1] "Todo <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2477
+#, php-format
+msgid "To Install <span class=\"count\">(%s)</span>"
+msgid_plural "To Install <span class=\"count\">(%s)</span>"
+msgstr[0] "Para instalar <span class=\"count\">(%s)</span>"
+msgstr[1] "Para instalar <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2481
+#, php-format
+msgid "Update Available <span class=\"count\">(%s)</span>"
+msgid_plural "Update Available <span class=\"count\">(%s)</span>"
+msgstr[0] "Actualización Disponible <span class=\"count\">(%s)</span>"
+msgstr[1] "Actualización Disponible <span class=\"count\">(%s)</span>"
+
+#. translators: 1: number of plugins.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2485
+#, php-format
+msgid "To Activate <span class=\"count\">(%s)</span>"
+msgid_plural "To Activate <span class=\"count\">(%s)</span>"
+msgstr[0] "Para activar <span class=\"count\">(%s)</span>"
+msgstr[1] "Para activar <span class=\"count\">(%s)</span>"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2567
+msgctxt "as in: \"version nr unknown\""
+msgid "unknown"
+msgstr "desconocido"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2575
+msgid "Installed version:"
+msgstr "Versión instalada:"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2583
+msgid "Minimum required version:"
+msgstr "Versión mínima requerida:"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2595
+msgid "Available version:"
+msgstr "Versión disponible:"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2618
+msgid "No plugins to install, update or activate."
+msgstr "No hay complementos para instalar, actualizar o activar."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2632
+msgid "Plugin"
+msgstr "Plugin"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2633
+msgid "Source"
+msgstr "Origen"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2634
+msgid "Type"
+msgstr "Tipo"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2638
+msgid "Version"
+msgstr "Versión"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2639
+msgid "Status"
+msgstr "Estatus"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2688
+#, php-format
+msgid "Install %2$s"
+msgstr "Instalar %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2693
+#, php-format
+msgid "Update %2$s"
+msgstr "Actualizar %2$s"
+
+#. translators: %2$s: plugin name in screen reader markup
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2699
+#, php-format
+msgid "Activate %2$s"
+msgstr "Activar %2$s"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2769
+msgid "Upgrade message from the plugin author:"
+msgstr "Mensaje de actualización del autor del plugin:"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2802
+msgid "Install"
+msgstr "Instalar"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2808
+msgid "Update"
+msgstr "Actualizar"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2811
+msgid "Activate"
+msgstr "Activar"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2842
+msgid "No plugins were selected to be installed. No action taken."
+msgstr ""
+"No ha seleccionado ningún pluging para instalar. No se ejecutó ninguna "
+"acción."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2844
+msgid "No plugins were selected to be updated. No action taken."
+msgstr ""
+"No seleccionó ningún complemento  para actualizar. No se ejecutó ninguna "
+"acción."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2885
+msgid "No plugins are available to be installed at this time."
+msgstr "No hay complementos  disponibles para ser instalados en este momento."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2887
+msgid "No plugins are available to be updated at this time."
+msgstr "No hay complementos disponibles para ser actualizados en este momento."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:2993
+msgid "No plugins were selected to be activated. No action taken."
+msgstr ""
+"No ha sido seleccionado ningún complemento para activar. No se han ejecutado "
+"acciones."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3019
+msgid "No plugins are available to be activated at this time."
+msgstr "No hay plugins disponibles para ser activados en este momento."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3243
+msgid "Plugin activation failed."
+msgstr "Activación del plugin falló."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3583
+#, php-format
+msgid "Updating Plugin %1$s (%2$d/%3$d)"
+msgstr "Actualizando Plugin %1$s (%2$d/%3$d)"
+
+#. translators: 1: plugin name, 2: error message.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3586
+#, php-format
+msgid "An error occurred while installing %1$s: <strong>%2$s</strong>."
+msgstr "Un error ocurrió mientras se instalaba %1$s: <strong>%2$s</strong>."
+
+#. translators: 1: plugin name.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3588
+#, php-format
+msgid "The installation of %1$s failed."
+msgstr "La instalación de %1$s falló."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3592
+msgid ""
+"The installation and activation process is starting. This process may take a "
+"while on some hosts, so please be patient."
+msgstr ""
+"Los procesos de instalación y activación se están iniciando. Esto puede "
+"demorar un tiempo en algunos hosts, así que por favor tenga paciencia."
+
+#. translators: 1: plugin name.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3594
+#, php-format
+msgid "%1$s installed and activated successfully."
+msgstr "%1$s instalado y activado con éxito."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3594
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3602
+msgid "Show Details"
+msgstr "Mostrar detalles"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3594
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3602
+msgid "Hide Details"
+msgstr "Ocultar detalles"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3595
+msgid "All installations and activations have been completed."
+msgstr "Todas las instalaciones y activaciones han sido completadas."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3597
+#, php-format
+msgid "Installing and Activating Plugin %1$s (%2$d/%3$d)"
+msgstr "Instalando y activando Plugin %1$s (%2$d/%3$d)"
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3600
+msgid ""
+"The installation process is starting. This process may take a while on some "
+"hosts, so please be patient."
+msgstr ""
+"El proceso de instalación está comenzando. Este proceso puede demorar un "
+"poco en algunos hosts, por lo que tenga paciencia."
+
+#. translators: 1: plugin name.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3602
+#, php-format
+msgid "%1$s installed successfully."
+msgstr "%1$s instalado correctamente."
+
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3603
+msgid "All installations have been completed."
+msgstr "Todas las instalaciones se han completado."
+
+#. translators: 1: plugin name, 2: action number 3: total number of actions.
+#: theme-features/site-TGM-integration/class-tgm-plugin-activation.php:3605
+#, php-format
+msgid "Installing Plugin %1$s (%2$d/%3$d)"
+msgstr "Instalando plugin %1$s (%2$d/%3$d)"
+
+#: theme-features/site-ajax-animations/ajax-animations-admin.php:8
+msgid "Transition Animations"
+msgstr "Animaciones de transición"
+
+#: theme-features/site-ajax-animations/ajax-animations-admin.php:9
+msgid ""
+"Check this option to active the transition animations for AJAX navigation"
+msgstr ""
+"Selecciona esta opción para activar las animaciones de transición en la "
+"navegación AJAX"
+
+#: theme-features/site-ajax-animations/ajax-animations-admin.php:22
+msgid "No animation"
+msgstr "Sin animación"
+
+#: theme-features/site-ajax-animations/ajax-animations-admin.php:28
+msgid "Transition Effect"
+msgstr "Efecto de transición"
+
+#: theme-features/site-ajax-animations/ajax-animations-admin.php:29
+msgid "Select an animation effect to use in AJAX transitions"
+msgstr "Seleccione un efecto de animación para utilizar como transición AJAX"
+
+#: theme-features/site-ajax-extra-js/site-ajax-extra-js.php:38
+msgid "Extra JS code"
+msgstr "Código JS adicional"
+
+#: theme-features/site-ajax-extra-js/site-ajax-extra-js.php:39
+msgid ""
+"This JS code will be execute at the end of every AJAX request. This field is "
+"useful to use with third-party plugins that needs special javascript load/"
+"execution in the load of the page."
+msgstr ""
+"Este código JS se ejecutara al final de cada llamada AJAX. Este campo es "
+"útil para usar con plugins de terceros que necesiten la carga/ejecución de "
+"código especial cuando la página carga."
+
+#: theme-features/site-ajax-navigation/site-ajax-navigation.php:677
+#: theme-features/site-ajax-navigation/site-ajax-navigation.php:691
+msgid "AJAX Navigation"
+msgstr "Navegación AJAX"
+
+#: theme-features/site-ajax-navigation/site-ajax-navigation.php:678
+#, php-format
+msgid ""
+"AJAX Navigation can be activated with just one click to accelerate and "
+"approach the navigation throughout %s."
+msgstr ""
+"La navegación AJAX puede ser activada con solo un click para acelerar y "
+"mejorar la navegación en %s."
+
+#: theme-features/site-ajax-navigation/site-ajax-navigation.php:692
+msgid "Active dynamic navigation in the site."
+msgstr "Activa la navegación dinámica en el sitio."
+
+#: theme-features/site-ajax-navigation/site-ajax-navigation.php:693
+#: theme-features/site-back-to-top-button/site-back-to-top-button.php:109
+msgid "Enable"
+msgstr "Habilitar"
+
+#: theme-features/site-back-to-top-button/site-back-to-top-button.php:97
+msgid "Back-to-top Button"
+msgstr "Botón volver-arriba"
+
+#: theme-features/site-back-to-top-button/site-back-to-top-button.php:98
+msgid "Configure the back-to-top button."
+msgstr "Configura el botón de volver arriba."
+
+#: theme-features/site-back-to-top-button/site-back-to-top-button.php:107
+msgid "Display back-to-top button"
+msgstr "Mostrar botón volver arriba"
+
+#: theme-features/site-back-to-top-button/site-back-to-top-button.php:108
+msgid "Enable or disable the back-top-top button in the site."
+msgstr "Activa o desactiva el botón de volver arriba en el sitio."
+
+#: theme-features/site-back-to-top-button/site-back-to-top-button.php:120
+msgid "Button icon"
+msgstr "Icono de botón"
+
+#: theme-features/site-back-to-top-button/site-back-to-top-button.php:121
+msgid ""
+"Insert the ID of the icon that's will be displayed in the button. You can "
+"insert any ID from the Google Material icons library."
+msgstr ""
+"Introduce la ID del icono que se mostrará en el botón. Puedes introducir "
+"cualquier ID de la librería de Material Icons de Google."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:23
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:30
+msgid "Templates"
+msgstr "Plantillas"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:24
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:31
+msgid "Customize and configure the theme's templates."
+msgstr "Personalizar y configurar las plantillas del tema."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:39
+msgid "Default Templates"
+msgstr "Plantillas por defecto"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:40
+msgid "Select the default templates to use in the site"
+msgstr "Seleccione las plantillas por defecto a utilizar en el sitio"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:56
+msgid "Post Template"
+msgstr "Plantilla de entrada"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:57
+msgid "Select the default template to use in posts pages."
+msgstr "Seleccione la plantilla por defecto para usar en páginas de posts."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:77
+msgid "Page Template"
+msgstr "Plantilla de página"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:78
+msgid "Select the default template to use in pages."
+msgstr "Seleccione la plantilla por defecto para usar en páginas."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:98
+msgid "Category Template"
+msgstr "Plantilla de categoría"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:99
+msgid "Select the default template to use in category pages."
+msgstr "Seleccione la plantilla por defecto para usar en páginas de categoría."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:117
+msgid "Tag Template"
+msgstr "Plantilla de etiquetas"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:118
+msgid "Select the default template to use in tag pages."
+msgstr "Seleccione la plantilla por defecto para usar en páginas de etiqueta."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:136
+msgid "Archive Template"
+msgstr "Plantilla de archivo"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:137
+msgid "Select the default template to use in archive pages."
+msgstr "Seleccione la plantilla por defecto para usar en páginas de archivo."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:155
+msgid "Search Template"
+msgstr "Plantilla de búsqueda"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:156
+msgid "Select the default template to use in search pages."
+msgstr "Seleccione la plantilla por defecto para usar en páginas de búsqueda."
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:173
+msgid "Author Template"
+msgstr "Plantilla autor"
+
+#: theme-features/site-custom-templates-system/site-custom-templates-system.php:174
+msgid "Select the default template to use in author profile pages."
+msgstr ""
+"Seleccione la plantilla por defecto para usar en páginas de Perfil de autor."
+
+#: theme-features/site-menu-slots/site-menu-slots.php:12
+msgid "Main Menu"
+msgstr "Menú Principal"
+
+#: theme-features/site-menu-slots/site-menu-slots.php:15
+msgid "Frontpage Extra Menu"
+msgstr "Menú extra de página principal"
+
+#: theme-features/site-menu-slots/site-menu-slots.php:18
+msgid "Bottom Menu"
+msgstr "Menu Inferior"
+
+#: theme-features/site-settings-color-scheme/site-settings-color-scheme.php:11
+msgid "Site color scheme"
+msgstr "Esquema de colores"
+
+#: theme-features/site-settings-color-scheme/site-settings-color-scheme.php:12
+#: theme-features/site-settings-color-scheme/site-settings-color-scheme.php:13
+msgid "Select a color scheme for this site."
+msgstr "Selecciona un esquema de color para la web."
+
+#: theme-features/site-settings-logo-size/site-settings-logo-size.php:15
+msgid "Don't display"
+msgstr "No mostrar"
+
+#: theme-features/site-settings-logo-size/site-settings-logo-size.php:21
+msgid "Select a size to display the site logo."
+msgstr "Seleccione un tamaño para mostrar el logotipo del sitio."
+
+#: theme-features/site-settings-menu-behaviour/site-settings-menu-behaviour.php:8
+msgid "Logo/Menu Icon behaviour"
+msgstr "Comportamiento del icono del logotipo/menú"
+
+#: theme-features/site-settings-menu-behaviour/site-settings-menu-behaviour.php:9
+#: theme-features/site-settings-menu-behaviour/site-settings-menu-behaviour.php:10
+msgid ""
+"You can change the behaviour and look of the main site logo and menu handle "
+"of the site."
+msgstr ""
+"Puede cambiar el comportamiento y la apariencia del logo y menú principal "
+"del sitio."
+
+#: theme-features/site-settings-menu-behaviour/site-settings-menu-behaviour.php:14
+msgid "Display site logo and menu handle next to it."
+msgstr "Mostrar logo del sitio y botón de menú."
+
+#: theme-features/site-settings-menu-behaviour/site-settings-menu-behaviour.php:15
+msgid "Display just the site logo has menu handle."
+msgstr "Mostrar solo logo del sitio como botón de menú."
+
+#: theme-features/site-settings-posts-template/site-settings-posts-template.php:11
+msgid "Posts frontpage"
+msgstr "Posts frontpage"
+
+#: theme-features/site-settings-posts-template/site-settings-posts-template.php:12
+msgid "Select a template to display posts."
+msgstr "Seleccione una plantilla para mostrar los posts."
+
+#: theme-features/site-settings-posts-template/site-settings-posts-template.php:13
+msgid "Select a template to display your latest posts"
+msgstr "Seleccione una plantilla para mostrar tus últimos posts"
+
+#: theme-features/site-settings-slogan/site-settings-slogan.php:16
+msgid "Website Slogan"
+msgstr "Lema del sitio web"
+
+#: theme-features/site-settings-slogan/site-settings-slogan.php:18
+msgid "This text will be displayed next to the website logo/name."
+msgstr "Este texto se mostrará al lado del logo/nombre del sitio Web."
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:18
+msgid "Mail contact address"
+msgstr "Dirección de contacto de correo"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:19
+msgid "Insert your contact email address"
+msgstr "Introduzca su dirección de correo electrónico de contacto"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:20
+msgid "Contact email"
+msgstr "Email de contacto"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:29
+msgid "Facebook username"
+msgstr "Nombre de usuario de Facebook"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:30
+msgid "Insert your username in Facebook"
+msgstr "Introduce tu nombre de usuario de Facebook"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:31
+msgid "Share on Facebook"
+msgstr "Compartir en Facebook"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:40
+msgid "Twitter username"
+msgstr "Usuario de Twitter"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:41
+msgid "Insert your username in Twitter"
+msgstr "Introduzca su nombre de usuario en Twitter"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:42
+msgid "Tweet this"
+msgstr "Twittear"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:51
+msgid "Instagram username"
+msgstr "Nombre de usuario Instagram"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:52
+msgid "Insert your username in Instagram"
+msgstr "Introduzca su nombre de usuario en Instagram"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:53
+msgid "Share on Instagram"
+msgstr "Comparte en Instagram"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:62
+msgid "Linkedin username"
+msgstr "Nombre de usuario de LinkedIn"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:63
+msgid "Insert your username in Linkedin"
+msgstr "Introduzca su nombre de usuario en Linkedin"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:64
+msgid "Share on Linkedin"
+msgstr "Compartir en Linkedin"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:73
+msgid "Pinterest username"
+msgstr "Nombre de usuario de Pinterest"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:74
+msgid "Insert your username in Pinterest"
+msgstr "Introduce tu nombre de usuario en Pinterest"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:75
+msgid "Share on Pinterest"
+msgstr "Compartir en Pinterest"
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:153
+msgid ""
+"Fill these fields to make the site and the articles fully shareables in "
+"social media sites."
+msgstr ""
+"Rellena estos campos para compartir los artículos del sitio con las redes "
+"sociales."
+
+#: theme-features/site-settings-social-media/site-settings-social-media.php:198
+#, php-format
+msgid ""
+"Select social media links to display them under the site title. You can "
+"configure the social media links of %s in Theme Options > Social Media"
+msgstr ""
+"Selecciona los links de medios sociales que quieres que aparezcan debajo del "
+"título del sitio. Puedes configurar los enlaces que aparecerán disponibles "
+"en %s en Theme Options > Social Media"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:20
+msgid "Fonts & Typography"
+msgstr "Fuentes y tipografía"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:21
+msgid "Customize the theme's typography related elements."
+msgstr "Personaliza los elementos relacionados con la tipografía del sitio."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:35
+msgid "Typography Typefaces"
+msgstr "Fuentes y tipografía"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:36
+#, php-format
+msgid "Select the custom typefaces to use in %s."
+msgstr "Seleccionar las tipografías personalizadas para usar en %s."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:50
+msgid "Titles typeface"
+msgstr "Tipografía de títulos"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:51
+msgid "This is the typeface used in titles."
+msgstr "Este es el typeface usado en títulos."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:77
+msgid "Headlines typeface"
+msgstr "Tipografía titulares"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:78
+msgid "This is the typeface used by headlines and subtitles."
+msgstr "Este es el tipo de letra utilizado por encabezados y subtítulos."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:103
+msgid "Content typeface"
+msgstr "Tipografía de contenidos"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:104
+msgid "This is the typeface used in post/page contents."
+msgstr "Este es el tipo de letra utilizado en el post/página contenido."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:132
+msgid "Body typeface"
+msgstr "Tipografía de cuerpo"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:133
+msgid "This is the typeface used by default in the site."
+msgstr "Este es el typeface usado por defecto en el sitio web."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:173
+msgid "Basic Typography"
+msgstr "Tipografía básica"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:174
+msgid "Configure the basic typography of the site."
+msgstr "Configurar la tipografía básica del sitio."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:190
+msgid "Default site font"
+msgstr "Fuente de sitio predeterminada"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:191
+msgid "This is the font used in the entire site by default."
+msgstr "Esta es la fuente utilizada en todo el sitio por defecto."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:216
+msgid "Headline 1"
+msgstr "Encabezado 1"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:217
+msgid "Adjust the size and line height used in h1 tags."
+msgstr "Ajuste la altura de la línea y tamaño utilizada en las etiquetas h1."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:243
+msgid "Headline 2"
+msgstr "Encabezado 2"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:244
+msgid "Adjust the size and line height used in h2 tags."
+msgstr "Ajuste la altura de la línea y tamaño utilizada en las etiquetas h2."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:270
+msgid "Headline 3"
+msgstr "Headline 3"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:271
+msgid "Adjust the size and line height used in h3 tags."
+msgstr ""
+"Ajusta el tamaño de fuente y altura de línea usada en las etiquetas h3."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:302
+msgid "Post/Pages Typography"
+msgstr "Tipografía de Posts/Paginas"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:303
+msgid ""
+"Configure the typography of the site used by default in posts and pages."
+msgstr "Configura la tipografía a utilizar por defecto en posts y páginas."
+
+#: theme-features/site-settings-typography/site-settings-typography.php:314
+msgid "Content"
+msgstr "Contenido"
+
+#: theme-features/site-settings-typography/site-settings-typography.php:315
+msgid ""
+"Adjust the font style of text used in main contents of the site. This font "
+"style is used in the body content of posts and pages by default."
+msgstr ""
+"Ajustar el estilo de fuente de texto utilizado en el contenido principal del "
+"sitio. Este estilo de fuente se utiliza en el contenido de los posts y las "
+"páginas por defecto."
+
+#: theme-features/site-settings-website-firm/site-settings-website-firm.php:18
+msgid "Website Firm"
+msgstr "Lema del sitio web"
+
+#: theme-features/site-settings-website-firm/site-settings-website-firm.php:20
+msgid ""
+"This text will appear in the bottom of the site. You can use it to display "
+"information about copyright and disclaimer message."
+msgstr ""
+"Este texto aparecerá en la parte inferior del sitio. Se puede utilizar para "
+"mostrar información sobre el mensaje de derechos de autor y descargo de "
+"responsabilidad."
+
+#: theme-features/site-template-settings-filter-by-category-option/site-template-settings-filter-by-category-option.php:68
+#: widgets/featured-post/featured-post.php:136
+msgid "Select category"
+msgstr "Selecciona categoría"
+
+#: theme-features/site-template-settings-filter-by-category-option/site-template-settings-filter-by-category-option.php:71
+msgid "Filter by Category"
+msgstr "Filtrar por categoría"
+
+#: theme-features/site-template-settings-filter-by-category-option/site-template-settings-filter-by-category-option.php:72
+msgid ""
+"Filter posts by category. Only the posts belonging to the selected category "
+"will be displayed in this template."
+msgstr ""
+"Filtrar Posts por categoría. Sólo se mostrarán en esta plantilla los "
+"mensajes que pertenezcan a la categoría seleccionada."
+
+#: theme-features/site-template-settings-filter-by-post_tag-option/site-template-settings-filter-by-post_tag-option.php:68
+msgid "Select tag"
+msgstr "Selecciona etiqueta "
+
+#: theme-features/site-template-settings-filter-by-post_tag-option/site-template-settings-filter-by-post_tag-option.php:71
+msgid "Filter by post tag"
+msgstr "Filtrar por etiqueta"
+
+#: theme-features/site-template-settings-filter-by-post_tag-option/site-template-settings-filter-by-post_tag-option.php:72
+msgid ""
+"Filter posts by tag. Only the posts belonging to the selected tag will be "
+"displayed in this template."
+msgstr ""
+"Filtrar posts por etiqueta. Sólo se mostrarán en esta plantilla los mensajes "
+"que pertenezcan a la etiqueta seleccionada."
+
+#: theme-features/site-template-settings-posts-order-option/site-template-settings-posts-order-option.php:24
+msgid "Posts order"
+msgstr "Orden de publicación"
+
+#: theme-features/site-template-settings-posts-order-option/site-template-settings-posts-order-option.php:25
+msgid ""
+"Designates the ascending or descending order of the items displayed by this "
+"template."
+msgstr ""
+"Designa el orden ascendente o descendente de los elementos mostrados por "
+"esta plantilla."
+
+#: theme-features/site-template-settings-posts-order-option/site-template-settings-posts-order-option.php:30
+msgid "DESC"
+msgstr "DESC"
+
+#: theme-features/site-template-settings-posts-order-option/site-template-settings-posts-order-option.php:31
+msgid "ASC"
+msgstr "ASC"
+
+#: theme-features/site-theme-fullscreen-menu/site-theme-fullscreen-menu.php:57
+msgid "Go back to home"
+msgstr "Volver al inicio"
+
+#: theme-features/site-theme-fullscreen-menu/site-theme-fullscreen-menu.php:69
+msgid "Close"
+msgstr "Cerrar"
+
+#: theme-features/site-theme-functions/site-theme-functions.php:55
+#: theme-features/site-theme-functions/site-theme-functions.php:74
+#: theme-features/site-theme-functions/site-theme-functions.php:94
+msgid "Previous"
+msgstr "Anterior"
+
+#: theme-features/site-theme-functions/site-theme-functions.php:60
+#: theme-features/site-theme-functions/site-theme-functions.php:73
+#: theme-features/site-theme-functions/site-theme-functions.php:85
+msgid "Next"
+msgstr "Siguiente"
+
+#: theme-features/site-theme-functions/site-theme-functions.php:106
+#: theme-features/site-theme-functions/site-theme-functions.php:116
+#: theme-features/site-theme-functions/site-theme-functions.php:118
+msgid "Next page"
+msgstr "Siguiente página"
+
+#: theme-features/site-theme-functions/site-theme-functions.php:107
+#: theme-features/site-theme-functions/site-theme-functions.php:125
+#: theme-features/site-theme-functions/site-theme-functions.php:127
+msgid "Previous page"
+msgstr "Página anterior"
+
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-archive.php:66
+#, php-format
+msgid "%s articles from"
+msgstr "%s artículos de"
+
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-category.php:85
+#, php-format
+msgid "%s articles filed in"
+msgstr "%s artículos archivados en"
+
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-frontpage.php:83
+msgid "Logo"
+msgstr "Logo"
+
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:164
+msgid "No responses"
+msgstr "No hay respuestas"
+
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:164
+msgid "One response"
+msgstr "Una Respuesta"
+
+#: theme-features/site-theme-sideheaders/site-theme-sideheaders-single.php:164
+msgid "% responses"
+msgstr "% respuestas"
+
+#: theme-features/site-theme-supports-image-sizes/site-theme-supports-image-sizes.php:42
+msgid "Square 500"
+msgstr "Cuadrado 500"
+
+#: theme-features/site-theme-supports-image-sizes/site-theme-supports-image-sizes.php:43
+msgid "Square 1000"
+msgstr "Cuadrado 1000"
+
+#: theme-features/site-theme-topbar/site-theme-topbar.php:65
+msgid "Menu"
+msgstr "Menú"
+
+#: theme-features/widget-areas/widget-areas.php:13
+msgid ""
+"Use this area to place widgets that will appear in the main menu window."
+msgstr ""
+"Utilice esta área para colocar widgets que aparecerán en la ventana de menú "
+"principal."
+
+#: widgets/featured-post/featured-post.php:64
+msgid "Featured post"
+msgstr "Entrada destacada"
+
+#: widgets/featured-post/featured-post.php:65
+msgid "Display a featured post in the widget area"
+msgstr "Muestra una entrada destacada en el área de widgets."
+
+#: widgets/featured-post/featured-post.php:76
+msgid ""
+"Insert the ID of the post to be highlighted in the widget. If you does not "
+"insert a post ID you can also active the filter options to select a post "
+"dynamically."
+msgstr ""
+"Introduce el I de la entrada a destacar en el widget. Si no indicas una ID "
+"de entrada también puedes activar las opciones de filtro para que la entrada "
+"se seleccione dinámicamente."
+
+#: widgets/featured-post/featured-post.php:89
+msgid "Post ID"
+msgstr "ID de entrada"
+
+#: widgets/featured-post/featured-post.php:90
+msgid "Insert the ID of the post to be highlighted."
+msgstr "Introduce el ID de la entrada a destacar."
+
+#: widgets/featured-post/featured-post.php:106
+msgid "Photo height"
+msgstr "Alto de imagen"
+
+#: widgets/featured-post/featured-post.php:107
+msgid "Defines a default height for the image height size."
+msgstr "Define un valor de altura por defecto para el tamaño de imagen."
+
+#: widgets/featured-post/featured-post.php:112
+#: widgets/posts-column/posts-column.php:163
+msgid "100px min"
+msgstr "100px min"
+
+#: widgets/featured-post/featured-post.php:113
+#: widgets/posts-column/posts-column.php:164
+msgid "200px min"
+msgstr "200px min"
+
+#: widgets/featured-post/featured-post.php:114
+#: widgets/posts-column/posts-column.php:165
+msgid "300px min"
+msgstr "300px min"
+
+#: widgets/featured-post/featured-post.php:115
+#: widgets/posts-column/posts-column.php:166
+msgid "400px min"
+msgstr "400px min"
+
+#: widgets/featured-post/featured-post.php:116
+#: widgets/posts-column/posts-column.php:167
+msgid "500px min"
+msgstr "500px min"
+
+#: widgets/featured-post/featured-post.php:117
+#: widgets/posts-column/posts-column.php:168
+msgid "600px min"
+msgstr "600px min"
+
+#: widgets/featured-post/featured-post.php:118
+msgid "700px min"
+msgstr "700px min"
+
+#: widgets/featured-post/featured-post.php:132
+#: widgets/posts-column/posts-column.php:47
+#: widgets/posts-list/posts-list.php:47
+msgid "Filter by category"
+msgstr "Filtrar por categoría"
+
+#: widgets/featured-post/featured-post.php:140
+msgid "Order criteria"
+msgstr "Criterio de orden"
+
+#: widgets/featured-post/featured-post.php:145
+msgid "Latest"
+msgstr "Últimas"
+
+#: widgets/featured-post/featured-post.php:146
+msgid "Random"
+msgstr "Aleatorio"
+
+#: widgets/featured-post/featured-post.php:147
+msgid "Most commented"
+msgstr "Mas comentadas"
+
+#: widgets/posts-column/posts-column.php:14
+msgid "Posts column"
+msgstr "Columna de entradas."
+
+#: widgets/posts-column/posts-column.php:15
+msgid "Display a column of posts."
+msgstr "Muestra una columna de entradas."
+
+#: widgets/posts-column/posts-column.php:26
+msgid "This widget display a column of posts."
+msgstr "Este widget muestra una columna de entradas."
+
+#: widgets/posts-column/posts-column.php:39
+#: widgets/posts-list/posts-list.php:39
+msgid "Number of posts"
+msgstr "Número de entradas."
+
+#: widgets/posts-column/posts-column.php:40
+#: widgets/posts-list/posts-list.php:40
+msgid "Insert the number of posts to be displayed."
+msgstr "Introduce el número de posts para mostrar."
+
+#: widgets/posts-column/posts-column.php:48
+#: widgets/posts-list/posts-list.php:48
+msgid "Display only posts associated with the selected category."
+msgstr "Muestra solo los posts vinculados a la categoría seleccionada."
+
+#: widgets/posts-column/posts-column.php:52
+#: widgets/posts-list/posts-list.php:52
+msgid "All"
+msgstr "Todos"
+
+#: widgets/posts-column/posts-column.php:56
+#: widgets/posts-list/posts-list.php:56
+msgid "Order by"
+msgstr "Ordenar por"
+
+#: widgets/posts-column/posts-column.php:57
+#: widgets/posts-list/posts-list.php:57
+msgid "Sort retrieved posts by parameter."
+msgstr "Ordena los posts por parámetro."
+
+#: widgets/posts-column/posts-column.php:62
+#: widgets/posts-list/posts-list.php:62
+msgid "Order by title"
+msgstr "Ordenar por título"
+
+#: widgets/posts-column/posts-column.php:63
+#: widgets/posts-list/posts-list.php:63
+msgid "Order by date"
+msgstr "Ordenar por fecha"
+
+#: widgets/posts-column/posts-column.php:64
+#: widgets/posts-list/posts-list.php:64
+msgid "Random order"
+msgstr "Orden aleatorio"
+
+#: widgets/posts-column/posts-column.php:65
+#: widgets/posts-list/posts-list.php:65
+msgid "Order by number of comments"
+msgstr "Ordenar por número de comentarios."
+
+#: widgets/posts-column/posts-column.php:66
+#: widgets/posts-list/posts-list.php:66
+msgid "Order by Page Order"
+msgstr "Ordenar por orden de página."
+
+#: widgets/posts-column/posts-column.php:71
+#: widgets/posts-list/posts-list.php:71
+msgid "Order direction"
+msgstr "Orden"
+
+#: widgets/posts-column/posts-column.php:72
+#: widgets/posts-list/posts-list.php:72
+msgid "Designates the ascending or descending order of the posts"
+msgstr "Designa el orden ascendente o descendente de los posts."
+
+#: widgets/posts-column/posts-column.php:77
+#: widgets/posts-list/posts-list.php:77
+msgid "Ascending order from lowest to highest"
+msgstr "Orden ascendente de más pequeño a mas grande."
+
+#: widgets/posts-column/posts-column.php:78
+#: widgets/posts-list/posts-list.php:78
+msgid "Descending order from highest to lowest"
+msgstr "Orden descendiente de más grande a más pequeño."
+
+#: widgets/posts-column/posts-column.php:85
+#: widgets/posts-list/posts-list.php:85
+msgid ""
+"In the following section you can select what meta information you want to "
+"display."
+msgstr ""
+"En la siguiente sección puedes seleccionar que información quieres mostrar."
+
+#: widgets/posts-column/posts-column.php:93
+msgid "Display image"
+msgstr "Mostrar imagen"
+
+#: widgets/posts-column/posts-column.php:94
+#: widgets/posts-list/posts-list.php:94
+msgid "Check to display the featured image of the posts."
+msgstr "Marca para mostrar la imagen destacada de cada post."
+
+#: widgets/posts-column/posts-column.php:101
+msgid "Display post excerpt"
+msgstr "Mostrar extracto de post"
+
+#: widgets/posts-column/posts-column.php:102
+msgid "Check to display the post excerpt."
+msgstr "Marca para mostrar el extracto de post."
+
+#: widgets/posts-column/posts-column.php:109
+#: widgets/posts-list/posts-list.php:101
+msgid "Display post author"
+msgstr "Mostrar autor de post"
+
+#: widgets/posts-column/posts-column.php:110
+#: widgets/posts-list/posts-list.php:102
+msgid "Check to display the post author."
+msgstr "Marca para mostrar el autor del post."
+
+#: widgets/posts-column/posts-column.php:117
+#: widgets/posts-list/posts-list.php:109
+msgid "Display post date"
+msgstr "Mostrar fecha del post"
+
+#: widgets/posts-column/posts-column.php:118
+#: widgets/posts-list/posts-list.php:110
+msgid "Check to display the post date."
+msgstr "Marca para mostrar la fecha de los posts."
+
+#: widgets/posts-column/posts-column.php:125
+#: widgets/posts-list/posts-list.php:117
+msgid "Display post comments count"
+msgstr "Mostrar número de comentarios"
+
+#: widgets/posts-column/posts-column.php:126
+#: widgets/posts-list/posts-list.php:118
+msgid "Check to display the comment count of the posts."
+msgstr "Marca para mostrar el número de comentarios de cada post."
+
+#: widgets/posts-column/posts-column.php:137
+msgid "Design options"
+msgstr "Opciones de diseño"
+
+#: widgets/posts-column/posts-column.php:144
+msgid "Post title size"
+msgstr "Tamaño de título de post"
+
+#: widgets/posts-column/posts-column.php:145
+msgid "Select the default title size of the posts."
+msgstr "Selecciona el tamaño por defecto para el título de los posts."
+
+#: widgets/posts-column/posts-column.php:150
+msgid "Base"
+msgstr "Base"
+
+#: widgets/posts-column/posts-column.php:151
+msgid "Medium"
+msgstr "Medio"
+
+#: widgets/posts-column/posts-column.php:152
+msgid "Large"
+msgstr "Grande"
+
+#: widgets/posts-column/posts-column.php:157
+msgid "Post image height"
+msgstr "Altura de Imagen"
+
+#: widgets/posts-column/posts-column.php:158
+msgid "Select the default size for the post's images."
+msgstr "Selecciona el tamaño por defecto para las imágenes de post."
+
+#: widgets/posts-column/posts-column.php:173
+msgid "Post excerpt length"
+msgstr "Longitud del resumen del post"
+
+#: widgets/posts-column/posts-column.php:174
+msgid "Indicate the excerpt length."
+msgstr "Longitud del extracto"
+
+#: widgets/posts-column/posts-column.php:183
+#: widgets/posts-list/posts-list.php:126
+msgid "Advanced options"
+msgstr "Opciones avanzadas"
+
+#: widgets/posts-column/posts-column.php:190
+#: widgets/posts-list/posts-list.php:133
+msgid "Offset"
+msgstr "Offset"
+
+#: widgets/posts-column/posts-column.php:191
+#: widgets/posts-list/posts-list.php:134
+msgid "Number of post to displace or pass over."
+msgstr "Número de posts a saltar."
+
+#: widgets/posts-list/posts-list.php:14
+msgid "Posts list"
+msgstr "Lista de artículos"
+
+#: widgets/posts-list/posts-list.php:15
+msgid "Display a list of posts."
+msgstr "Muestra una lista de posts."
+
+#: widgets/posts-list/posts-list.php:26
+msgid "This widget display a list of posts."
+msgstr "Este widget muestra una lista de posts."
+
+#: widgets/posts-list/posts-list.php:93
+msgid "Display Image"
+msgstr "Mostrar Imagen"
+
+#. Theme Name of the plugin/theme
+msgid "Narratium"
+msgstr "Narratium"
+
+#. Theme URI of the plugin/theme
+msgid "https://kohette.com/"
+msgstr "https://kohette.com/"
+
+#. Description of the plugin/theme
+msgid ""
+"Narratium is clean, blog-focused, and designed for clarity. Best suited for "
+"writers and bloggers."
+msgstr ""
+"Narratium es limpio, blog enfocado y diseñado para mayor claridad. Más "
+"adecuado para escritores y bloggers."
+
+#. Author of the plugin/theme
+msgid "Rafael Martín"
+msgstr "Rafael Martín"
+
+#. Author URI of the plugin/theme
+msgid "http://rafaelmartin.dribbble.com"
+msgstr "http://rafaelmartin.dribbble.com"
+
+#~ msgid "Filled in %s"
+#~ msgstr "Archivado en %s"
+
+#~ msgid "Material Icons"
+#~ msgstr "Material Icons"
+
+#~ msgid "Active material icons."
+#~ msgstr "Activar iconos Material."
+
+#~ msgid "Check this option to active material icons in the site."
+#~ msgstr ""
+#~ "Selecciona esta opción para activar los iconos Material en el sitio."
+
+#~ msgctxt "comments title"
+#~ msgid "One thought on &ldquo;%2$s&rdquo;"
+#~ msgid_plural "%1$s thoughts on &ldquo;%2$s&rdquo;"
+#~ msgstr[0] "Un comentario en &ldquo;%2$s&rdquo;"
+#~ msgstr[1] "%1$s comentarios oen &ldquo;%2$s&rdquo;"
+
+#~ msgid "Enable share content tooltip"
+#~ msgstr "Habilita el tooltip de contenido"
+
+#~ msgid ""
+#~ "Display a tooltip with share links when the user selects an extract of "
+#~ "the article's content."
+#~ msgstr ""
+#~ "Muestra una etiqueta emergente con links para compartir cuando el usuario "
+#~ "selecciona un extracto del contenido del artículo."
+
+#~ msgid "Check this option to active the share tooltip"
+#~ msgstr ""
+#~ "Selecciona esta opción para activar la etiqueta emergente de compartir"
+
+#~ msgid "Custom Scripts"
+#~ msgstr "Scripts personalizados"
+
+#~ msgid "Custom options related with site's scripts"
+#~ msgstr "Opciones relacionadas con los scripts del sitio"
+
+#~ msgid "Custom scripts"
+#~ msgstr "Scripts personalizados"
+
+#~ msgid "Extra footer scripts"
+#~ msgstr "Scripts de pie de página"
+
+#~ msgid "Insert javascript file url"
+#~ msgstr "Inserte la url del archivo de javascript"
+
+#~ msgid ""
+#~ "You can add extra script files to the queue. This extra files will be "
+#~ "added in the footer."
+#~ msgstr ""
+#~ "Puede Agregar archivos de script extra a la cola. Estos archivos "
+#~ "adicionales se añadirán en el pie de página."
+
+#~ msgid "Extra footer JS code"
+#~ msgstr "Código extra JS para el footer"
+
+#~ msgid "This extra JS code will appear in the footer of the page."
+#~ msgstr "Este código extra aparecerá en el footer de la página."
+
+#~ msgid "Custom styles"
+#~ msgstr "Estilos personalizados"
+
+#~ msgid "Custom options related with site's styles"
+#~ msgstr "Opciones relacionadas con los estilos del sitio"
+
+#~ msgid "Extra styles"
+#~ msgstr "Estilos Extra"
+
+#~ msgid "Insert style file url"
+#~ msgstr "Inserte la url del archivo de estilo"
+
+#~ msgid ""
+#~ "You can add extra style files to the queue. This extra files will be "
+#~ "added in the head of the page."
+#~ msgstr ""
+#~ "Puedes añadir hojas de estilo extra a la cola de carga. Estas hojas de "
+#~ "estilo serán añadidas en el head de la página."
+
+#~ msgid ""
+#~ "This is the website slogan, it can be edited in Appearance / Customize / "
+#~ "Site Identity. You can display here a brief description of your site with "
+#~ "<a target=\"_blank\" href=\"http://twitter.com/mrrafaelmartin\">links</a> "
+#~ "and <u>some</u> text <strong>format</strong>."
+#~ msgstr ""
+#~ "Este es el lema del sitio web, puede editarse en apariencia / "
+#~ "personalizar / sitio de identidad. Puedes mostrar una breve descripción "
+#~ "de su sitio web con <u> <a target=\"_blank\" href=\"http://twitter.com/"
+#~ "mrrafaelmartin\">enlaces</a> y</u> texto de <strong>formato</strong>."
+
+#~ msgid "This plugin needs to be updated to be compatible with your theme."
+#~ msgstr "Este plugin debe actualizarse para que sea compatible con tu tema."
+
+#~ msgid ""
+#~ "This extra css code will appear in the head of the page, just after the "
+#~ "style links."
+#~ msgstr ""
+#~ "Este código css adicional aparecerá en la cabecera de la página, justo "
+#~ "después de los enlaces de estilo."
+
+#~ msgid "Oops! That page can&rsquo;t be found."
+#~ msgstr "Oops! La página no se encuentra."
+
+#~ msgid ""
+#~ "It looks like nothing was found at this location. Maybe try one of the "
+#~ "links below or a search?"
+#~ msgstr ""
+#~ "No hemos podido encontrar lo que estás buscando. Prueba con alguno de los "
+#~ "links que te mostramos a la derecha, o haciendo una nueva búsqueda."
+
+#~ msgid "Most Used Categories"
+#~ msgstr "Categorías más usadas"
+
+#~ msgid "Try looking in the monthly archives. %1$s"
+#~ msgstr "Intenta buscar en los archivos mensuales. %1$s"
+
+#~ msgid "Interview"
+#~ msgstr "Entrevista"
+
+#~ msgid ""
+#~ "If this article includes an interview and special controls have been used "
+#~ "to enter questions and answers, complete the following fields."
+#~ msgstr ""
+#~ "Si este artículo contiene una entrevista y han sido usados los controles "
+#~ "de preguntas y respuestas, completa los siguientes campos."
+
+#~ msgid "Interviewer"
+#~ msgstr "Entrevistador"
+
+#~ msgid "insert the name of the <b>interviewer</b>"
+#~ msgstr "introduce el nombre del <b>entrevistador</b>"
+
+#~ msgid "Interviewed"
+#~ msgstr "Entrevistado"
+
+#~ msgid "insert the name of the <b>interviewed</b>"
+#~ msgstr "introduce el nombre del <b>entrevistado</b>"
+
+#~ msgid "Question"
+#~ msgstr "Pregunta"
+
+#~ msgid "Answer"
+#~ msgstr "Respuesta"
+
+#~ msgid "Share buttons"
+#~ msgstr "Botones de compartir"
+
+#~ msgid "Clean and simple"
+#~ msgstr "Limpio y fácil de manejar"
