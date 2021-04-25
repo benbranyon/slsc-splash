@@ -13,7 +13,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 		/**
 		* We load every post_type we have
 		*/
-		foreach (glob(get_stylesheet_directory() . "/post-types/*", GLOB_ONLYDIR) as $post_type) {
+		foreach (glob(get_template_directory() . "/post-types/*", GLOB_ONLYDIR) as $post_type) {
 
 		    $plugins[] = array(
 					'name' => basename($post_type),
@@ -30,7 +30,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 		/**
 		* Cwe put the features of the post_types
 		*/
-		foreach (glob( get_stylesheet_directory() . "/post-types/*/*-features/*", GLOB_ONLYDIR) as $filename) {
+		foreach (glob( get_template_directory() . "/post-types/*/*-features/*", GLOB_ONLYDIR) as $filename) {
 
 			$plugins[] = array(
 				'name' => basename($filename),
@@ -42,7 +42,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 		/**
 		* We go through each one of the unique features of the theme and add them to the array
 		*/
-		foreach (glob(get_stylesheet_directory() . "/theme-features/*", GLOB_ONLYDIR) as $filename) {
+		foreach (glob(get_template_directory() . "/theme-features/*", GLOB_ONLYDIR) as $filename) {
 
 		    $plugins[] = array(
 				'name' => basename($filename),
@@ -58,7 +58,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 
 		// We load the functions of taxonomies ---------------------------------------------
 
-		foreach (glob(get_stylesheet_directory() . "/taxonomies/*/*-functions.php", GLOB_NOSORT) as $filename) {
+		foreach (glob(get_template_directory() . "/taxonomies/*/*-functions.php", GLOB_NOSORT) as $filename) {
 
 		    $plugins[] = array(
 				'name' => basename($filename),
@@ -71,7 +71,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 
 
 		// We load the features of the taxonomies---------------------------------------------
-		foreach (glob(get_stylesheet_directory() . "/taxonomies/*/*-features/*", GLOB_ONLYDIR) as $filename) {
+		foreach (glob(get_template_directory() . "/taxonomies/*/*-features/*", GLOB_ONLYDIR) as $filename) {
 
 		    $plugins[] = array(
 				'name' => basename($filename),
@@ -83,7 +83,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 		// ---------------------------------------------------------------------------------------
 
 		// Cargamos los taxonomias ----------------------------------------------------------------
-		foreach (glob(get_stylesheet_directory() . "/taxonomies/*", GLOB_ONLYDIR) as $filename) {
+		foreach (glob(get_template_directory() . "/taxonomies/*", GLOB_ONLYDIR) as $filename) {
 
 		    $plugins[] = array(
 				'name' => basename($filename),
@@ -99,7 +99,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 		/**
 		* We load every post_type we have
 		*/
-		foreach (glob(get_stylesheet_directory() . "/widgets/*", GLOB_ONLYDIR) as $widget) {
+		foreach (glob(get_template_directory() . "/widgets/*", GLOB_ONLYDIR) as $widget) {
 
 		    $plugins[] = array(
 					'name' => basename($widget),
@@ -110,7 +110,7 @@ function KTT_custom_theme_plugins( $plugins ) {
 
 
 		// Cargamos los blocks ----------------------------------------------------------------
-		foreach (glob(get_stylesheet_directory() . "/blocks/*", GLOB_ONLYDIR) as $filename) {
+		foreach (glob(get_template_directory() . "/blocks/*", GLOB_ONLYDIR) as $filename) {
 
 		    $plugins[] = array(
 				'name' => basename($filename),

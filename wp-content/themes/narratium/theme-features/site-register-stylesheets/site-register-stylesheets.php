@@ -8,7 +8,7 @@ function KTT_register_theme_stylesheets() {
       /**
       * First of all we define the route where we have our style sheets
       */
-      $css_dir = get_stylesheet_directory() . '/assets/stylesheets/';
+      $css_dir = get_template_directory() . '/assets/stylesheets/';
 
       /**
       * We define the url from which we can access the file with a browser

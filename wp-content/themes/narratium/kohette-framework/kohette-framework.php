@@ -413,7 +413,7 @@ class kohette_framework {
         * this define a constant for every folder of the theme directory
         * if the folder is named "the libs" the constant with the path will  defined as THEME_THE_LIBS_PATH
         */
-        foreach (glob(get_stylesheet_directory() . "/*", GLOB_ONLYDIR) as $f) {
+        foreach (glob(get_template_directory() . "/*", GLOB_ONLYDIR) as $f) {
 
             $name = basename($f);
             $name = str_replace(' ', '_', $name);
