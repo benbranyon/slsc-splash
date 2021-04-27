@@ -1,0 +1,11 @@
+.home {
+  padding-top: 0px;
+}
+
+#scene-container {
+  background-image: url('/wp-content/themes/TheStalkerState/assets/camera-head.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+}

@@ -22,7 +22,14 @@ if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
 	      'childe2-style',
 	      get_stylesheet_directory_uri() . '/style.css'
 	    );
+	    wp_register_style(
+	    	'front-page-style',
+	    	get_stylesheet_directory_uri() . '/css/front-page.css'
+	    );
 	    wp_enqueue_style( 'childe2-style');
+	    wp_enqueue_style('front-page-style');
+	    wp_enqueue_script( 'three', get_stylesheet_directory_uri() . '/js/libraries/three.min.js', array('jquery'), '20151215', true );
+	    wp_enqueue_script( 'main', get_stylesheet_directory_uri() .'/js/main.js', array('three'));
 	 }
 }
 add_action( 'wp_enqueue_scripts', 'TheStalkerState_enqueue_child_styles' );
