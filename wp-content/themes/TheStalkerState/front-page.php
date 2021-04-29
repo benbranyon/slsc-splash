@@ -82,7 +82,7 @@ get_header();
 
                   <?php if (is_single() || is_page()) {?>
                         <div id="scene-container"></div>
-                        <div class="intro-button"><a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 text-align-center site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="/the-stalker-state/">Enter</a></div>
+                        <div class="intro-button"><a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 text-align-center site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/the-stalker-state/">Enter</a></div>
 
                         <div class="clearfix"></div>
 
