@@ -2,7 +2,7 @@
   padding-top: 0px;
 }
 
-#scene-container {
+#scene-container #stage {
   background-image: url('/wp-content/themes/TheStalkerState/assets/camera-head.jpg');
   background-repeat: no-repeat;
   background-size: cover;

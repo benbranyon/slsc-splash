@@ -1,6 +1,6 @@
 <?php
 /*
-Template Name: Simple
+Template Name: Front Page
 Template Post Type: post, page, user, category, post_tag, frontpage, archive, search
 Template Description: Simple list of posts. This template can be used for single pages too.
 Template styles: template-single
@@ -81,8 +81,15 @@ get_header();
 
 
                   <?php if (is_single() || is_page()) {?>
-                        <div id="scene-container"></div>
-                        <div class="intro-button"><a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 text-align-center site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/the-stalker-state/">Enter</a></div>
+                        <div id="scene-container">
+                          <canvas id="stage"></canvas>
+                        </div>
+                        <?php 
+                          $url = site_url( '/the-stalker-state', 'http' ); 
+                        ?>
+                        <div class="intro-button">
+                          <a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 text-align-center site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="<?php echo $url?>">Enter</a>
+                        </div>
 
                         <div class="clearfix"></div>
 
@@ -120,107 +127,12 @@ get_header();
                         <div class="padding-both-20"></div>
 
                   <?php } ?>
-
-
-
-
-
-
-
-
     				<?php endwhile; ?>
     				<?php endif; ?>
-
-
-
-
-
-
-
-
-
     			</div>
     		</div>
-
-
-
-
-
-
-        <?php
-
-        $pagination_links = KTT_get_next_previous_links();
-        ?>
-
-        <hr class="site-palette-yang-4-border-color">
-
-        <p class="<?php echo KTT_get_content_width_classname();?> site-typeface-title-1  typo-size-small text-align-center  padding-top-10 margin-auto" data-layout="row">
-
-
-            <span data-flex>
-
-              <?php if ($pagination_links['next']['url']) {?>
-                <a
-                class="site-palette-yin-3-color margin-left-5 display-block   padding-top-10 padding-left-20 padding-right-20 classic-link padding-bottom-10 "
-                title="<?php echo esc_attr($pagination_links['next']['title']);?>"
-                href="<?php echo esc_url($pagination_links['next']['url']);?>">
-                  <span class="icon-left-hand"></span> <span data-hide-xs><?php echo esc_html($pagination_links['next']['label']);?></span>
-                </a>
-              <?php } else {?>
-                <span class="margin-left-5 display-block  opacity-03 padding-top-10 padding-left-20 padding-right-20 padding-bottom-10"><span class="icon-left-hand"></span> <span data-hide-xs><?php echo esc_html($pagination_links['next']['label']);?></span></span>
-              <?php } ?>
-
-            </span>
-
-            <span
-            data-flex="30"
-            data-flex-sm="20"
-            class="padding-both-10 site-palette-yin-4-color  <?php if (!$pagination_links['next']['url'] && !$pagination_links['previous']['url']) {?> opacity-03 <?php }?> "
-            data-layout="row"
-            data-layout-align="space-around center"
-            data-hide-xs>
-              <em class="icon-dot"></em>
-              <em class="typo-size-medium icon-book-open"></em>
-              <em class="icon-dot"></em>
-            </span>
-
-            <span data-flex>
-
-              <?php if ($pagination_links['previous']['url']) {?>
-                <a
-                class="site-palette-yin-3-color margin-right-5 display-block padding-top-10 padding-left-20 padding-right-20 classic-link padding-bottom-10 "
-                title="<?php echo esc_attr($pagination_links['previous']['title']);?>"
-                href="<?php echo esc_url($pagination_links['previous']['url']);?>">
-                  <span data-hide-xs><?php echo esc_html($pagination_links['previous']['label']);?></span> <span class="icon-right-hand"></span>
-                </a>
-              <?php }else {?>
-                <span class="margin-right-5 opacity-03 display-block padding-top-10 padding-left-20 padding-right-20 padding-bottom-10 "><span data-hide-xs><?php echo esc_html($pagination_links['previous']['label']);?></span> <span class="icon-right-hand"></span></span>
-              <?php } ?>
-
-            </span>
-
-
-
-        </p>
-
-
-
-
-
-        <?php
-          // If comments are open or we have at least one comment, load up the comment template
-          if (is_single() || is_page()) if ( comments_open() || '0' != get_comments_number() ) :
-            comments_template();
-          endif;
-        ?>
-
-
     </div>
   </div>
-
-
-
-
 
 <?php
 get_footer();
