@@ -9,3 +9,17 @@
   height: 100vh;
   width: 100%;
 }
+
+.intro-button {
+  position: absolute;
+  top: 0px;
+  bottom:  0px;
+  right: 0px;
+  left: 0px;
+  height: 53px;
+  width: 200px!important;
+}
+
+.intro-button .button-behaviour {
+	max-width: 200px;
+}
