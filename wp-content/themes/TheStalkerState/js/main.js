@@ -157,13 +157,13 @@ class Andre {
     this.world = world;
 
     this.options = {
-      branchs: 4,
+      branchs: 6,
       radius: 16,
       size: 8,
       lengthTentacles: 25,
-      rows: 8,
-      cols: 5,
-      color: "#ffae3c" };
+      rows: 6,
+      cols: 7,
+      color: "#08d4fc" };
 
 
     this.angle = new THREE.Vector2();
