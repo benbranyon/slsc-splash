@@ -1,5 +1,5 @@
 const C = CANNON;
-const perspective = 800;
+const perspective = 400;
 
 const map = (value, min1, max1, min2, max2) => min2 + (max2 - min2) * (value - min1) / (max1 - min1);
 
@@ -13,7 +13,7 @@ class Scene {
     this.H = window.innerHeight;
 
     this.world = new C.World();
-    this.world.gravity.set(50, 50, 50);
+    this.world.gravity.set(0, -40, 0);
 
     this.clock = new THREE.Clock();
 
@@ -88,44 +88,6 @@ class Scene {
     this.andre = new Andre(this.scene, this.world);
   }
 
-  setupControls() {
-    this.gui = new dat.GUI();
-
-    const { options } = this.andre;
-
-    this.gui.add(options, "radius", 10, 150).onChange(() => {
-      this.andre.updateGeometry();
-    });
-    this.gui.
-    add(options, "cols", 4, 12).
-    step(1).
-    onChange(() => {
-      this.andre.updateGeometry();
-    });
-    this.gui.
-    add(options, "rows", 4, 12).
-    step(1).
-    onChange(() => {
-      this.andre.updateGeometry();
-    });
-    this.gui.
-    add(options, "branchs", 1, 6).
-    step(1).
-    onChange(() => {
-      this.andre.updateGeometry();
-    });
-    this.gui.add(options, "lengthTentacles", 5, 25).onChange(() => {
-      this.andre.updateGeometry();
-    });
-    this.gui.add(options, "size", 5, 40).onChange(() => {
-      this.andre.updateGeometry();
-    });
-
-    this.gui.addColor(options, "color").onFinishChange(() => {
-      this.andre.updateMaterial();
-    });
-  }
-
   // Loop
   draw() {
     this.andre.update();
@@ -158,7 +120,7 @@ class Andre {
 
     this.options = {
       branchs: 6,
-      radius: 16,
+      radius: 30,
       size: 8,
       lengthTentacles: 25,
       rows: 6,
@@ -223,9 +185,15 @@ class Andre {
   // Handlers
 
   onMouseMove(event) {
-    TweenMax.to(this.angle, 3, {
+    TweenMax.to(this.angle, 50, {
       x: (event.clientX / window.innerWidth * 2 - 1) * Math.PI * 2,
       y: (-(event.clientY / window.innerHeight) * 2 + 1) * Math.PI * 2 });
+      let middlehalf = window.innerHeight / 2;
+      if (event.clientY > middlehalf) {
+          this.world.gravity.set(0, -40, 0);
+      } else {
+          this.world.gravity.set(0, 40, 0);
+      }
 
   }
 
@@ -280,7 +248,7 @@ class Andre {
         pivot.addShape(pivotShape, new C.Vec3(x, y, z));
 
         this.pivots.push(pivot);
-        this.world.addBody(pivot);
+        //this.world.addBody(pivot);
       }
     }
   }
