@@ -1,5 +1,7 @@
 const C = CANNON;
 const perspective = 400;
+let controls;
+import { OrbitControls } from '/wp-content/themes/TheStalkerState/js/modules/OrbitControls.js';
 
 const map = (value, min1, max1, min2, max2) => min2 + (max2 - min2) * (value - min1) / (max1 - min1);
 
@@ -50,10 +52,15 @@ class Scene {
       alpha: true,
       canvas: this.$container 
     });
-
     this.renderer.setClearColor(0x0e141c, 0);
     this.renderer.setSize(this.W, this.H);
     this.renderer.setPixelRatio(window.devicePixelRatio);
+    controls = new OrbitControls( this.camera, this.renderer.domElement );
+    controls.maxPolarAngle = Math.PI * 0.495;
+    controls.target.set( 0, 10, 0 );
+    controls.minDistance = 200.0;
+    controls.maxDistance = 400.0;
+    controls.update();
 
     this.renderer.setAnimationLoop(() => {
       this.draw();
@@ -62,7 +69,6 @@ class Scene {
 
   setCamera() {
     const fov = 180 * (2 * Math.atan(this.H / 2 / perspective)) / Math.PI;
-
     this.camera = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
     this.camera.position.set(0, 0, perspective);
   }

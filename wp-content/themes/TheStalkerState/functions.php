@@ -35,3 +35,15 @@ if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
 	 }
 }
 add_action( 'wp_enqueue_scripts', 'TheStalkerState_enqueue_child_styles' );
+
+add_filter('script_loader_tag', 'add_type_attribute' , 10, 3);
+
+function add_type_attribute($tag, $handle, $src) {
+    // if not your script, do nothing and return original $tag
+    if ( 'main' !== $handle ) {
+        return $tag;
+    }
+    // change the script tag by adding type="module" and return it.
+    $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
+    return $tag;
+}
