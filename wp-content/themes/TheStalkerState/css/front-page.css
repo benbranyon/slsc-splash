@@ -21,9 +21,9 @@
 }
 
 .intro-button .button-behaviour {
-	background-color: rgba(255,255,255,0.5)!important;
-    color: white!important;
-    border: 2px solid #fff;
-    font-weight: bold;
+	background-color: #E43523!important;
+  color: white!important;
+  border: 2px solid #fff;
+  font-weight: bold;
 	max-width: 200px;
 }

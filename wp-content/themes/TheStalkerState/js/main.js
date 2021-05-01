@@ -68,10 +68,10 @@ class Scene {
   }
 
   setLights() {
-    const ambient = new THREE.AmbientLight(0x999999);
+    const ambient = new THREE.DirectionalLight(0x999999);
     this.scene.add(ambient);
 
-    const light = new THREE.PointLight(0xffffff, 0.5);
+    const light = new THREE.PointLight(0x08d4fc, 0.4);
     light.position.set(200, 200, 400);
     this.scene.add(light);
   }
@@ -189,10 +189,15 @@ class Andre {
       x: (event.clientX / window.innerWidth * 2 - 1) * Math.PI * 2,
       y: (-(event.clientY / window.innerHeight) * 2 + 1) * Math.PI * 2 });
       let middlehalf = window.innerHeight / 2;
-      if (event.clientY > middlehalf) {
-          this.world.gravity.set(0, -40, 0);
-      } else {
-          this.world.gravity.set(0, 40, 0);
+      let middlehoriz = window.innerWidth / 2;
+      if (event.clientY > middlehalf && event.clientX > middlehoriz) {
+          this.world.gravity.set(40, -40, 0);
+      } else if (event.clientY > middlehalf && event.clientX < middlehoriz) {
+          this.world.gravity.set(-40, -40, 0)
+      } else if (event.clientY < middlehalf && event.clientX < middlehoriz) {
+          this.world.gravity.set(-40, 40, 0);
+      } else if (event.clientY < middlehalf && event.clientX > middlehoriz) {
+          this.world.gravity.set(40, 40, 0);
       }
 
   }
@@ -289,7 +294,9 @@ class Andre {
       lengthTentacles * 2,
       6),
 
-      new THREE.MeshLambertMaterial({ color }),
+      new THREE.MeshLambertMaterial({ 
+        color: color
+      }),
       rows * cols * branchs);
 
 
