@@ -111,7 +111,7 @@ class Scene {
     this.renderer.clear();
     this.renderer.clearDepth();
     this.renderer.render(this.scene, this.camera);
-    this.renderer.render(this.scene2, this.camera2)
+    //this.renderer.render(this.scene2, this.camera2)
   }
 
   updatePhysics() {
