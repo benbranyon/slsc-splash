@@ -1,6 +1,8 @@
 const C = CANNON;
 const perspective = 400;
 let controls;
+let torusKnot;
+var maxRotation = 4 * Math.PI;
 import { OrbitControls } from '/wp-content/themes/TheStalkerState/js/modules/OrbitControls.js';
 
 const map = (value, min1, max1, min2, max2) => min2 + (max2 - min2) * (value - min1) / (max1 - min1);
@@ -33,6 +35,7 @@ class Scene {
 
   setup() {
     this.scene = new THREE.Scene();
+    this.scene2 = new THREE.Scene();
 
     this.setCamera();
     this.setLights();
@@ -52,6 +55,7 @@ class Scene {
       alpha: true,
       canvas: this.$container 
     });
+    this.renderer.autoClear = false;
     this.renderer.setClearColor(0x0e141c, 0);
     this.renderer.setSize(this.W, this.H);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -71,15 +75,20 @@ class Scene {
     const fov = 180 * (2 * Math.atan(this.H / 2 / perspective)) / Math.PI;
     this.camera = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
     this.camera.position.set(0, 0, perspective);
+    this.camera2 = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
+    this.camera2.position.set(0, 0, perspective);
   }
 
   setLights() {
-    const ambient = new THREE.DirectionalLight(0x999999);
-    this.scene.add(ambient);
+    const directional = new THREE.DirectionalLight(0x999999);
+    this.scene.add(directional);
 
     const light = new THREE.PointLight(0x08d4fc, 0.4);
     light.position.set(200, 200, 400);
     this.scene.add(light);
+
+    const ambient = new THREE.AmbientLight( 0x999999 );
+    this.scene2.add(ambient);
   }
 
   setControls() {
@@ -91,14 +100,18 @@ class Scene {
   // Actions
 
   addObjects() {
-    this.andre = new Andre(this.scene, this.world);
+    this.andre = new Andre(this.scene, this.scene2, this.world);
   }
 
   // Loop
   draw() {
+    torusKnot.rotation.x = (torusKnot.rotation.x + 0.005) % maxRotation;
     this.andre.update();
     this.updatePhysics();
+    this.renderer.clear();
+    this.renderer.clearDepth();
     this.renderer.render(this.scene, this.camera);
+    this.renderer.render(this.scene2, this.camera2)
   }
 
   updatePhysics() {
@@ -112,16 +125,20 @@ class Scene {
     this.H = window.innerHeight;
 
     this.camera.aspect = this.W / this.H;
+    this.camera2.aspect = this.W / this.H;
 
     this.camera.updateProjectionMatrix();
+    this.camera2.updateProjectionMatrix();
     this.renderer.setSize(this.W, this.H);
-  }}
+  }
+}
 
 
 // Andre
 class Andre {
-  constructor(scene, world) {
+  constructor(scene, scene2, world) {
     this.scene = scene;
+    this.scene2 = scene2;
     this.world = world;
 
     this.options = {
@@ -139,6 +156,7 @@ class Andre {
 
     this.setup();
     this.createSphere();
+    this.createTorusKnot();
 
     this.createPivots();
     this.createTentacles();
@@ -225,6 +243,19 @@ class Andre {
 
     this.world.addBody(this.mesh.body);
     this.scene.add(this.mesh);
+  }
+
+  createTorusKnot() {
+    const geometry = new THREE.BoxGeometry( 120, 120, 200 );
+    const texture = new THREE.TextureLoader().load( '/wp-content/themes/TheStalkerState/assets/AoS-1920x1920-no-labels.jpg' );
+    const material = new THREE.MeshLambertMaterial({ 
+      map: texture,
+    });
+    torusKnot = new THREE.Mesh( geometry, material );
+    torusKnot.position.x = 200;
+    torusKnot.position.y = 200;
+    torusKnot.position.z = 20;
+    this.scene2.add(torusKnot);
   }
 
   createPivots() {
