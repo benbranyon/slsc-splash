@@ -168,6 +168,9 @@ class Andre {
     window.addEventListener("mousemove", e => {
       this.onMouseMove(e);
     });
+    window.addEventListener("click", e => {
+      this.onClickScreen(e);
+    })
   }
 
   setup() {
@@ -224,6 +227,23 @@ class Andre {
           this.world.gravity.set(40, 40, 0);
       }
 
+  }
+
+  onClickScreen(event) {
+    TweenMax.to(this.angle, 50, {
+      x: (event.clientX / window.innerWidth * 2 - 1) * Math.PI * 2,
+      y: (-(event.clientY / window.innerHeight) * 2 + 1) * Math.PI * 2 });
+      let middlehalf = window.innerHeight / 2;
+      let middlehoriz = window.innerWidth / 2;
+      if (event.clientY > middlehalf && event.clientX > middlehoriz) {
+          this.world.gravity.set(40, -40, 0);
+      } else if (event.clientY > middlehalf && event.clientX < middlehoriz) {
+          this.world.gravity.set(-40, -40, 0)
+      } else if (event.clientY < middlehalf && event.clientX < middlehoriz) {
+          this.world.gravity.set(-40, 40, 0);
+      } else if (event.clientY < middlehalf && event.clientX > middlehoriz) {
+          this.world.gravity.set(40, 40, 0);
+      }    
   }
 
   // Actions
