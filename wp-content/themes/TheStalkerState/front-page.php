@@ -89,7 +89,8 @@ get_header();
                         ?>
                         <div class="intro-button">
                           <a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 text-align-center site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="<?php echo $url?>">Enter</a>
-                          <p>The Stalker State is a sprawling web of entities committed to data-collection. It is based on intent to police us and cause harm. Here are three concepts we hope will help paint the picture.</p>
+                          <h1>The Stalker State</h1> 
+                          <p>is a sprawling web of entities committed to data-collection. It is based on intent to police us and cause harm. Here are three concepts we hope will help paint the picture.</p>
                         </div>
 
                         <div class="clearfix"></div>
