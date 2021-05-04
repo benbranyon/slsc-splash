@@ -75,8 +75,23 @@ class Scene {
     const fov = 180 * (2 * Math.atan(this.H / 2 / perspective)) / Math.PI;
     this.camera = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
     this.camera.position.set(0, 0, perspective);
-    this.camera2 = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
-    this.camera2.position.set(0, 0, perspective);
+    // create an AudioListener and add it to the camera
+    const listener = new THREE.AudioListener();
+    this.camera.add( listener );
+
+    // create a global audio source
+    const sound = new THREE.Audio( listener );
+
+    // load a sound and set it as the Audio object's buffer
+    const audioLoader = new THREE.AudioLoader();
+    audioLoader.load( '/wp-content/themes/TheStalkerState/assets/music/juno-does.m4a', function( buffer ) {
+      sound.setBuffer( buffer );
+      sound.setLoop( true );
+      sound.setVolume( 0.5 );
+      sound.play();
+    });
+    //this.camera2 = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
+    //this.camera2.position.set(0, 0, perspective);
   }
 
   setLights() {
@@ -125,10 +140,10 @@ class Scene {
     this.H = window.innerHeight;
 
     this.camera.aspect = this.W / this.H;
-    this.camera2.aspect = this.W / this.H;
+    //this.camera2.aspect = this.W / this.H;
 
     this.camera.updateProjectionMatrix();
-    this.camera2.updateProjectionMatrix();
+    //this.camera2.updateProjectionMatrix();
     this.renderer.setSize(this.W, this.H);
   }
 }
@@ -392,7 +407,7 @@ class Andre {
 
 
       dummy.lookAt(cnormal);
-      dummy.applyMatrix(mat);
+      dummy.applyMatrix4(mat);
 
       for (let j = 0; j < branchs; j++) {
         const box = new C.Cylinder(maxw * 1.2, maxw, lengthTentacles * 2, 3);
