@@ -23,6 +23,8 @@
 .intro-button p {
   color: #fff;
   text-align: center;
+  text-shadow: 1px 1px 2px #E43523;
+  font-weight: bold;
 }
 
 .intro-button .button-behaviour {
