@@ -25,3 +25,7 @@ Text Domain:  TheStalkerState
   font-weight: bold;
   text-decoration: underline;
 }
+
+.footer-firm p {
+  font-size: 16px!important;
+}
