@@ -76,4 +76,7 @@
   .intro-button h1 {
     font-size: 32px;
   }
+  .intro-button p {
+    line-height: initial;
+  }
 }
