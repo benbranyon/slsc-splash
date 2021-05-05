@@ -265,6 +265,7 @@ get_header();
         ?>
 
         <div class="padding-both-30"></div>
+        <?php if ( ! is_page() ) { ?>
         <hr class="site-palette-yang-4-border-color">
 
         <p class="<?php echo KTT_get_content_width_classname();?> site-typeface-title-1  typo-size-small text-align-center  padding-top-10 margin-auto" data-layout="row">
@@ -315,6 +316,7 @@ get_header();
 
 
         </p>
+      <?php } ?>
 
 
 
