@@ -17,11 +17,14 @@
   right: 0px;
   left: 0px;
   height: 53px;
-  width: 800px!important;
+  max-width: 800px!important;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .intro-button h1 {
   color: #fff;
+  font-family: 'orbitron';
   text-align: center;
   text-shadow: 1px 1px 2px #E43523;
   font-weight: bold;
@@ -67,4 +70,10 @@
 
 .audio-toggle:hover {
   cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
+  .intro-button h1 {
+    font-size: 36px;
+  }
 }
