@@ -166,20 +166,6 @@ get_header();
                             <?php } ?>
 
 
-
-                            <?php if (
-                              isset($template->options['displays'])
-                              && isset($template->options['displays']['post_read_time'])
-                              && $template->options['displays']['post_read_time']
-                            )  {?>
-                            <span class="meta ornament-line-before-amper">
-                              <?php  KTT_display_post_read_time();?>
-                            </span>
-                            <?php } ?>
-
-
-
-
                         </p>
 
 
