@@ -15,3 +15,7 @@ Text Domain:  TheStalkerState
 .site-typeface-title {
   font-weight: bold!important;
 }
+
+.post-title {
+  font-weight: 48px!important;
+}
