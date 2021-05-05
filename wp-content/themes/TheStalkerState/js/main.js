@@ -29,6 +29,22 @@ class Scene {
     window.addEventListener("resize", () => {
       this.onResize();
     });
+    document.getElementById('audioToggle').addEventListener("click", e => {
+      // create an AudioListener and add it to the camera
+      const listener = new THREE.AudioListener();
+      this.camera.add( listener );
+      // create a global audio source
+      const sound = new THREE.Audio( listener );
+
+      // load a sound and set it as the Audio object's buffer
+      const audioLoader = new THREE.AudioLoader();
+      audioLoader.load( '/wp-content/themes/TheStalkerState/assets/music/juno-does.m4a', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 0.5 );
+        sound.play();
+      });
+    });
   }
 
   // Setups
@@ -75,21 +91,7 @@ class Scene {
     const fov = 180 * (2 * Math.atan(this.H / 2 / perspective)) / Math.PI;
     this.camera = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
     this.camera.position.set(0, 0, perspective);
-    // create an AudioListener and add it to the camera
-    const listener = new THREE.AudioListener();
-    this.camera.add( listener );
 
-    // create a global audio source
-    const sound = new THREE.Audio( listener );
-
-    // load a sound and set it as the Audio object's buffer
-    const audioLoader = new THREE.AudioLoader();
-    audioLoader.load( '/wp-content/themes/TheStalkerState/assets/music/juno-does.m4a', function( buffer ) {
-      sound.setBuffer( buffer );
-      sound.setLoop( true );
-      sound.setVolume( 0.5 );
-      sound.play();
-    });
     //this.camera2 = new THREE.PerspectiveCamera(fov, this.W / this.H, 1, 10000);
     //this.camera2.position.set(0, 0, perspective);
   }

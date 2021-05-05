@@ -94,7 +94,7 @@ get_header();
                           <p>Here are three concepts we hope will help paint the picture.</p>
                         </div>
 
-                        <div class="audio-controls"><a id="audioToggle" href="#"/>Play</a></div>
+                        <div class="audio-controls"><span id="audioToggle" class="audio-toggle ng-non-bindable">Play</span></div>
 
                         <div class="clearfix"></div>
 
