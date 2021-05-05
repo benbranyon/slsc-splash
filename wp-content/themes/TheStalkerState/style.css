@@ -19,3 +19,9 @@ Text Domain:  TheStalkerState
 .post-title {
   font-weight: 48px!important;
 }
+
+.footer-firm a {
+  color: #000;
+  font-weight: bold;
+  text-decoration: underline;
+}
