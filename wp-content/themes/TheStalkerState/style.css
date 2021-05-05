@@ -11,3 +11,7 @@ Text Domain:  TheStalkerState
 */
 
 /* Write here your own personal stylesheet */
+
+.site-typeface-title {
+  font-weight: bold!important;
+}
