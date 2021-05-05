@@ -1,5 +1,5 @@
 const C = CANNON;
-const perspective = 400;
+const perspective = 420;
 let controls;
 let torusKnot;
 var maxRotation = 4 * Math.PI;
