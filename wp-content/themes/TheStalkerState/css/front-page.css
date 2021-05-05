@@ -61,6 +61,10 @@
   width: 40px;
 }
 
+.audio-toggle.playing {
+  background: url('/wp-content/themes/TheStalkerState/assets/pause-button.svg');
+}
+
 .audio-toggle:hover {
   cursor: pointer;
 }

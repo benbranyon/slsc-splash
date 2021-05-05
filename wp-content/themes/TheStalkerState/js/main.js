@@ -22,28 +22,40 @@ class Scene {
     this.clock = new THREE.Clock();
 
     this.setup();
+    this.musicSetup();
     this.bindEvents();
+  }
+
+  musicSetup() {
+    // for cross browser
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const audioCtx = new AudioContext();
+
+    // load some sound
+    const audioElement = document.querySelector('audio');
+    const track = audioCtx.createMediaElementSource(audioElement);
+    const toggle = document.getElementById('audioToggle');
+    toggle.addEventListener("click", e => {
+      // check if context is in suspended state (autoplay policy)
+      if (audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      
+      if (toggle.classList.contains('playing')) {
+        audioElement.pause();
+        toggle.classList.remove('playing');
+      // if track is playing pause it
+      } else {
+        audioElement.play();
+        toggle.classList.add('playing');
+      }
+    });
+    track.connect(audioCtx.destination);
   }
 
   bindEvents() {
     window.addEventListener("resize", () => {
       this.onResize();
-    });
-    document.getElementById('audioToggle').addEventListener("click", e => {
-      // create an AudioListener and add it to the camera
-      const listener = new THREE.AudioListener();
-      this.camera.add( listener );
-      // create a global audio source
-      const sound = new THREE.Audio( listener );
-
-      // load a sound and set it as the Audio object's buffer
-      const audioLoader = new THREE.AudioLoader();
-      audioLoader.load( '/wp-content/themes/TheStalkerState/assets/music/juno-does.m4a', function( buffer ) {
-        sound.setBuffer( buffer );
-        sound.setLoop( true );
-        sound.setVolume( 0.5 );
-        sound.play();
-      });
     });
   }
 
@@ -51,7 +63,7 @@ class Scene {
 
   setup() {
     this.scene = new THREE.Scene();
-    this.scene2 = new THREE.Scene();
+    //this.scene2 = new THREE.Scene();
 
     this.setCamera();
     this.setLights();
@@ -104,8 +116,8 @@ class Scene {
     light.position.set(200, 200, 400);
     this.scene.add(light);
 
-    const ambient = new THREE.AmbientLight( 0x999999 );
-    this.scene2.add(ambient);
+    //const ambient = new THREE.AmbientLight( 0x999999 );
+    //this.scene2.add(ambient);
   }
 
   setControls() {
@@ -117,12 +129,12 @@ class Scene {
   // Actions
 
   addObjects() {
-    this.andre = new Andre(this.scene, this.scene2, this.world);
+    this.andre = new Andre(this.scene, this.world);
   }
 
   // Loop
   draw() {
-    torusKnot.rotation.x = (torusKnot.rotation.x + 0.005) % maxRotation;
+    //torusKnot.rotation.x = (torusKnot.rotation.x + 0.005) % maxRotation;
     this.andre.update();
     this.updatePhysics();
     this.renderer.clear();
@@ -153,9 +165,9 @@ class Scene {
 
 // Andre
 class Andre {
-  constructor(scene, scene2, world) {
+  constructor(scene, world) {
     this.scene = scene;
-    this.scene2 = scene2;
+    //this.scene2 = scene2;
     this.world = world;
 
     this.options = {
@@ -173,7 +185,7 @@ class Andre {
 
     this.setup();
     this.createSphere();
-    this.createTorusKnot();
+    //this.createTorusKnot();
 
     this.createPivots();
     this.createTentacles();
