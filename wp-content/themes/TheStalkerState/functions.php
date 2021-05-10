@@ -26,6 +26,10 @@ if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
 	    	'front-page-style',
 	    	get_stylesheet_directory_uri() . '/css/front-page.css'
 	    );
+	    if ( is_page_template('template-aos.php') ) {
+	    	wp_enqueue_style( 'aos-styles', get_stylesheet_directory_uri() . '/css/aos.css' );
+	    	wp_enqueue_script('aos-script', get_stylesheet_directory_uri() . '/js/aos.js', array( 'jquery' ));
+	    }
 	    wp_enqueue_style( 'childe2-style');
 	    wp_enqueue_style('front-page-style');
 	    if( is_front_page() ) {
