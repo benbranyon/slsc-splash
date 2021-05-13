@@ -9,7 +9,8 @@ var textCounter = 0;
 
 var $video1 = $("#video1");
 var $text1 = $('#infographic__text-intro');
-var image = document.getElementById('source');
+var imagebg = new Image();
+imagebg.src = "/wp-content/themes/TheStalkerState/assets/images/loading.png";
 
 var timerID;
 
@@ -17,9 +18,13 @@ var $canvas = $("#videoCanvas");
 var ctx = $canvas[0].getContext("2d");
 
 
-image.addEventListener('load', e => {
-  drawImage(image);
-});
+if (imagebg.complete) {
+  ctx.drawImage(imagebg, 0, 0);
+} else {
+  imagebg.onload = function () {
+    ctx.drawImage(imagebg, 0, 0);    
+  };
+}
 
 function stopTimer() {
   window.clearInterval(timerID);
