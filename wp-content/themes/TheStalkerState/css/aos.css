@@ -38,6 +38,7 @@
 
 .aos-page-title {
   color: #fff;
+  font-family: 'orbitron';
   font-size: 36px;
   line-height: 1;
   margin-bottom: 20px;
@@ -115,6 +116,7 @@
 }
 
 .aos-infographic__nav {
+  bottom: 43vh;
   display: flex;
   justify-content: center;
   margin: 20px;
