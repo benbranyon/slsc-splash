@@ -82,7 +82,7 @@
 
 .aos-infographic__title {
   font-size:24px;
-  margin-bottom:20px;
+  margin-bottom:0px;
 }
 
 .aos-infographic__display {
@@ -113,7 +113,7 @@
 }
 
 .aos-list li {
-  margin-left: 0px;
+  margin-left: 0px!important;
 }
 
 .aos-infographic__nav {
