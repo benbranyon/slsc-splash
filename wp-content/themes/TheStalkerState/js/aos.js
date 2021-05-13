@@ -19,10 +19,10 @@ var ctx = $canvas[0].getContext("2d");
 
 
 if (imagebg.complete) {
-  ctx.drawImage(imagebg, 0, 0);
+  ctx.drawImage(imagebg, 0, 0, 1180, 640);
 } else {
   imagebg.onload = function () {
-    ctx.drawImage(imagebg, 0, 0);    
+    ctx.drawImage(imagebg, 0, 0, 1180, 640);    
   };
 }
 
