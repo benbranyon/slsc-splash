@@ -614,6 +614,8 @@ function KTT_ajax_js() {
 					*/
 					if (url_object.href.indexOf('#') != -1) return false;
 
+					if (ul_object.classList.contains('wp-block-social-link-anchor')) return false;
+
 					/**
 					* If we have passed the filters, we return true;
 					*/

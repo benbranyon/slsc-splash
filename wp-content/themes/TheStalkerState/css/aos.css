@@ -1,7 +1,6 @@
-.page-template-page-architecture-of-surveillance #page, 
-.page-template-page-architecture-of-surveillance-landing #page {
-  /*background: linear-gradient(to bottom, #2d465e 0%, #24394c 80%);*/
-  background: #000;
+.aos-immersive {
+  background: linear-gradient(to bottom, #2d465e 0%, #24394c 80%);
+  height: 100vh;
   margin-top: 0px;
   padding-top: 25px;
 }
@@ -11,16 +10,6 @@
   background-color: transparent;
   max-width: 1600px;
   box-shadow: none;
-}
-
-.aos-immersive {
-  background: url('/wp-content/themes/TheStalkerState/assets/images/loading.png');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  height: 100vh;
-  padding-bottom: 60px;
-  padding-top: 60px;
 }
 
 .page-template-page-architecture-of-surveillance .main-inner,
@@ -48,6 +37,7 @@
 }
 
 .aos-page-title {
+  color: #fff;
   font-size: 36px;
   line-height: 1;
   margin-bottom: 20px;
@@ -60,13 +50,22 @@
 }
 
 .aos-infographic__info {
+  background: transparent;
+  border: 2px solid black;
+  bottom: 0;
+  left: 20px;
+  right: 20px;
   color: #fff;
+  height: 50vh;
   padding: 20px;
-  width: 90%;
+  position: absolute;
+  overflow: scroll;
 }
 
 @media only screen and (min-width: 600px) {
   .aos-infographic__info {
+    height: 75vh;
+    top: 100px;
     width: 35%;
   }
 }
@@ -90,6 +89,10 @@
   }
 }
 
+.aos-infographic_intro {
+  text-align: center;
+}
+
 .aos-list {
   list-style: disc;
   margin-left: 20px;
@@ -99,6 +102,9 @@
   display: flex;
   justify-content: center;
   margin: 20px;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0%);
 }
 
 .m-hidden {
@@ -113,15 +119,13 @@
 }
 
 .aos-infographic_intro .button {
-  background-color: #9FACBD;
-  border: 1px solid #F1F1E6;
-  border-radius: 30px;
+  background-color: #FFF;
+  border: 2px solid #000;
   color: #333;
   display: block;
-  height: 35px;
-  padding: 12px;
+  height: 45px;
   text-align: center;
-  width: 35px;
+  width: 45px;
 }
 
 .aos-infographic_intro .button:hover {
@@ -129,8 +133,9 @@
 }
 
 .aos-infographic_intro .button img {
-  height: 35px;
-  width: 35px;
+  display: block;
+  height: 45px;
+  width: 45px;
 }
 
 #infographicPrev {
@@ -207,12 +212,13 @@
 }
 
 .aos-infographic__animation {
+  margin: 0 auto;
+  max-width: 1200px;
   width: 100%;
 }
 
 @media only screen and (min-width: 600px) {
   .aos-infographic__animation {
-    width: 65%;
   }
 }
 
@@ -223,6 +229,7 @@
 #videoCanvas {
   box-shadow: 0 -19px 21px 2px #2d465e;
   margin: 0px;
+  max-width: 1180px;
   width: 100%;
 }
 

@@ -306,7 +306,7 @@ get_header();
 								    	<source src="/wp-content/themes/TheStalkerState/assets/videos/last_shot.mp4" type="video/mp4"/>
 								    </video>
 								</div>
-							    <canvas id="videoCanvas" width="1280" height="720"></canvas> 
+							    <canvas id="videoCanvas" width="1180" height="640"></canvas> 
 							</div>
 						</div>
 					</div>
