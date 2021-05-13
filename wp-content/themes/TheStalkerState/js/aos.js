@@ -81,11 +81,11 @@ $('#infographicPrev').click(function(event) {
 
 function drawImage(video) {
   //last 2 params are video width and height
-  ctx.drawImage(video, 0, 0, 1280, 720);
+  ctx.drawImage(video, 0, 0, 1180, 640);
 }
 
 // copy the 1st video frame to canvas as soon as it is loaded
-$video1.one("loadeddata", function() {
+$video1.on("loadeddata", function() {
   drawImage(image[0]);
 });
 
