@@ -9,12 +9,17 @@ var textCounter = 0;
 
 var $video1 = $("#video1");
 var $text1 = $('#infographic__text-intro');
-var image = $('#source');
+var image = document.getElementById('source');
 
 var timerID;
 
 var $canvas = $("#videoCanvas");
 var ctx = $canvas[0].getContext("2d");
+
+
+image.addEventListener('load', e => {
+  drawImage(image);
+});
 
 function stopTimer() {
   window.clearInterval(timerID);
@@ -83,10 +88,5 @@ function drawImage(video) {
   //last 2 params are video width and height
   ctx.drawImage(video, 0, 0, 1180, 640);
 }
-
-// copy the 1st video frame to canvas as soon as it is loaded
-$video1.on("loadeddata", function() {
-  drawImage(image[0]);
-});
 
 });

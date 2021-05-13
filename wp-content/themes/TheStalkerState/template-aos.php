@@ -244,7 +244,7 @@ get_header();
 							</div>
 							<div class="aos-infographic__animation">
 								<div class="video-consainer">
-									<img id="source" src="/wp-content/themes/TheStalkerState/assets/images/loading.png" width="1280" height="720">
+									<img id="source" src="/wp-content/themes/TheStalkerState/assets/images/loading.png" width="1180" height="640">
 								    <video id="video1" width="1280" height="720" playsinline>
 								      <source src="/wp-content/themes/TheStalkerState/assets/videos/1.mp4" type="video/mp4"/>
 								    </video>
