@@ -52,11 +52,11 @@
 .aos-infographic__info {
   background: transparent;
   border: 2px solid black;
-  bottom: 0;
+  bottom: 40px;
   left: 20px;
   right: 20px;
   color: #fff;
-  height: 50vh;
+  height: 40vh;
   padding: 20px;
   position: absolute;
   overflow: scroll;
@@ -64,9 +64,13 @@
 
 @media only screen and (min-width: 600px) {
   .aos-infographic__info {
-    height: 75vh;
-    top: 100px;
-    width: 35%;
+    background: #000;
+    height: 100vh;
+    left: 0px;
+    padding-top: 100px;
+    opacity: 0.5;
+    top: 0px;
+    width: 25%;
   }
 }
 
@@ -91,6 +95,14 @@
 
 .aos-infographic_intro {
   text-align: center;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media only screen and (min-width: 600px) {
+  .aos-infographic_intro {
+    margin-left: 25%;
+  }
 }
 
 .aos-list {
@@ -98,13 +110,27 @@
   margin-left: 20px;
 }
 
+.aos-list li {
+  margin-left: 0px;
+}
+
 .aos-infographic__nav {
   display: flex;
   justify-content: center;
   margin: 20px;
+  margin-left: 0px;
+  margin-top: 0px;
   position: absolute;
   left: 50%;
   transform: translate(-50%, 0%);
+}
+
+@media only screen and (min-width: 600px) {
+  .aos-infographic__nav {
+    margin-top: 20px;
+    margin-right: 0px;
+    position: relative;
+  }
 }
 
 .m-hidden {
@@ -219,6 +245,7 @@
 
 @media only screen and (min-width: 600px) {
   .aos-infographic__animation {
+    margin-left: 27%;
   }
 }
 
@@ -227,14 +254,14 @@
 }
 
 #videoCanvas {
-  box-shadow: 0 -19px 21px 2px #2d465e;
+  box-shadow: 0 5px 21px 2px #000;
   margin: 0px;
   max-width: 1180px;
   width: 100%;
 }
 
 @media only screen and (min-width: 600px) {
-  #videoCanva {
-    margin: 20px;
+  #videoCanvas {
+    width: 98%;
   }
 }
