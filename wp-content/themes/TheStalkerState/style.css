@@ -96,7 +96,9 @@ Text Domain:  TheStalkerState
   .post-title {
   	font-size: 58px!important;
   }
+}
 
+@media only screen and (min-width: 1260px) {
   .aos-landing {
 	  left: 25%;
 	  margin-left: calc(-50vw + 400px)!important;
