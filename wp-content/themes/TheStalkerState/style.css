@@ -38,3 +38,47 @@ Text Domain:  TheStalkerState
   padding-bottom: 60px;
   padding-top: 60px;
 }
+
+.aos-landing__description {
+  color: white;
+  font-size: 20px;
+  max-width: 680px;
+  text-align: center;
+  text-shadow: 2px 2px 4px #000000;
+  margin: 0 auto;
+}
+
+.aos-landing-title {
+  max-width: 680px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+.aos-landing-subtitle {
+  color: #fff;
+  font-size: 30px;
+  margin-bottom: 1em;
+  text-shadow: 2px 2px 4px #000000;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.aos-landing__nav {
+  font-size: 20px;
+  justify-content: center;
+}
+
+.aos-landing__nav .button {
+  background-color: transparent;
+  border: 5px solid #000;
+  color: #000;
+  font-weight: bold;
+  display: block;
+  padding: 25px;
+  text-align: center;
+  margin:40px;
+}
+
+.aos-landing__nav .button:hover {
+  background-color: #EDFBFF;
+}
