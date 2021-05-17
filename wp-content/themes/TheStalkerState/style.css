@@ -71,7 +71,7 @@ Text Domain:  TheStalkerState
 .aos-landing__nav .button {
   background-color: transparent;
   border: 5px solid #000;
-  color: #000;
+  color: #000!important;
   font-weight: bold;
   display: block;
   padding: 25px;
