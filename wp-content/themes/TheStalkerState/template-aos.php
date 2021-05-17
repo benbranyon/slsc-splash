@@ -82,6 +82,9 @@ get_header();
 
                   <?php if (is_single() || is_page()) {?>
                   	<div class="aos-immersive">
+                  		<audio src="/wp-content/themes/TheStalkerState/assets/music/c-thru-inst.mp3"></audio>
+                        <div class="audio-controls"><span id="audioToggle" class="audio-toggle">Play</span></div>
+
 						<div class="aos-infographic_intro">
 							<h1 class="aos-page-title"><?php the_title(); ?></h1>
 							<div class="aos-infographic__nav">

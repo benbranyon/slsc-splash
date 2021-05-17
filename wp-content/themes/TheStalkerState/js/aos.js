@@ -94,4 +94,29 @@ function drawImage(video) {
   ctx.drawImage(video, 0, 0, 1180, 640);
 }
 
+  // for cross browser
+  const AudioContext = window.AudioContext || window.webkitAudioContext;
+  const audioCtx = new AudioContext();
+
+  // load some sound
+  const audioElement = document.querySelector('audio');
+  const track = audioCtx.createMediaElementSource(audioElement);
+  const toggle = document.getElementById('audioToggle');
+  toggle.addEventListener("click", e => {
+    // check if context is in suspended state (autoplay policy)
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+    
+    if (toggle.classList.contains('playing')) {
+      audioElement.pause();
+      toggle.classList.remove('playing');
+    // if track is playing pause it
+    } else {
+      audioElement.play();
+      toggle.classList.add('playing');
+    }
+  });
+  track.connect(audioCtx.destination);
+
 });
