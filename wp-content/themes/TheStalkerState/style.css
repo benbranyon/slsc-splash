@@ -43,7 +43,7 @@ Text Domain:  TheStalkerState
   padding-top: 60px;
   left: 50%;
   margin-left: calc(-50vw - 400px)!important;
-  margin-right: calc(-50vw -400px)!important;
+  margin-right: calc(-50vw - 400px)!important;
   max-width: calc(100vw - 400px)!important;
   position: relative;
   right: 50%;
