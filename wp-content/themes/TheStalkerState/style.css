@@ -82,3 +82,10 @@ Text Domain:  TheStalkerState
 .aos-landing__nav .button:hover {
   background-color: #EDFBFF;
 }
+
+@media only screen and (min-width: 600px) {
+
+  .aos-landing__nav {
+    display: flex;
+  }
+}
