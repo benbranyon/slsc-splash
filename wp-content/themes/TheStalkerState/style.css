@@ -42,12 +42,12 @@ Text Domain:  TheStalkerState
   padding-bottom: 60px;
   padding-top: 60px;
   left: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  max-width: calc(100vw - 400px);
+  margin-left: calc(-50vw - 400px)!important;
+  margin-right: calc(-50vw -400px)!important;
+  max-width: calc(100vw - 400px)!important;
   position: relative;
   right: 50%;
-  width: calc(100vw - 400px);
+  width: calc(100vw - 400px)!important;
 }
 
 .aos-landing__description {
