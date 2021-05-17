@@ -17,7 +17,11 @@ Text Domain:  TheStalkerState
 }
 
 .post-title {
-  font-weight: 48px!important;
+  font-size: 48px!important;
+}
+
+.ornament-line-before-amper { 
+	display: none;
 }
 
 .footer-firm a {
@@ -37,6 +41,13 @@ Text Domain:  TheStalkerState
   background-position: center;
   padding-bottom: 60px;
   padding-top: 60px;
+  left: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  max-width: calc(100vw - 400px);
+  position: relative;
+  right: 50%;
+  width: calc(100vw - 400px);
 }
 
 .aos-landing__description {
@@ -87,5 +98,9 @@ Text Domain:  TheStalkerState
 
   .aos-landing__nav {
     display: flex;
+  }
+
+  .post-title {
+  	font-size: 58px!important;
   }
 }
