@@ -41,12 +41,11 @@ Text Domain:  TheStalkerState
   background-position: center;
   padding-bottom: 60px;
   padding-top: 60px;
-  left: calc(50% - 400px);
-  margin-left: calc(-50vw - 400px)!important;
+  left: 25%;
+  margin-left: calc(-50vw + 400px)!important;
   margin-right: calc(-50vw - 400px)!important;
   max-width: calc(100vw - 400px)!important;
   position: relative;
-  right: calc(50% - 400px);
   width: calc(100vw - 400px)!important;
 }
 
