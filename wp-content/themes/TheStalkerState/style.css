@@ -29,3 +29,12 @@ Text Domain:  TheStalkerState
 .footer-firm p {
   font-size: 16px!important;
 }
+
+.aos-landing {
+  background: url('/wp-content/themes/TheStalkerState/assets/images/loading.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  padding-bottom: 60px;
+  padding-top: 60px;
+}
