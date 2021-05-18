@@ -41,14 +41,7 @@ $('#infographicNext').click(function(event) {
   textCounter ++;
   if(playCounter == 20) {
     $('.aos-infographic__info').slideUp('slow');
-    $('.aos-infographic__animation').animate({    
-      width: "100%"
-    }, 4000, function() {
-      $('#finalShot')[0].play();
-      timerID = window.setInterval(function() {
-        drawImage($('#finalShot')[0]);
-      }, 30);  
-    });  
+    drawImage($('#finalShot')[0]); 
   }
   else {
     if($('#infographicPrev').css('visibility') == 'hidden'){
