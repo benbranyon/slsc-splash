@@ -100,6 +100,7 @@ Text Domain:  TheStalkerState
 .wrap_svl_center {
   margin-left: calc(-100vw / 2 + 800px / 2)!important;
   margin-right: calc(-100vw / 2 + 800px / 2)!important;
+  max-width: none!important;
 }
 
 .wrap_svl_center_box {
