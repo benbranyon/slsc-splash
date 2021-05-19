@@ -17,7 +17,7 @@ Text Domain:  TheStalkerState
 }
 
 .post-title {
-  font-size: 48px!important;
+  font-size: 38px!important;
 }
 
 .ornament-line-before-amper { 
@@ -95,6 +95,15 @@ Text Domain:  TheStalkerState
 
 .icon-right-hand:before {
   content: '\e823'!important;
+}
+
+.wrap_svl_center {
+  margin-left: calc(-100vw / 2 + 800px / 2)!important;
+  margin-right: calc(-100vw / 2 + 800px / 2)!important;
+}
+
+.wrap_svl_center_box {
+  max-width: 1024px;
 }
 
 @media only screen and (min-width: 600px) {
