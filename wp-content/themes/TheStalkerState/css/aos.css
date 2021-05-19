@@ -58,7 +58,7 @@
   left: 20px;
   right: 20px;
   color: #fff;
-  height: 40vh;
+  height: 31vh;
   padding: 20px;
   position: absolute;
   overflow: scroll;
@@ -117,7 +117,7 @@
 }
 
 .aos-infographic__nav {
-  bottom: 43vh;
+  bottom: 37vh;
   display: flex;
   justify-content: center;
   margin: 20px;
