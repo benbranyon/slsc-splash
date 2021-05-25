@@ -46,6 +46,16 @@
   text-shadow: 2px 2px 4px #000000;
 }
 
+.aos-page-title a {
+  color: #fff!important;
+  font-family: 'orbitron';
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px #000000;  
+}
+
 .aos-intro-image {
   max-width: 600px;
   margin: 0 auto;

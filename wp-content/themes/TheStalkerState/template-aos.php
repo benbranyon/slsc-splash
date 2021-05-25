@@ -86,7 +86,7 @@ get_header();
                         <div class="audio-controls"><span id="audioToggle" class="audio-toggle">Play</span></div>
 
 						<div class="aos-infographic_intro">
-							<h1 class="aos-page-title"><?php the_title(); ?></h1>
+							<h1 class="aos-page-title"><a href="https://thestalkerstate.org/architecture-of-surveillance/"><?php the_title(); ?></a></h1>
 							<div class="aos-infographic__nav">
 								<a href="#" class="button m-hidden" id="infographicPrev"><img src="/wp-content/themes/TheStalkerState/assets/images/arrow-left.svg" alt="Previous Button"/></a>
 								<a href="#" class="button" id="infographicNext"><img src="/wp-content/themes/TheStalkerState/assets/images/arrow-right.svg" alt="Next Button"/></a>
