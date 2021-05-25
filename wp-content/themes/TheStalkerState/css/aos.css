@@ -178,6 +178,14 @@
   width: 45px;
 }
 
+.red-button {
+  background-color: #E43523!important;
+  color: white!important;
+  border: 2px solid #fff;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
 #infographicPrev {
   transform: rotate(180deg);
   margin-right:20px;

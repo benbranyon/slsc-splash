@@ -245,9 +245,9 @@ get_header();
 									</ul>
 								</div>
 								<div class="aos-infographic__text" id="infographic__text20">
-									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/the-stalker-state/">The Stalker State</a>
-									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/architecture-of-surveillance/">The Architecture of Surveillance</a>
-									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/before-the-bullet-hits-the-body/">Before the Bullet Hits the Body</a>
+									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto red-button" href="https://thestalkerstate.org/the-stalker-state/">The Stalker State</a>
+									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto red-button" href="https://thestalkerstate.org/architecture-of-surveillance/">The Architecture of Surveillance</a>
+									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto red-button" href="https://thestalkerstate.org/before-the-bullet-hits-the-body/">Before the Bullet Hits the Body</a>
 								</div>
 							</div>
 							<div class="aos-infographic__animation">
