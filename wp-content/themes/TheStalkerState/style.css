@@ -103,6 +103,10 @@ Text Domain:  TheStalkerState
   max-width: none!important;
 }
 
+.post-title a {
+  color: #27262B!important;
+}
+
 .wrap_svl_center_box {
   max-width: 1024px;
 }
