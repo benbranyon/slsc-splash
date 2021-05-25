@@ -40,7 +40,9 @@ $('#infographicNext').click(function(event) {
   playCounter ++;
   textCounter ++;
   if(playCounter == 20) {
-    $('.aos-infographic__info').slideUp('slow');
+    $('.aos-infographic__display').animate({'opacity': 0}, 1000, function () {
+      $(this).html($('#infographic__text20').html());
+    }).animate({'opacity': 1}, 1000);
     drawImage($('#finalShot')[0]); 
   }
   else {

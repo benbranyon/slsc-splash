@@ -244,6 +244,11 @@ get_header();
 										<li>Allows the routine use of innocent activity (taking pictures or using binoculars in public) as suspicious- opening formal police investigations without one’s knowledge.</li>
 									</ul>
 								</div>
+								<div class="aos-infographic__text" id="infographic__text20">
+									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/the-stalker-state/">The Stalker State</a>
+									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/architecture-of-surveillance/">The Architecture of Surveillance</a>
+									<a class="button-behaviour cursor-pointer display-block padding-both-10 padding-left-20 padding-right-20 site-palette-yin-2-color site-palette-yang-4-background-color flex-auto" href="https://thestalkerstate.org/before-the-bullet-hits-the-body/">Before the Bullet Hits the Body</a>
+								</div>
 							</div>
 							<div class="aos-infographic__animation">
 								<div class="video-consainer">
