@@ -43,6 +43,7 @@ $('#infographicNext').click(function(event) {
     $('.aos-infographic__display').animate({'opacity': 0}, 1000, function () {
       $(this).html($('#infographic__text20').html());
     }).animate({'opacity': 1}, 1000);
+    $('#finalShot')[0].play();
     timerID = window.setInterval(function() {
       drawImage($('#finalShot')[0]); 
     }, 30);
