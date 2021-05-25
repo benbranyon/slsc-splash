@@ -43,7 +43,9 @@ $('#infographicNext').click(function(event) {
     $('.aos-infographic__display').animate({'opacity': 0}, 1000, function () {
       $(this).html($('#infographic__text20').html());
     }).animate({'opacity': 1}, 1000);
-    drawImage($('#finalShot')[0]); 
+    timerID = window.setInterval(function() {
+      drawImage($('#finalShot')[0]); 
+    }, 30);
   }
   else {
     if($('#infographicPrev').css('visibility') == 'hidden'){
