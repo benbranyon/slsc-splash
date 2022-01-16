@@ -21,7 +21,7 @@ class Organization extends Abstract_Schema_Piece {
 	/**
 	 * Returns the Organization Schema data.
 	 *
-	 * @return array $data The Organization schema.
+	 * @return array The Organization schema.
 	 */
 	public function generate() {
 		$logo_schema_id = $this->context->site_url . Schema_IDs::ORGANIZATION_LOGO_HASH;
@@ -38,7 +38,7 @@ class Organization extends Abstract_Schema_Piece {
 			'@id'    => $this->context->site_url . Schema_IDs::ORGANIZATION_HASH,
 			'name'   => $this->helpers->schema->html->smart_strip_tags( $this->context->company_name ),
 			'url'    => $this->context->site_url,
-			'sameAs' => $this->fetch_social_profiles(),
+			'sameAs' => \array_values( \array_unique( $this->fetch_social_profiles() ) ),
 			'logo'   => $logo,
 			'image'  => [ '@id' => $logo_schema_id ],
 		];
@@ -47,7 +47,7 @@ class Organization extends Abstract_Schema_Piece {
 	/**
 	 * Retrieve the social profiles to display in the organization schema.
 	 *
-	 * @return array $profiles An array of social profiles.
+	 * @return array An array of social profiles.
 	 */
 	private function fetch_social_profiles() {
 		$profiles        = [];

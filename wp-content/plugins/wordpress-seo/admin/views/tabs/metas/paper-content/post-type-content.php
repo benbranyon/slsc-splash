@@ -15,7 +15,7 @@ $single_label = $wpseo_post_type->labels->singular_name;
 $paper_style  = false;
 
 /* translators: %s is the singular version of the post type's name. */
-echo '<h3>' . esc_html( sprintf( __( 'Settings for single %s URLs', 'wordpress-seo' ), $wpseo_post_type->labels->singular_name ) ) . '</h3>';
+echo '<h3>' . esc_html( sprintf( __( 'Single %s settings', 'wordpress-seo' ), $wpseo_post_type->labels->singular_name ) ) . '</h3>';
 
 require __DIR__ . '/post_type/post-type.php';
 
@@ -35,9 +35,11 @@ if ( $wpseo_post_type->name === 'product' && YoastSEO()->helpers->woocommerce->i
 
 if ( WPSEO_Post_Type::has_archive( $wpseo_post_type ) ) {
 	$plural_label = $wpseo_post_type->labels->name;
+	$archive_url  = get_post_type_archive_link( $wpseo_post_type->name );
+	$label        = '<a href="' . esc_url( $archive_url ) . '">' . esc_html( $plural_label ) . '</a>';
 
 	/* translators: %s is the plural version of the post type's name. */
-	echo '<h3>' . esc_html( sprintf( __( 'Settings for %s archive', 'wordpress-seo' ), $plural_label ) ) . '</h3>';
+	echo '<h3>' . esc_html( sprintf( __( '%s archive settings', 'wordpress-seo' ), $plural_label ) ) . '</h3>';
 
 	echo '<div class="yoast-settings-section">';
 
@@ -46,9 +48,9 @@ if ( WPSEO_Post_Type::has_archive( $wpseo_post_type ) ) {
 	$yform->index_switch(
 		'noindex-ptarchive-' . $wpseo_post_type->name,
 		sprintf(
-			/* translators: %s expands to the post type's name. */
-			__( 'the archive for %s', 'wordpress-seo' ),
-			$plural_label
+			/* translators: %s expands to the post type's name with a link to the archive. */
+			esc_html__( 'the archive for %s', 'wordpress-seo' ),
+			$label
 		),
 		$custom_post_type_archive_help->get_button_html() . $custom_post_type_archive_help->get_panel_html()
 	);
@@ -73,6 +75,14 @@ if ( WPSEO_Post_Type::has_archive( $wpseo_post_type ) ) {
 
 	echo '</div>';
 
+	if ( WPSEO_Options::get( 'breadcrumbs-enable' ) === true ) {
+		echo '<div class="yoast-settings-section">';
+
+		$yform->textinput_extra_content( 'bctitle-ptarchive-' . $wpseo_post_type->name, __( 'Breadcrumbs title', 'wordpress-seo' ) );
+
+		echo '</div>';
+	}
+
 	/**
 	 * Allow adding custom fields to the admin meta page at the end of the archive settings for a post type - Content Types tab.
 	 *
@@ -80,12 +90,6 @@ if ( WPSEO_Post_Type::has_archive( $wpseo_post_type ) ) {
 	 * @param string     $name  The post type name.
 	 */
 	do_action( 'Yoast\WP\SEO\admin_post_types_archive', $yform, $wpseo_post_type->name );
-
-	if ( WPSEO_Options::get( 'breadcrumbs-enable' ) === true ) {
-		/* translators: %s is the plural version of the post type's name. */
-		echo '<h4>' . esc_html( sprintf( __( 'Breadcrumb settings for %s archive', 'wordpress-seo' ), $plural_label ) ) . '</h4>';
-		$yform->textinput( 'bctitle-ptarchive-' . $wpseo_post_type->name, __( 'Breadcrumbs title', 'wordpress-seo' ) );
-	}
 }
 
 /**

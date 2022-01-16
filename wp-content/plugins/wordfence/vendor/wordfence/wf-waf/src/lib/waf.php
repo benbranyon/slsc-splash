@@ -292,9 +292,6 @@ auEa+7b+FGTKs7dUo2BNGR7OVifK4GZ8w/ajS0TelhrSRi3BBQCGXLzUO/UURUAh
 			$this->eventBus->blockSQLi($ip, $e);
 			$this->blockAction($e);
 			
-		} catch (wfWAFLogException $e) {
-			$this->eventBus->log($ip, $e);
-			$this->logAction($e);
 		}
 
 		$this->runCron();
@@ -304,9 +301,9 @@ auEa+7b+FGTKs7dUo2BNGR7OVifK4GZ8w/ajS0TelhrSRi3BBQCGXLzUO/UURUAh
 
 		$ping = $this->getRequest()->getBody('ping');
 		$pingResponse = $this->getRequest()->getBody('ping_response');
-		$pingIsApiKey = wfWAFUtils::hash_equals($ping, sha1($this->getStorageEngine()->getConfig('apiKey', null, 'synced')));
 
-		if ($ping && $pingResponse && $pingIsApiKey &&
+		if ($ping && $pingResponse &&
+			wfWAFUtils::hash_equals($ping, sha1($this->getStorageEngine()->getConfig('apiKey', null, 'synced'))) &&
 			$this->verifySignedRequest($this->getRequest()->getBody('signature'), $this->getStorageEngine()->getConfig('apiKey', null, 'synced'))
 		) {
 			// $this->updateRuleSet(base64_decode($this->getRequest()->body('ping')));
@@ -328,11 +325,13 @@ auEa+7b+FGTKs7dUo2BNGR7OVifK4GZ8w/ajS0TelhrSRi3BBQCGXLzUO/UURUAh
 		if ($storageEngine instanceof wfWAFStorageFile) {
 			// Acquire lock on this file so we're not including it while it's being written in another process.
 			$handle = fopen($storageEngine->getRulesFile(), 'r');
-			flock($handle, LOCK_SH);
+			$locked = $handle !== false && flock($handle, LOCK_SH);
 			/** @noinspection PhpIncludeInspection */
 			include $storageEngine->getRulesFile();
-			flock($handle, LOCK_UN);
-			fclose($handle);
+			if ($locked)
+				flock($handle, LOCK_UN);
+			if ($handle !== false)
+				fclose($handle);
 		} else {
 			$wafRules = $storageEngine->getRules();
 			if (is_array($wafRules)) {
@@ -385,30 +384,32 @@ auEa+7b+FGTKs7dUo2BNGR7OVifK4GZ8w/ajS0TelhrSRi3BBQCGXLzUO/UURUAh
 					$failedComparison = $failedRule['failedComparison'];
 					$action = $failedRule['action'];
 
-					$score = $rule->getScore();
-					if ($failedComparison->hasMultiplier()) {
-						$score *= $failedComparison->getMultiplier();
-					}
-					if (!isset($this->failScores[$category])) {
-						$this->failScores[$category] = 100;
-					}
-					if (!isset($this->scores[$paramKey][$category])) {
-						$this->scores[$paramKey][$category] = 0;
-					}
-					$this->scores[$paramKey][$category] += $score;
-					if ($this->scores[$paramKey][$category] >= $this->failScores[$category]) {
-						$blockActions[$category] = array(
-							'paramKey'         => $paramKey,
-							'score'            => $this->scores[$paramKey][$category],
-							'action'           => $action,
-							'rule'             => $rule,
-							'failedComparison' => $failedComparison,
-						);
-					}
-					if (defined('WFWAF_DEBUG') && WFWAF_DEBUG) {
-						$this->debug[] = sprintf("%s tripped %s for %s->%s('%s'). Score %d/%d", $paramKey, $action,
-							$category, $failedComparison->getAction(), $failedComparison->getExpected(),
-							$this->scores[$paramKey][$category], $this->failScores[$category]);
+					if ($action !== 'log') {
+						$score = $rule->getScore();
+						if ($failedComparison->hasMultiplier()) {
+							$score *= $failedComparison->getMultiplier();
+						}
+						if (!isset($this->failScores[$category])) {
+							$this->failScores[$category] = 100;
+						}
+						if (!isset($this->scores[$paramKey][$category])) {
+							$this->scores[$paramKey][$category] = 0;
+						}
+						$this->scores[$paramKey][$category] += $score;
+						if ($this->scores[$paramKey][$category] >= $this->failScores[$category]) {
+							$blockActions[$category] = array(
+								'paramKey'         => $paramKey,
+								'score'            => $this->scores[$paramKey][$category],
+								'action'           => $action,
+								'rule'             => $rule,
+								'failedComparison' => $failedComparison,
+							);
+						}
+						if (defined('WFWAF_DEBUG') && WFWAF_DEBUG) {
+							$this->debug[] = sprintf("%s tripped %s for %s->%s('%s'). Score %d/%d", $paramKey, $action,
+								$category, $failedComparison->getAction(), $failedComparison->getExpected(),
+								$this->scores[$paramKey][$category], $this->failScores[$category]);
+						}
 					}
 				}
 			}
@@ -1094,7 +1095,6 @@ HTML
 	 * @param wfWAFRule $rule
 	 * @param wfWAFRuleComparisonFailure $failedComparison
 	 * @param bool $updateFailedRules
-	 * @throws wfWAFLogException
 	 */
 	public function log($rule, $failedComparison, $updateFailedRules = true) {
 		$paramKey = $failedComparison->getParamKey();
@@ -1108,12 +1108,19 @@ HTML
 			);
 		}
 
-		$e = new wfWAFLogException();
-		$e->setFailedRules(array($rule));
-		$e->setParamKey($failedComparison->getParamKey());
-		$e->setParamValue($failedComparison->getParamValue());
-		$e->setRequest($this->getRequest());
-		throw $e;
+		$event=new wfWAFLogEvent(
+			array($rule),
+			$failedComparison->getParamKey(),
+			$failedComparison->getParamValue(),
+			$this->getRequest()
+		);
+
+		$this->recordLogEvent($event);
+	}
+
+	public function recordLogEvent($event) {
+		$this->eventBus->log($this->getRequest()->getIP(), $event);
+		$this->logAction($event);
 	}
 
 	/**
@@ -1168,12 +1175,9 @@ HTML
 		exit($this->getBlockedMessage());
 	}
 	
-	public function logAction($e) {
-		$failedRules = array('logged');
-		if (is_array($e->getFailedRules())) {
-			$failedRules = array_merge($failedRules, $e->getFailedRules());
-		}
-		$this->getStorageEngine()->logAttack($failedRules, $e->getParamKey(), $e->getParamValue(), $this->getRequest());
+	public function logAction($event) {
+		$failedRules = array_merge(array('logged'), $event->getFailedRules());
+		$this->getStorageEngine()->logAttack($failedRules, $event->getParamKey(), $event->getParamValue(), $this->getRequest());
 	}
 
 	/**
@@ -1382,7 +1386,7 @@ HTML
 								sprintf('%s://%s/', $this->getRequest()->getProtocol(), rawurlencode($this->getRequest()->getHost())),
 							't'		 => microtime(true),
 							'lang'   => $this->getStorageEngine()->getConfig('WPLANG', null, 'synced'),
-						), null, '&'), $this->getStorageEngine()->getAttackData(), $request);
+						), '', '&'), $this->getStorageEngine()->getAttackData(), $request);
 
 					if ($response instanceof wfWAFHTTPResponse && $response->getBody()) {
 						$jsonData = wfWAFUtils::json_decode($response->getBody(), true);
@@ -1849,7 +1853,7 @@ class wfWAFCronFetchRulesEvent extends wfWAFCronEvent {
 				$payload['disabled'] = implode('|', $waf->getDisabledRuleIDs());
 			}
 			
-			$this->response = wfWAFHTTP::get(WFWAF_API_URL_SEC . "?" . http_build_query($payload, null, '&'), null, 10, 5);
+			$this->response = wfWAFHTTP::get(WFWAF_API_URL_SEC . "?" . http_build_query($payload, '', '&'), null, 10, 5);
 			if ($this->response) {
 				if($this->response->getStatusCode() !== 304){
 					$jsonData = wfWAFUtils::json_decode($this->response->getBody(), true);
@@ -1906,7 +1910,7 @@ class wfWAFCronFetchRulesEvent extends wfWAFCronEvent {
 						'hash'	   => $this->forceUpdate ? null : $waf->getStorageEngine()->getConfig('lastMalwareHash', null, 'transient'),
 						'cs-hash'  => $this->forceUpdate ? null : $waf->getStorageEngine()->getConfig('lastMalwareHashCommonStrings', null, 'transient'),
 						'lang'   => $waf->getStorageEngine()->getConfig('WPLANG', null, 'synced')
-					), null, '&'), null, 15, 5);
+					), '', '&'), null, 15, 5);
 				if ($this->response) {
 					if($this->response->getStatusCode() !== 304){
 						$jsonData = wfWAFUtils::json_decode($this->response->getBody(), true);
@@ -2031,7 +2035,7 @@ class wfWAFCronFetchIPListEvent extends wfWAFCronEvent {
 					'h'      => $waf->getStorageEngine()->getConfig('homeURL', null, 'synced') ? $waf->getStorageEngine()->getConfig('homeURL', null, 'synced') : $guessSiteURL,
 					't'		 => microtime(true),
 					'lang'   => $waf->getStorageEngine()->getConfig('WPLANG', null, 'synced'),
-				), null, '&'), '[]', $request);
+				), '', '&'), '[]', $request);
 			
 			if ($response instanceof wfWAFHTTPResponse && $response->getBody()) {
 				$jsonData = wfWAFUtils::json_decode($response->getBody(), true);
@@ -2074,7 +2078,7 @@ class wfWAFCronFetchBlacklistPrefixesEvent extends wfWAFCronEvent {
 						'h'      => $waf->getStorageEngine()->getConfig('homeURL', null, 'synced') ? $waf->getStorageEngine()->getConfig('homeURL', null, 'synced') : $guessSiteURL,
 						't'		 => microtime(true),
 						'lang'   => $waf->getStorageEngine()->getConfig('WPLANG', null, 'synced'),
-					), null, '&'), $request);
+					), '', '&'), $request);
 				
 				if ($response instanceof wfWAFHTTPResponse && $response->getBody()) {
 					$waf->getStorageEngine()->setConfig('blockedPrefixes', base64_encode($response->getBody()), 'transient');
@@ -2113,7 +2117,7 @@ interface wfWAFObserver {
 	
 	public function blockSQLi($ip, $exception);
 	
-	public function log($ip, $exception);
+	public function log($ip, $event);
 	
 	public function wafDisabled();
 	
@@ -2182,10 +2186,10 @@ class wfWAFEventBus implements wfWAFObserver {
 		}
 	}
 	
-	public function log($ip, $exception) {
+	public function log($ip, $event) {
 		/** @var wfWAFObserver $observer */
 		foreach ($this->observers as $observer) {
-			$observer->log($ip, $exception);
+			$observer->log($ip, $event);
 		}
 	}
 
@@ -2334,12 +2338,40 @@ class wfWAFBlockXSSException extends wfWAFRunException {
 class wfWAFBlockSQLiException extends wfWAFRunException {
 }
 
-class wfWAFLogException extends wfWAFRunException {
-}
-
 class wfWAFBuildRulesException extends wfWAFException {
 }
 
 class wfWAFEventBusException extends wfWAFException {
 }
+}
+
+class wfWAFLogEvent {
+
+	private $failedRules;
+	private $paramKey, $paramValue;
+	private $request;
+
+	public function __construct($failedRules=array(), $paramKey=null, $paramValue=null, $request=null){
+		$this->failedRules=$failedRules;
+		$this->paramKey=$paramKey;
+		$this->paramValue=$paramValue;
+		$this->request=$request;
+	}
+
+	public function getFailedRules(){
+		return $this->failedRules;
+	}
+
+	public function getParamKey(){
+		return $this->paramKey;
+	}
+
+	public function getParamValue(){
+		return $this->paramValue;
+	}
+
+	public function getRequest(){
+		return $this->request;
+	}
+
 }

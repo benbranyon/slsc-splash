@@ -170,6 +170,10 @@ $keys = array(
 		'type' => 'boolean',
 		'default' => false
 	),
+	'lazyload.threshold' => array(
+		'type' => 'string',
+		'default' => ''
+	),
 	'lazyload.process_img' => array(
 		'type' => 'boolean',
 		'default' => true
@@ -2417,12 +2421,12 @@ $keys = array(
 	'extensions.active' => array(
 		'type' => 'array',
 		'default' => array(
-			'fragmentcache' => 'w3-total-cache/Extension_FragmentCache_Plugin.php'
-		)
+			'fragmentcache' => 'w3-total-cache/Extension_FragmentCache_Plugin.php',
+		),
 	),
 	'extensions.active_frontend' => array(
 		'type' => 'array',
-		'default' => array()
+		'default' => array(),
 	),
 	'extensions.active_dropin' => array(
 		'type' => 'array',
@@ -2441,6 +2445,13 @@ $keys = array(
 	'jquerymigrate.disabled' => array(
 		'type' => 'boolean',
 		'default' => false,
+	),
+	'imageservice' => array(
+		'type' => 'array',
+		'default' => array(
+			'compression' => 'lossy',
+			'auto'        => 'enabled',
+		),
 	),
 
 	// extensions keys:
