@@ -397,6 +397,7 @@ class Cdn_Core {
 					'id' => $c->get_string( 'cdn.cf.id' ),
 					'cname' => $c->get_array( 'cdn.cf.cname' ),
 					'ssl' => $c->get_string( 'cdn.cf.ssl' ),
+					'public_objects' => $c->get_string( 'cdn.cf.public_objects' ),
 					'compression' => $compression
 				);
 				break;
@@ -563,6 +564,7 @@ class Cdn_Core {
 					'bucket_location' => $c->get_string( 'cdn.s3.bucket.location' ),
 					'cname' => $c->get_array( 'cdn.s3.cname' ),
 					'ssl' => $c->get_string( 'cdn.s3.ssl' ),
+					'public_objects' => $c->get_string( 'cdn.s3.public_objects' ),
 					'compression' => $compression
 				);
 				break;
@@ -725,7 +727,7 @@ class Cdn_Core {
 			}
 		}
 
-		return ltrim( $remote_uri, '/' );
+		return apply_filters( 'w3tc_uri_cdn_uri', ltrim( $remote_uri, '/' ) );
 	}
 
 	/**
