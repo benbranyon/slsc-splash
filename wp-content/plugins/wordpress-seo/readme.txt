@@ -1,11 +1,11 @@
 === Yoast SEO ===
-Contributors: yoast, joostdevalk, omarreiss
+Contributors: yoast, joostdevalk, tdevalk
 Donate link: https://yoa.st/1up
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl.html
 Tags: SEO, XML sitemap, Content analysis, Readability, Schema
-Tested up to: 5.8
-Stable tag: 17.9
+Tested up to: 6.1
+Stable tag: 19.13
 Requires PHP: 5.6.20
 
 Improve your WordPress SEO: Write better content and have a fully optimized WordPress site using the Yoast SEO plugin.
@@ -36,6 +36,8 @@ Yoast SEO is packed full of features, designed to help visitors and search engin
 * **Faster loading times** for your whole website, due to an innovative way of managing data in WordPress.
 * **[Premium]** E-mail support for our [Yoast SEO Premium](https://yoa.st/1v8) users.
 * **[Premium]** The possibility to expand Yoast SEO with the [News SEO](https://yoa.st/1uv), [Video SEO](https://yoa.st/1uw), [Local SEO](https://yoa.st/1uu) and [WooCommerce SEO](https://yoa.st/3rh) extensions.
+* **[Premium]** **New!** Yoast SEO Premium comes with wide-ranging crawl settings that help you improve how search engines crawl your site.
+* **[Premium]** **New!** Yoast SEO Premium comes with an IndexNow integration to ping search engines like Microsoft Bing whenever you publish or update content.
 
 #### WRITE KILLER CONTENT WITH YOAST SEO
 We know content is king, that's why Yoast SEO is famous for its **state-of-the-art content and SEO analysis**. Yoast SEO gives you:
@@ -53,6 +55,8 @@ We know content is king, that's why Yoast SEO is famous for its **state-of-the-a
 * **[Premium]** Automatic internal linking suggestions: write your article and get automatic suggested posts to link to!
 * **[Premium]** An orphaned content filter to detect posts that have no links pointing towards them!
 * **[Premium]** SEO workouts to make working on your site as easy as ABC. These SEO workflows will get your site into shape in no time!
+* **[Premium]** **New!** Yoast SEO Premium comes with a new word complexity feature that gives you actionable feedback on using difficult words. This feature is in beta and English only for now.
+* **New!** Yoast SEO Free and Premium come with a new inclusive language analysis that helps you write inclusive content. This feature is opt-in and English-only for now.
 
 #### KEEP YOUR SITE IN PERFECT SHAPE
 
@@ -110,6 +114,7 @@ Yoast SEO integrates seamlessly into a range of themes and plugins. We work part
 * The [Elementor](https://wordpress.org/plugins/elementor/) website builder.
 * [Zapier](https://zapier.com/apps/yoast-seo/integrations), which helps you automate your publishing flow.
 * [Algolia](https://wordpress.org/plugins/wp-search-with-algolia/) integration to improve the quality of your site search.
+* [WordProof](https://wordproof.com/), which helps you prove ownership by adding timestamps.
 
 ### BUG REPORTS
 
@@ -126,7 +131,7 @@ Want more information on search engine optimization and Yoast SEO? Have a look a
 * Also follow Yoast on [Facebook](https://facebook.com/yoast), [Instagram](https://www.instagram.com/yoast/) & [Twitter](https://twitter.com/yoast).
 
 == Installation ==
-Starting with Yoast SEO consists of just two steps: installing and setting up the plugin. Yoast SEO is designed to work with your site’s specific needs, so don’t forget to go through the Yoast SEO configuration workout as explained in the ‘after activation’ step!
+Starting with Yoast SEO consists of just two steps: installing and setting up the plugin. Yoast SEO is designed to work with your site’s specific needs, so don’t forget to go through the Yoast SEO first-time configuration as explained in the ‘after activation’ step!
 
 ### INSTALL YOAST SEO FROM WITHIN WORDPRESS
 
@@ -143,8 +148,8 @@ Starting with Yoast SEO consists of just two steps: installing and setting up th
 
 ### AFTER ACTIVATION
 
-1. You should see (a notice to start) the Yoast SEO configuration workout;
-1. Go through the configuration workout and set up the plugin for your site;
+1. You should see (a notice to start) the Yoast SEO first-time configuration;
+1. Go through this configuration and set up the plugin for your site;
 1. You’re done!
 
 == Frequently Asked Questions ==
@@ -221,6 +226,10 @@ The plugins you buy at Yoast are called ‘premium plugins’ (even if Premium i
 
 [Read more on how to get support](https://yoa.st/3r2)
 
+= What happens to my data if I enable usage tracking? =
+
+[This page on yoast.com explains what data we collect to improve Yoast SEO](https://yoa.st/4w7). We only collect data when you explicitly opt in. Read more about how we handle your data in [our Privacy Policy](https://yoa.st/4w8). 
+
 = I have a different question than listed here =
 
 Your question has most likely been answered on our help center: [yoast.com/help/](https://yoa.st/1va).
@@ -236,65 +245,58 @@ Your question has most likely been answered on our help center: [yoast.com/help/
 
 == Changelog ==
 
-= 17.9 =
-Release Date: January 11th, 2022
+= 19.13 =
 
-Yoast SEO 17.9 is now available! Yoast SEO now comes with a keyphrase tracking tool powered by Wincher that lets you monitor your keyphrases, straight from the plugin! Make sure to try out this new keyphrase tracking feature and let us know what you think. Read more about what's new in Yoast SEO 17.9 in [our release post in English](https://yoa.st/release-17-9) or [our release post in Spanish](https://yoa.st/release-17-9-spanish)!
+Release date: December 20th, 2022
 
-Enhancements:
+Yoast SEO 19.13 proactively fixes an issue we found in the upcoming release of the Gutenberg editor. This release of the block editor breaks the link functionality when used in conjunction with Yoast SEO. The Yoast SEO release works around that so users can keep adding and changing links. Find out more about what's new in Yoast SEO 19.13 in [our release post](https://yoa.st/release-20-12-22)!
 
-* Introduces a keyphrase position tracking tool that gives insight into how your content ranks in the search results. Powered by Wincher.
-* Improves Japanese text analysis results by adding functionality to segment Japanese texts into sentences and words.
-* Adapts relevant assessments to count text length in characters instead of words in Japanese.
-* Completes the readability analysis for Japanese by adding the transition words and sentence beginnings assessments.
-* Improves keyword detection for Japanese by adding a function words list.
-* Adapts Keyphrase in title scoring criteria for Japanese: the exact match keyphrase is not required for Japanese unless the keyphrase is enclosed in double quotes.
-* Disables the Keyphrase in slug assessment for Japanese due to currently being unable to match keyphrases written in Japanese characters in slugs written in Latin characters.
-* Improves the accuracy of the Estimated Reading Time results for Japanese.
-* Adapts the recommended meta description length and meta description preview limit for Japanese.
-* Improves the Workouts overview for mobile screens.
-* Makes sure we don't output the same `sameAs` URL twice on `Person` and `Organization`.
-* Adds "Blog Post" / `BlogPosting` as a potential Schema `Article` type.
+#### Enhancements
 
-Bugfixes:
+* Prevents an incompatibility with the upcoming Gutenberg 14.8.0.
 
-* Fixes a bug where a fatal error would be thrown when using PHP 8.1.
-* Fixes a bug where the `og:image:type` meta would not be output correctly. Props to [@dodomorandi](https://github.com/dodomorandi).
-* Fixes a bug where the incoming link count of a post would not return to zero if all incoming links were removed.
-* Fixes a bug where the meta description would get trimmed to an empty string if the text doesn't have any space. Props to [@waviaei](https://github.com/waviaei).
-* Fixes a bug where Link keyphrase assessment would not find a match when the keyphrase is enclosed in double quotes.
-* Fixes a bug where `<br>` tags with attributes in the text would not be converted to paragraph tags. As a result some long paragraphs in the text might not have been highlighted in the Paragraph length assessment.
+= 19.12 =
 
-Other:
+Release date: December 13th, 2022
 
-* Improves compatibility with PHP 8.1 by adding validations and handling deprecations.
-* Reverts the removal of the deprecated `WPSEO_Frontend` class.
-* Changes the font size of the alerts from 14px to 13px.
+In Yoast SEO 19.12, we're introducing the inclusive language analysis — previously only available in Yoast SEO Premium. This will help you get feedback on words that might exclude part of your audience and get inclusive alternatives. This is only available in English for now. Plus, it is opt-in. Try it! Find out more about what's new in Yoast SEO 19.12 in [our release post](https://yoa.st/release-13-12-22)!
 
-= 17.8 =
-Release Date: December 14th, 2021
+#### Enhancements
 
-Yoast SEO 17.8 is out now and ready for you to download. In this release, we fix a number of bugs and added a few enhancements for you to enjoy! Read more about what's new in Yoast SEO 17.8 in [our release post in English](https://yoa.st/release-17-8) or [our release post in Spanish](https://yoa.st/release-17-8-spanish)!
+* NEW in Free: Adds the inclusive language analysis for English as a beta feature. Get suggestions on how to improve non-inclusive phrases, to make your content appeal to a larger audience.
+* Improves the Integrations page to explain more clearly the different types of integrations.
+* Adds integration cards for [The Events Calendar](https://wordpress.org/plugins/the-events-calendar/), the [Seriously Simple Podcasting](https://wordpress.org/plugins/seriously-simple-podcasting/) and the [WP Recipe Maker](https://it.wordpress.org/plugins/wp-recipe-maker/) plugins.
+* Adds a new `Website name` text field in the `Site Representation` step of the `First-time configuration`.
+* Improves the _subheading distribution_ assessment by adding highlighting and also targeting long content before the first subheading.
+* Improves the `First-time configuration` styling.
+* Improves the _transition words_ assessment for Arabic by removing some transition words.
+* Improves the Yoast admin bar menu with more functionality and better links.
+* Removes a notification that prompts users to help with translating the plugin in the language of the site.
 
-Enhancements:
+#### Bugfixes
 
-* Improves the user direction in the configuration workout.
-* Adds a sleep interval to the WP CLI index command to limit server load while this command is running. Props to [roborourke](https://github.com/roborourke).
+* Fixes a bug that would affect users managing the cron jobs with a plugin on PHP 8.1 after they have performed a core upgrade.
+* Fixes a bug where a fatal error would be thrown when trying to create breadcrumbs from unindexable items.
+* Fixes a bug where blocks with a NULL `blockName` would trigger deprecation errors with PHP 8.1 and cause performance issues. Props to [@dustyf](https://github.com/dustyf).
+* Fixes a bug where breadcrumbs markup would not validate due to improper nesting and closing of span tags. Props to [@michaelbourne](https://github.com/michaelbourne).
+* Fixes a bug where highlighting would not be removed from the text after the analysis is updated and the present highlighting has become irrelevant.
+* Fixes a bug where the Baidu Webmaster Tools link would go to the wrong page. Props to [@SavPhill](https://github.com/SavPhill).
+* Fixes a bug where the content analysis would not load when editing web stories in the Web Stories plug-in.
+* Fixes a bug where the highlighting functionality would not be working when highlighting content in lists items in the Block editor in WordPress 6.1.
+* Fixes a bug where the `<title>` tag would potentially be missing when publishing a story with the Web Stories plugin. Props to [@swissspidy](https://github.com/swissspidy).
+* Improves line ending handling for `robots.txt` contents.
 
-Bugfixes:
+#### Other
 
-* Fixes a bug where on small screens the advanced setting's search engine follow checkbox would have a misplaced center.
-* Fixes a bug where the styling of the introduction dialog in Elementor would be broken due to changes in Elementor.
-* Fixes a bug where the reading time functionality for languages other than English would incorrectly output English reading speed values.
-* Fixes a bug where certain text strings in the Google, Facebook and Twitter previews would not be translated.
-* Fixes a bug where the state of indexation was not persisted when switching between workouts and the workouts page.
-* Fixes a bug where the Workouts page wouldn't display translations.
-
-Other:
-
-* Fixes some styling issues in the configuration workout.
-* Prevents SEO managers from changing the site description in the configuration workout.
-* Optimizes and compresses several .png images to reduce their size. Props to [lowwebtech](https://github.com/lowwebtech).
+* Introduces a notice on the WordPress dashboard and the Yoast SEO dashboard to let users know we are dropping support for PHP < 7.2 starting March 1st, 2023.
+* Reduces noise from PHP 8.1 deprecations.
+* Improves compatibility with PHP 8.2.
+* Allows using the `yoast_seo_development_mode` to override the `wp_get_environment_type()` result to `production`.
+* Deprecates the built-in integration with the `The Events Calendar` plugin, following the release of its version 6.0.4 which integrates with Yoast SEO.
+* Disallows setting or unsetting any dynamic properties on `Abstract_Main`.
+* Removes the note in the readability analysis results that tells users that the _Flesch reading ease_ score has moved to the _Insights_ section.
+* Removes the Yoast i18n package.
+* Resolves a typo in the feedback string for the phrase `exotic` in the inclusive language analysis.
 
 = Earlier versions =
 For the changelog of earlier versions, please refer to [the changelog on yoast.com](https://yoa.st/yoast-seo-changelog).

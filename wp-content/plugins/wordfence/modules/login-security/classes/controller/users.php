@@ -12,6 +12,10 @@ class Controller_Users {
 	const META_KEY_GRACE_PERIOD_RESET = 'wfls-grace-period-reset';
 	const META_KEY_GRACE_PERIOD_OVERRIDE = 'wfls-grace-period-override';
 	const META_KEY_ALLOW_GRACE_PERIOD = 'wfls-allow-grace-period';
+	const META_KEY_VERIFICATION_TOKENS = 'wfls-verification-tokens';
+	const VERIFICATION_TOKEN_BYTES = 64;
+	const VERIFICATION_TOKEN_LIMIT = 5; //Max number of concurrent tokens
+	const VERIFICATION_TOKEN_TRANSIENT_PREFIX = 'wfls_verify_';
 	
 	/**
 	 * Returns the singleton Controller_Users.
@@ -494,7 +498,7 @@ class Controller_Users {
 			$columns['wfls_2fa_status'] = esc_html__('2FA Status', 'wordfence-2fa');
 		}
 		
-		if (Controller_Permissions::shared()->can_manage_settings(wp_get_current_user())) {
+		if (Controller_Settings::shared()->are_login_history_columns_enabled() && Controller_Permissions::shared()->can_manage_settings(wp_get_current_user())) {
 			$columns['wfls_last_login'] = esc_html__('Last Login', 'wordfence-2fa');
 			if (Controller_CAPTCHA::shared()->enabled()) {
 				$columns['wfls_last_captcha'] = esc_html__('Last CAPTCHA', 'wordfence-2fa');
@@ -518,7 +522,7 @@ class Controller_Users {
 						$value = wp_kses(__('Inactive<small class="wfls-sub-status">(Grace Period)</small>', 'wordfence-2fa'), array('small'=>array('class'=>array())));
 					}
 					elseif (($requires2fa && !$has2fa)) {
-						$value = wp_kses($inGracePeriod === null ? __('Locked Out<small class="wfls-sub-status">(Grace Period Disabled)</small>') : __('Locked Out<small class="wfls-sub-status">(Grace Period Exceeded)</small>', 'wordfence-2fa'), array('small'=>array('class'=>array())));
+						$value = wp_kses($inGracePeriod === null ? __('Locked Out<small class="wfls-sub-status">(Grace Period Disabled)</small>', 'wordfence-2fa') : __('Locked Out<small class="wfls-sub-status">(Grace Period Exceeded)</small>', 'wordfence-2fa'), array('small'=>array('class'=>array())));
 					}
 					else {
 						$value = esc_html__('Inactive', 'wordfence-2fa');
@@ -527,7 +531,7 @@ class Controller_Users {
 				break;
 			case 'wfls_last_login':
 				$value = '-';
-				if (($last = get_user_meta($user_id, 'wfls-last-login', true))) {
+				if (($last = get_user_meta($user_id, 'wfls-last-login', true)) && ctype_digit($last)) {
 					$value = Controller_Time::format_local_time(get_option('date_format') . ' ' . get_option('time_format'), $last);
 				}
 				break;
@@ -875,4 +879,55 @@ SQL;
 			return $results;
 		}
 	}
+
+	private function get_verification_token_transient_key($hash) {
+		return self::VERIFICATION_TOKEN_TRANSIENT_PREFIX . $hash;
+	}
+
+	private function load_verification_token($hash) {
+		$key = $this->get_verification_token_transient_key($hash);
+		$userId = get_transient($key);
+		if ($userId === false)
+			return null;
+		return intval($userId);
+	}
+
+	private function load_verification_tokens($user) {
+		$storedHashes = get_user_meta($user->ID, self::META_KEY_VERIFICATION_TOKENS, true);
+		$validHashes = array();
+		if (is_array($storedHashes)) {
+			foreach ($storedHashes as $hash) {
+				$userId = $this->load_verification_token($hash);
+				if ($userId === $user->ID)
+					$validHashes[] = $hash;
+			}
+		}
+		return $validHashes;
+	}
+
+	private function hash_verification_token($token) {
+		return wp_hash($token);
+	}
+
+	public function generate_verification_token($user) {
+		$token = Model_Crypto::random_bytes(self::VERIFICATION_TOKEN_BYTES);
+		$hash = $this->hash_verification_token($token);
+		$tokens = $this->load_verification_tokens($user);
+		array_unshift($tokens, $hash);
+		while (count($tokens) > self::VERIFICATION_TOKEN_LIMIT) {
+			$excessHash = array_pop($tokens);
+			delete_transient($this->get_verification_token_transient_key($excessHash));
+		}
+		$key = $this->get_verification_token_transient_key($hash);
+		set_transient($key, $user->ID, WORDFENCE_LS_EMAIL_VALIDITY_DURATION_MINUTES * 60);
+		update_user_meta($user->ID, self::META_KEY_VERIFICATION_TOKENS, $tokens);
+		return base64_encode($token);
+	}
+
+	public function validate_verification_token($token, $user = null) {
+		$hash = $this->hash_verification_token(base64_decode($token));
+		$userId = $this->load_verification_token($hash);
+		return $userId !== null && ($user === null || $userId === $user->ID);
+	}
+
 }

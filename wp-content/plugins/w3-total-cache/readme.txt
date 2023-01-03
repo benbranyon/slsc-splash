@@ -1,9 +1,9 @@
 === Plugin Name ===
 Contributors: boldgrid, fredericktownes, maxicusc, gidomanders, bwmarkle, harryjackson1221, joemoto, vmarko, jacobd91
 Tags: seo, cache, CDN, pagespeed, caching, performance, compression, optimize, cloudflare, nginx, apache, varnish, redis, aws, amazon web services, s3, cloudfront, azure
-Requires at least: 3.8
-Tested up to: 5.8
-Stable tag: 2.2.1
+Requires at least: 5.3
+Tested up to: 6.1
+Stable tag: 2.2.9
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -285,7 +285,87 @@ Please reach out to all of these people and support their projects if you're so 
 
 == Changelog ==
 
-= 2.2.1=
+= 2.2.9 =
+* Fix: Reset our textdomain for translations
+
+= 2.2.8 =
+* Fix: Escape output in compatibility checker, minify, and New Relic pages
+* Fix: Admin notice buttons on non-plugin pages
+* Fix: Namespace on exception type in a minify class
+* Fix: Translation issues due to hooks and typos
+* Fix: Broken JavaScript in admin_print_scripts calls when language is not English
+* Fix: Deprecated warnings in JS and CSS minify
+* Update: Translation files
+
+= 2.2.7 =
+* Fix: Updated database cache connection class to avoid deprecated warnings in WordPress 6.1
+* Fix: Redis: Fixed handling of retry interval and timeout options for usage statistics
+* Enhancement: Redis: Added TLS/SSL certificate verification option
+* Enhancement: Page cache: Added query string exemptions
+
+= 2.2.6 =
+* Fix: Error clearing all cache when using Cloudfront full CDN in Pro
+
+= 2.2.5 =
+* Fix: Revert WooCommerce Variation Image Gallery plugin CDN filter
+* Fix: DB cache syntax error in PHP 5.6
+* Fix: Added missing space to S3 CDN bucket label
+* Fix: JS error for CloudFront CDN related check on non-W3TC pages
+* Fix: Page cache unpack warning for empty/malformed files
+* Enhancement: Image Service pre_get_posts anonymous action now hooked (w3tc_modify_query_obj)
+* Enhancement: Image Service ajax_query_attachments_args anonymous action now hooked (w3tc_filter_ajax_args)
+
+= 2.2.4 =
+* Fix: Extensions URL in settings
+* Fix: Redis undefined array key warnings
+* Fix: Redis connect issue based on phpredis version
+* Fix: Sanitization of licensing messages
+* Fix: DB cache error in Ajax
+* Fix: Call to undefined function in DB cache query class
+* Fix: PHP 8 compatibility: join
+* Fix: WooCommerce Variation Image Gallery plugin CDN filter
+* Enhancement: Add setting for AWS S3 public objects in ACL
+* Enhancement: Check if post is empty before cache flush
+* Enhancement: Add max lifetime setting for non-disk page cache
+* Enhancement: Add notice when selecting CDN using CloudFront
+* Update: CSS Tidy 1.7.3 => 2.0.1
+* Update: Add sns-message-validator
+* Security: Ensure cache writes in cache folders
+
+= 2.2.3 =
+* Fix: Redis Cache: Removed exception on warnings
+* Fix: Compatibility check for WP_CACHE
+* Fix: Flush all cache cache except Cloudflare button
+* Fix: License terms update notice escaping
+* Fix: Feature Showcase: Image Service activate button
+* Security: Updated guzzlehttp/guzzle to 6.5.8
+
+= 2.2.2 =
+* Security: PHPCS and WPCS updates
+* Security: Updated guzzlehttp/guzzle to 6.5.6
+* Security: Updated guzzlehttp/psr7 to 1.8.5
+* Fix: Cloudflare flush all cache
+* Fix: Access log test
+* Fix: Better handling for PHP 5.6
+* Fix: Convert Redis warnings to exceptions
+* Fix: WordPress 5.5 image lazy loading
+* Fix: Infinite loop when using database cluster configuration
+* Fix: Database cluster logic
+* Fix: FTP credentials form
+* Fix: Preview deploy button
+* Fix: Image Service links in multisite network admin
+* Fix: Enable Image Service settings changes in multisite blog/sub sites
+* Enhancement: Updated Cloudflare settings to allow a global API key or token
+* Enhancement: Added Cloudflare CDN public objects option to settings
+* Enhancement: Added timeout settings for Redis
+* Enhancement: Added TLS/SSL certificate verification option for Redis
+* Enhancement: Added Image Service visibility option
+* Enhancement: Updated Image Service limit notification
+* Enhancement: Better handling of trailing slash URLs
+* Update: Adjusted lightbox for accessibility
+* Update: Removed deprecated opcache flush
+
+= 2.2.1 =
 * Fix: Cloudflare: Removed use of the retired ip_lkup V1 endpoint
 * Fix: Prevent error in some environments using non-direct filesystems
 * Fix: Added better checking for some filesystem actions

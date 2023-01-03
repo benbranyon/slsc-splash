@@ -4,7 +4,7 @@ Plugin Name: Image Hotspot by DevVN
 Plugin URI: https://levantoan.com/devvn-image-hotspot
 Description: Image Hotspot help you add hotspot to your images.
 Author: Le Van Toan
-Version: 1.2.1
+Version: 1.2.2
 Author URI: https://levantoan.com/
 Text Domain: devvn-image-hotspot
 Domain Path: /languages
@@ -29,8 +29,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-define('DEVVN_IHOTSPOT_VER', '1.2.1');
-define('DEVVN_IHOTSPOT_DEV_MOD', false);
+define('DEVVN_IHOTSPOT_VER', '1.2.2');
+define('DEVVN_IHOTSPOT_DEV_MOD', true);
+if ( !defined( 'DEVVN_IHOTSPOT_BASENAME' ) )
+    define( 'DEVVN_IHOTSPOT_BASENAME', plugin_basename( __FILE__ ) );
 
 define('DEVVN_IHOTSPOT_POINT_DEFAULT',serialize(array(
 	'countPoint'	=>	'',
@@ -54,6 +56,7 @@ define('DEVVN_IHOTSPOT_PINS_DEFAULT',serialize(array(
 include 'admin/inc/cpt-ihotspot.php';
 include 'admin/inc/add_shortcode_devvn_ihotspot.php';
 include 'admin/inc/metabox-donate.php';
+include 'admin/inc/settings.php';
 
 load_textdomain('devvn-image-hotspot', dirname(__FILE__) . '/languages/devvn-image-hotspot-' . get_locale() . '.mo');
 load_plugin_textdomain( 'devvn-image-hotspot', false, plugin_basename( dirname( __FILE__ ) ) . '/i18n/languages' );
@@ -589,3 +592,4 @@ function devvn_ihotspot_convert_array_data($inputArray = array()){
 	}
 	return $aOutput;
 }
+

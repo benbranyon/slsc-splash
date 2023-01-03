@@ -1,11 +1,11 @@
 === Disable Comments - Remove Comments & Stop Spam [Multi-Site Support] ===
-Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, tusharimran, alimuzzamanalim, solarissmoke, garrett-eclipse
+Contributors: Asif2BD, priyomukul, wpdevteam, re_enter_rupok, alimuzzamanalim, solarissmoke, garrett-eclipse
 Donate link: https://wpdeveloper.com/
 Tags: comments, delete comments, disable comments, spam comment, disable, stop spam, remove comments, anti spam, disable xml-rpc, hide comment, XML-RPC, REST-API, WP-CLI, multi-site support
 Requires at least: 5.0
-Tested up to: 5.8
+Tested up to: 6.1
 Requires PHP: 5.6
-Stable tag: 2.3.2
+Stable tag: 2.4.2
 License: GPL-3.0-or-later
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,8 @@ https://www.youtube.com/watch?v=J9AteKzQpPs
 * **[New]** Delete comments by type.
 * **[New]** Disable comments via [XML-RPC](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-xml-rpc/) & [REST-API](https://wpdeveloper.com/docs/how-to-disable-comments-made-via-rest-api/)
 * **[New]** Fully Multi-site Network supported.
+* **[New]** Manage multiple website networks specific subsites or entire networks comments in advance.
+* **[New]** Exclude Disable Comments Settings based on user roles.
 
 https://www.youtube.com/watch?v=FBq3-W-p-DM
 
@@ -123,13 +125,13 @@ Consider checking out our other WordPress solutions & boost your WordPress websi
 
 📄 [EmbedPress](https://wordpress.org/plugins/embedpress/): EmbedPress lets you embed anything including videos, images, posts, audio, maps and upload PDF, DOC, PPT etc.
 
-☁ [Templately](https://wordpress.org/plugins/templately/): 1000+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
+☁ [Templately](https://wordpress.org/plugins/templately/): 1200+ Free templates library for Elementor & Gutenberg along with the cloud collaboration for WordPress.
 
 📚 [BetterDocs](https://wordpress.org/plugins/betterdocs/): Best Documentation & Knowledge Base Plugin for WordPress reduce manual support tickets & improve user experience.
 
 ⏰ [SchedulePress](https://wordpress.org/plugins/wp-scheduled-posts/): Advanced editorial calendar with WordPress Post Scheduling, Social Sharing, Missed scheduled alerts, and more.
 
-⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, video, and more.
+⭐ [ReviewX](https://wordpress.org/plugins/reviewx/): WooCommerce Product review plugin that allows users to submit product reviews with multiple criteria, photos, videos, and more.
 
 ⚡ [Flexia](https://wordpress.org/themes/flexia/): Most lightweight, customizable & multi purpose theme for WordPress.
 
@@ -183,6 +185,7 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 
 1. Setting Screen for Disable Comments
 2. Delete Comments under Tools menu.
+3. Multisite Network support
 
 
 == Changelog ==
@@ -190,6 +193,30 @@ Go to the tools page for the Disable Comments plugin and utlize the Delete Comme
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 This will be maiintained from August 19, 2020 - @asif2bd
+
+= [2.4.2] - 2022-09-18 =
+* Improved sanitization.
+
+= [2.4.1] - 2022-08-10 =
+* Improvement: Localized missing strings in plugin.
+* Improvement: Included the fonts in plugin distribution.
+
+= [2.4.0] - 2022-07-27 =
+* New Feature: Exclude Disable Comments settings based on user roles.
+* Few minor bug fix and improvement.
+
+= [2.3.6] - 2022-06-05 =
+* Fixed: JavaScript error in Gutenberg editor.
+
+= [2.3.5] - 2022-04-27 =
+* Added: More WP-CLI commands.
+* Few minor bug fix and improvement.
+
+= [2.3.4] - 2022-03-28 =
+* Fixed: PHP Warning in Multisite Network.
+
+= [2.3.3] - 2022-01-25 =
+* Added: WordPress 5.9 compatibility added.
 
 = [2.3.2] - 2021-12-20 =
 * Added: Configure Disable Avatar settings from the main network of Multisite Network.

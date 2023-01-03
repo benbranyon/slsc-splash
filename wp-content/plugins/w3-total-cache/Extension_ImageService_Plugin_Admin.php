@@ -111,10 +111,6 @@ class Extension_ImageService_Plugin_Admin {
 			'disabled_message' => '',
 			'requirements'     => '',
 			'path'             => 'w3-total-cache/Extension_ImageService_Plugin.php',
-			'extra_links'      => array(
-				'<a class="edit" href="' . $settings_url . '">' . esc_html__( 'Settings', 'w3-total-cache' ) . '</a>',
-				'<a class="edit" href="' . $library_url . '">' . esc_html__( 'Media Library', 'w3-total-cache' ) . '</a>',
-			),
 			'notice'           => sprintf(
 				// translators: 1: HTML anchor open tag, 2: HTML anchor close tag, 3: HTML anchor open tag, 4: HTML anchor open tag.
 				__(
@@ -129,6 +125,14 @@ class Extension_ImageService_Plugin_Admin {
 				) . '">'
 			),
 		);
+
+		// The settings and Media Library links are only valid for single and network sites; not the admin section.
+		if ( ! is_network_admin() ) {
+			$extensions['imageservice']['extra_links'] = array(
+				'<a class="edit" href="' . $settings_url . '">' . esc_html__( 'Settings', 'w3-total-cache' ) . '</a>',
+				'<a class="edit" href="' . $library_url . '">' . esc_html__( 'Media Library', 'w3-total-cache' ) . '</a>',
+			);
+		}
 
 		return $extensions;
 	}
@@ -438,15 +442,20 @@ class Extension_ImageService_Plugin_Admin {
 		delete_transient( 'w3tc_activation_imageservice' );
 
 		// Save submitted settings.
-		if ( isset( $_POST['_wpnonce'], $_POST['imageservice___compression'] ) && wp_verify_nonce( $_POST['_wpnonce'], 'w3tc' ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput
-			$settings = $c->get_array( 'imageservice' );
+		$nonce_val                    = Util_Request::get_string( '_wpnonce' );
+		$imageservice_compression_val = Util_Request::get_string( 'imageservice___compression' );
+		if ( ! empty( $imageservice_compression_val ) && ! empty( $nonce_val ) && wp_verify_nonce( $nonce_val, 'w3tc' ) ) {
+			$settings                = $c->get_array( 'imageservice' );
+			$settings['compression'] = $imageservice_compression_val;
 
-			if ( isset( $_POST['imageservice___compression'] ) ) {
-				$settings['compression'] = sanitize_key( $_POST['imageservice___compression'] );
+			$imageservice_auto_val = Util_Request::get_string( 'imageservice___auto' );
+			if ( ! empty( $imageservice_auto_val ) ) {
+				$settings['auto'] = $imageservice_auto_val;
 			}
 
-			if ( isset( $_POST['imageservice___auto'] ) ) {
-				$settings['auto'] = sanitize_key( $_POST['imageservice___auto'] );
+			$imageservice_visibility_val = Util_Request::get_string( 'imageservice___visibility' );
+			if ( ! empty( $imageservice_visibility_val ) ) {
+				$settings['visibility'] = $imageservice_visibility_val;
 			}
 
 			$c->set( 'imageservice', $settings );
@@ -494,10 +503,14 @@ class Extension_ImageService_Plugin_Admin {
 	 * Runs on the "admin_enqueue_scripts" action.
 	 *
 	 * @since 2.2.0
+	 *
+	 * @see Util_Ui::admin_url()
+	 * @see Licensing_Core::get_tos_choice()
 	 */
 	public function admin_enqueue_scripts() {
 		// Enqueue JavaScript for the Media Library (upload) and extension settings admin pages.
-		$is_settings_page = isset( $_GET['page'] ) && 'w3tc_extension_page_imageservice' === $_GET['page']; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$page_val         = Util_Request::get_string( 'page' );
+		$is_settings_page = ! empty( $page_val ) && 'w3tc_extension_page_imageservice' === $page_val;
 		$is_media_page    = 'upload' === get_current_screen()->id;
 
 		if ( $is_settings_page ) {
@@ -527,36 +540,39 @@ class Extension_ImageService_Plugin_Admin {
 						'revert'   => wp_create_nonce( 'w3tc_imageservice_revert' ),
 					),
 					'lang'        => array(
-						'convert'          => __( 'Convert', 'w3-total_cache' ),
-						'sending'          => __( 'Sending...', 'w3-total_cache' ),
-						'submitted'        => __( 'Submitted', 'w3-total_cache' ),
-						'processing'       => __( 'Processing...', 'w3-total_cache' ),
-						'converted'        => __( 'Converted', 'w3-total_cache' ),
-						'notConverted'     => __( 'Not converted', 'w3-total_cache' ),
-						'reverting'        => __( 'Reverting...', 'w3-total_cache' ),
-						'reverted'         => __( 'Reverted', 'w3-total_cache' ),
-						'revert'           => __( 'Revert', 'w3-total_cache' ),
-						'error'            => __( 'Error', 'w3-total_cache' ),
-						'ajaxFail'         => __( 'Failed to retrieve a response.  Please reload the page to try again.', 'w3-total_cache' ),
-						'apiError'         => __( 'API error.  Please reload the page to try again,', 'w3-total_cache' ),
-						'refresh'          => __( 'Refresh', 'w3-total_cache' ),
-						'refreshing'       => __( 'Refreshing...', 'w3-total_cache' ),
-						'settings'         => __( 'Settings', 'w3-total_cache' ),
+						'convert'          => __( 'Convert', 'w3-total-cache' ),
+						'sending'          => __( 'Sending...', 'w3-total-cache' ),
+						'submitted'        => __( 'Submitted', 'w3-total-cache' ),
+						'processing'       => __( 'Processing...', 'w3-total-cache' ),
+						'converted'        => __( 'Converted', 'w3-total-cache' ),
+						'notConverted'     => __( 'Not converted', 'w3-total-cache' ),
+						'reverting'        => __( 'Reverting...', 'w3-total-cache' ),
+						'reverted'         => __( 'Reverted', 'w3-total-cache' ),
+						'revert'           => __( 'Revert', 'w3-total-cache' ),
+						'error'            => __( 'Error', 'w3-total-cache' ),
+						'ajaxFail'         => __( 'Failed to retrieve a response.  Please reload the page to try again.', 'w3-total-cache' ),
+						'apiError'         => __( 'API error.  Please reload the page to try again,', 'w3-total-cache' ),
+						'refresh'          => __( 'Refresh', 'w3-total-cache' ),
+						'refreshing'       => __( 'Refreshing...', 'w3-total-cache' ),
+						'settings'         => __( 'Settings', 'w3-total-cache' ),
 						'submittedAllDesc' => sprintf(
 							// translators: 1: HTML anchor open tag, 2: HTML anchor close tag.
-							__( 'Images queued for conversion.  Progress can be seen in the %1$sMedia Library%2$s.', 'w3-total_cache' ),
+							__( 'Images queued for conversion.  Progress can be seen in the %1$sMedia Library%2$s.', 'w3-total-cache' ),
 							'<a href="' . esc_url( Util_Ui::admin_url( 'upload.php?mode=list' ) ) . '">',
 							'</a>'
 						),
 						'notConvertedDesc' => sprintf(
 							// translators: 1: HTML anchor open tag, 2: HTML anchor close tag.
-							__( 'The converted image would be larger than the original; conversion canceled.  %1$sLearn more%2$s.', 'w3-total_cache' ),
+							__( 'The converted image would be larger than the original; conversion canceled.  %1$sLearn more%2$s.', 'w3-total-cache' ),
 							'<a target="_blank" href="' . esc_url(
 								'https://www.boldgrid.com/support/w3-total-cache/image-service#conversion-canceled/?utm_source=w3tc&utm_medium=conversion_canceled&utm_campaign=imageservice'
 							) . '">',
 							'</a>'
 						),
 					),
+					'tos_choice'  => Licensing_Core::get_tos_choice(),
+					'track_usage' => $this->config->get_boolean( 'common.track_usage' ),
+					'ga_profile'  => ( defined( 'W3TC_DEBUG' ) && W3TC_DEBUG ) ? 'UA-2264433-7' : 'UA-2264433-8',
 					'settings'    => $this->config->get_array( 'imageservice' ),
 					'settingsUrl' => esc_url( Util_Ui::admin_url( 'upload.php?page=w3tc_extension_page_imageservice' ) ),
 				)
@@ -665,7 +681,7 @@ class Extension_ImageService_Plugin_Admin {
 					<?php
 					printf(
 						// translators: 1: HTML anchor open tag, 2: HTML anchor close tag.
-						esc_html__( 'The converted image would be larger than the original; conversion canceled.  %1$sLearn more%2$s.', 'w3-total_cache' ),
+						esc_html__( 'The converted image would be larger than the original; conversion canceled.  %1$sLearn more%2$s.', 'w3-total-cache' ),
 						'<a target="_blank" href="' . esc_url(
 							'https://www.boldgrid.com/support/w3-total-cache/image-service#conversion-canceled/?utm_source=w3tc&utm_medium=conversion_canceled&utm_campaign=imageservice'
 						) . '">',
@@ -821,14 +837,19 @@ class Extension_ImageService_Plugin_Admin {
 	 * @uses $_GET['w3tc_imageservice_invalid']    Number of invalid submissions.
 	 */
 	public function display_notices() {
-		// phpcs:disable WordPress.Security.NonceVerification.Recommended
-		if ( isset( $_GET['w3tc_imageservice_submitted'] ) ) {
-			$submitted  = intval( $_GET['w3tc_imageservice_submitted'] );
-			$successful = isset( $_GET['w3tc_imageservice_successful'] ) ? intval( $_GET['w3tc_imageservice_successful'] ) : 0;
-			$skipped    = isset( $_GET['w3tc_imageservice_skipped'] ) ? intval( $_GET['w3tc_imageservice_skipped'] ) : 0;
-			$errored    = isset( $_GET['w3tc_imageservice_errored'] ) ? intval( $_GET['w3tc_imageservice_errored'] ) : 0;
-			$invalid    = isset( $_GET['w3tc_imageservice_invalid'] ) ? intval( $_GET['w3tc_imageservice_invalid'] ) : 0;
-			// phpcs:enable WordPress.Security.NonceVerification.Recommended
+		$submitted = Util_Request::get_integer( 'w3tc_imageservice_submitted' );
+		if ( ! empty( $submitted ) ) {
+			$successful_val = Util_Request::get_integer( 'w3tc_imageservice_successful' );
+			$successful     = ! empty( $successful_val ) ? $successful_val : 0;
+
+			$skipped_val = Util_Request::get_integer( 'w3tc_imageservice_skipped' );
+			$skipped     = ! empty( $skipped_val ) ? $skipped_val : 0;
+
+			$errored_val = Util_Request::get_integer( 'w3tc_imageservice_errored' );
+			$errored     = ! empty( $errored_val ) ? $errored_val : 0;
+
+			$invalid_val = Util_Request::get_integer( 'w3tc_imageservice_invalid' );
+			$invalid     = ! empty( $invalid_val ) ? $invalid_val : 0;
 
 			?>
 			<script>history.pushState( null, '', location.href.split( '?' )[0] );</script>
@@ -875,7 +896,7 @@ class Extension_ImageService_Plugin_Admin {
 			</div>
 			<?php
 
-		} elseif ( isset( $_GET['w3tc_imageservice_reverted'] ) ) { // phpcs:ignore
+		} elseif ( ! empty( Util_Request::get_string( 'w3tc_imageservice_reverted' ) ) ) {
 			?>
 			<script>history.pushState( null, '', location.href.split( '?' )[0] );</script>
 
@@ -1139,7 +1160,8 @@ class Extension_ImageService_Plugin_Admin {
 		);
 
 		// Check for post id.
-		$post_id = isset( $_POST['post_id'] ) ? (int) sanitize_key( $_POST['post_id'] ) : null;
+		$post_id_val = Util_Request::get_integer( 'post_id' );
+		$post_id     = ! empty( $post_id_val ) ? $post_id_val : null;
 
 		if ( ! $post_id ) {
 			wp_send_json_error(
@@ -1222,7 +1244,8 @@ class Extension_ImageService_Plugin_Admin {
 	public function ajax_get_postmeta() {
 		check_ajax_referer( 'w3tc_imageservice_postmeta' );
 
-		$post_id = isset( $_POST['post_id'] ) ? (int) sanitize_key( $_POST['post_id'] ) : null;
+		$post_id_val = Util_Request::get_integer( 'post_id' );
+		$post_id     = ! empty( $post_id_val ) ? $post_id_val : null;
 
 		if ( $post_id ) {
 			wp_send_json_success( (array) get_post_meta( $post_id, 'w3tc_imageservice', true ) );
@@ -1246,7 +1269,8 @@ class Extension_ImageService_Plugin_Admin {
 	public function ajax_revert() {
 		check_ajax_referer( 'w3tc_imageservice_revert' );
 
-		$post_id = isset( $_POST['post_id'] ) ? (int) sanitize_key( $_POST['post_id'] ) : null;
+		$post_id_val = Util_Request::get_integer( 'post_id' );
+		$post_id     = ! empty( $post_id_val ) ? $post_id_val : null;
 
 		if ( $post_id ) {
 			$result = $this->remove_optimizations( $post_id );
