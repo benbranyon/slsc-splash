@@ -14,10 +14,10 @@
 				powerTipClose: function() {
 					$('#powerTip').html('');
 				}
-			});;
-			$('body').on('click','.close_ihp',function () {
-                $.powerTip.hide();
-            });
-		})
+			});
+		});
+		$('body').on('click','.close_ihp',function () {
+			$.powerTip.hide();
+		});
     })
 })(jQuery)
