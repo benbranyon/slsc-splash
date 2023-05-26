@@ -107,9 +107,11 @@ Text Domain:  TheStalkerState
   color: #27262B!important;
 }
 
-.wrap_svl_center_box {
-  max-width: 1024px;
+.page-template-template-simple-aos .wrap_svl_center {
+  margin-left:0px!important;
+  margin-right:0px!important;
 }
+
 
 @media only screen and (min-width: 600px) {
 
