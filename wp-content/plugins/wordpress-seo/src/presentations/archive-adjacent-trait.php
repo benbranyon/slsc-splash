@@ -13,6 +13,8 @@ use Yoast\WP\SEO\Models\Indexable;
  * @property Indexable         $model      The indexable.
  * @property Pagination_Helper $pagination The pagination helper. Should be defined in the parent
  *                                         class because of trait issues in PHP 5.6.
+ *                                         For a detailed explanation of the issue, see
+ *                                         {@link https://github.com/Yoast/wordpress-seo/pull/18820}.
  */
 trait Archive_Adjacent {
 
@@ -21,9 +23,9 @@ trait Archive_Adjacent {
 	 *
 	 * @required
 	 *
-	 * @param Pagination_Helper $pagination The pagination helper.
-	 *
 	 * @codeCoverageIgnore
+	 *
+	 * @param Pagination_Helper $pagination The pagination helper.
 	 */
 	public function set_archive_adjacent_helpers( Pagination_Helper $pagination ) {
 		$this->pagination = $pagination;
@@ -31,6 +33,8 @@ trait Archive_Adjacent {
 
 	/**
 	 * Generates the rel prev.
+	 *
+	 * @return string
 	 */
 	public function generate_rel_prev() {
 		if ( $this->pagination->is_rel_adjacent_disabled() ) {
@@ -44,14 +48,16 @@ trait Archive_Adjacent {
 		}
 		// Check if the previous page is the first page.
 		if ( $current_page === 2 ) {
-			return $this->get_permalink();
+			return $this->permalink;
 		}
 
-		return $this->pagination->get_paginated_url( $this->get_permalink(), ( $current_page - 1 ) );
+		return $this->pagination->get_paginated_url( $this->permalink, ( $current_page - 1 ) );
 	}
 
 	/**
 	 * Generates the rel next.
+	 *
+	 * @return string
 	 */
 	public function generate_rel_next() {
 		if ( $this->pagination->is_rel_adjacent_disabled() ) {
@@ -63,6 +69,6 @@ trait Archive_Adjacent {
 			return '';
 		}
 
-		return $this->pagination->get_paginated_url( $this->get_permalink(), ( $current_page + 1 ) );
+		return $this->pagination->get_paginated_url( $this->permalink, ( $current_page + 1 ) );
 	}
 }

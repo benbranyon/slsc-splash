@@ -74,19 +74,17 @@ class Yoast_Integration_Toggles {
 				'order'           => 10,
 			],
 			(object) [
-				/* translators: %s: Ryte */
-				'name'            => sprintf( __( '%s integration', 'wordpress-seo' ), 'Ryte' ),
-				'setting'         => 'ryte_indexability',
-				'label'           => sprintf(
-				/* translators: 1: Ryte, 2: Yoast SEO */
-					__( '%1$s will check weekly if your site is still indexable by search engines and %2$s will notify you when this is not the case.', 'wordpress-seo' ),
-					'Ryte',
-					'Yoast SEO'
-				),
-				/* translators: %s: Ryte */
-				'read_more_label' => sprintf( __( 'Read more about how %s works.', 'wordpress-seo' ), 'Ryte ' ),
-				'read_more_url'   => 'https://yoa.st/2an',
-				'order'           => 20,
+				/* translators: %s: Algolia. */
+				'name'               => \sprintf( \esc_html__( '%s integration', 'wordpress-seo' ), 'Algolia' ),
+				'premium'            => true,
+				'setting'            => 'algolia_integration_active',
+				'label'              => __( 'Improve the quality of your site search! Automatically helps your users find your cornerstone and most important content in your internal search results. It also removes noindexed posts & pages from your site’s search results.', 'wordpress-seo' ),
+				/* translators: %s: Algolia. */
+				'read_more_label'    => \sprintf( \__( 'Find out more about our %s integration.', 'wordpress-seo' ), 'Algolia' ),
+				'read_more_url'      => 'https://yoa.st/4eu',
+				'premium_url'        => 'https://yoa.st/4ex',
+				'premium_upsell_url' => 'https://yoa.st/get-algolia-integration',
+				'order'              => 25,
 			],
 		];
 

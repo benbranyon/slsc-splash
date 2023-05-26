@@ -32,6 +32,7 @@ class FAQ extends Abstract_Schema_Piece {
 	 * @return array
 	 */
 	private function generate_ids() {
+		$ids = [];
 		foreach ( $this->context->blocks['yoast/faq-block'] as $block ) {
 			foreach ( $block['attrs']['questions'] as $index => $question ) {
 				if ( ! isset( $question['jsonAnswer'] ) || empty( $question['jsonAnswer'] ) ) {
@@ -47,14 +48,14 @@ class FAQ extends Abstract_Schema_Piece {
 	/**
 	 * Render a list of questions, referencing them by ID.
 	 *
-	 * @return array $data Our Schema graph.
+	 * @return array Our Schema graph.
 	 */
 	public function generate() {
 		$graph = [];
 
 		$questions = [];
 		foreach ( $this->context->blocks['yoast/faq-block'] as $index => $block ) {
-			$questions = array_merge( $questions, $block['attrs']['questions'] );
+			$questions = \array_merge( $questions, $block['attrs']['questions'] );
 		}
 		foreach ( $questions as $index => $question ) {
 			if ( ! isset( $question['jsonAnswer'] ) || empty( $question['jsonAnswer'] ) ) {

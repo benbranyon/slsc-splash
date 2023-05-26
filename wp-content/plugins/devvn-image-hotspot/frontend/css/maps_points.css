@@ -293,8 +293,13 @@ span.close_ihp {
 body .point_style a:hover img {
     background: transparent !important;
 }
+span.close_ihp svg {
+    width: 25px;
+    height: 25px;
+}
+
 @media (max-width: 500px){
-    div#powerTip {
+    .ihp_popup_full div#powerTip {
         position: fixed;
         top: 0 !important;
         left: 0 !important;
@@ -303,13 +308,13 @@ body .point_style a:hover img {
         overflow-x: hidden;
         overflow-y: auto;
     }
-    span.close_ihp {
+    .ihp_popup_full span.close_ihp {
         display: block;
         float: right;
         width: 25px;
         height: 25px;
     }
-    span.close_ihp svg {
+    .ihp_popup_full span.close_ihp svg {
         fill: #fff;
     }
 }

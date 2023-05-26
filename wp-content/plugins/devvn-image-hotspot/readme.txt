@@ -3,8 +3,8 @@ Contributors: levantoan
 Donate link: https://levantoan.com/donate/
 Tags: hotspot, points, image, maps, image hotspot
 Requires at least: 4.3
-Tested up to: 5.6
-Stable tag: 4.9
+Tested up to: 5.9.1
+Stable tag: 1.2.2
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0
 
@@ -49,6 +49,11 @@ Read here [change the background tooltip and text color](https://github.com/leva
 == Changelog ==
 
 For more information, see [Releases](https://levantoan.com/devvn-image-hotspot).
+
+= 1.2.2 - 05/03/2022 =
+
+* add option popup full screen or normal on mobile
+* Fix css close button
 
 = 1.2.1 - 14/12/2020 =
 

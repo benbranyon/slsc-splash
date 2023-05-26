@@ -2,7 +2,9 @@
 
 namespace Yoast\WP\SEO\Builders;
 
+use WPSEO_Image_Utils;
 use Yoast\WP\SEO\Helpers\Image_Helper;
+use Yoast\WP\SEO\Helpers\Options_Helper;
 use Yoast\WP\SEO\Helpers\Post_Helper;
 use Yoast\WP\SEO\Helpers\Url_Helper;
 use Yoast\WP\SEO\Models\Indexable;
@@ -11,7 +13,7 @@ use Yoast\WP\SEO\Repositories\Indexable_Repository;
 use Yoast\WP\SEO\Repositories\SEO_Links_Repository;
 
 /**
- * Post link builder.
+ * Indexable link builder.
  */
 class Indexable_Link_Builder {
 
@@ -44,6 +46,13 @@ class Indexable_Link_Builder {
 	protected $post_helper;
 
 	/**
+	 * The options helper.
+	 *
+	 * @var Options_Helper
+	 */
+	protected $options_helper;
+
+	/**
 	 * The indexable repository.
 	 *
 	 * @var Indexable_Repository
@@ -51,20 +60,23 @@ class Indexable_Link_Builder {
 	protected $indexable_repository;
 
 	/**
-	 * Post_Link_Builder constructor.
+	 * Indexable_Link_Builder constructor.
 	 *
 	 * @param SEO_Links_Repository $seo_links_repository The SEO links repository.
 	 * @param Url_Helper           $url_helper           The URL helper.
 	 * @param Post_Helper          $post_helper          The post helper.
+	 * @param Options_Helper       $options_helper       The options helper.
 	 */
 	public function __construct(
 		SEO_Links_Repository $seo_links_repository,
 		Url_Helper $url_helper,
-		Post_Helper $post_helper
+		Post_Helper $post_helper,
+		Options_Helper $options_helper
 	) {
 		$this->seo_links_repository = $seo_links_repository;
 		$this->url_helper           = $url_helper;
 		$this->post_helper          = $post_helper;
+		$this->options_helper       = $options_helper;
 	}
 
 	/**
@@ -139,10 +151,39 @@ class Indexable_Link_Builder {
 
 		$linked_indexable_ids = [];
 		foreach ( $links as $link ) {
-			$linked_indexable_ids[] = $link->target_indexable_id;
+			if ( $link->target_indexable_id ) {
+				$linked_indexable_ids[] = $link->target_indexable_id;
+			}
 		}
 
 		$this->update_incoming_links_for_related_indexables( $linked_indexable_ids );
+	}
+
+	/**
+	 * Fixes existing SEO links that are supposed to have a target indexable but don't, because of prior indexable cleanup.
+	 *
+	 * @param Indexable $indexable The indexable to be the target of SEO Links.
+	 *
+	 * @return void
+	 */
+	public function patch_seo_links( Indexable $indexable ) {
+		if ( ! empty( $indexable->id ) && ! empty( $indexable->object_id ) ) {
+			$links = $this->seo_links_repository->find_all_by_target_post_id( $indexable->object_id );
+
+			$updated_indexable = false;
+			foreach ( $links as $link ) {
+				if ( \is_a( $link, SEO_Links::class ) && empty( $link->target_indexable_id ) ) {
+					// Since that post ID exists in an SEO link but has no target_indexable_id, it's probably because of prior indexable cleanup.
+					$this->seo_links_repository->update_target_indexable_id( $link->id, $indexable->id );
+					$updated_indexable = true;
+				}
+			}
+
+			if ( $updated_indexable ) {
+				$updated_indexable_id = [ $indexable->id ];
+				$this->update_incoming_links_for_related_indexables( $updated_indexable_id );
+			}
+		}
 	}
 
 	/**
@@ -276,38 +317,78 @@ class Indexable_Link_Builder {
 
 		$model->parsed_url = $parsed_url;
 
-		if ( $model->type === SEO_Links::TYPE_INTERNAL || $model->type === SEO_Links::TYPE_INTERNAL_IMAGE ) {
-			$permalink = $this->get_permalink( $url, $home_url );
-			if ( $this->url_helper->is_relative( $permalink ) ) {
-				// Make sure we're checking against the absolute URL, and add a trailing slash if the site has a trailing slash in its permalink settings.
-				$permalink = $this->url_helper->ensure_absolute_url( user_trailingslashit( $permalink ) );
-			}
-			$target = $this->indexable_repository->find_by_permalink( $permalink );
+		if ( $model->type === SEO_Links::TYPE_INTERNAL ) {
+			$permalink = $this->build_permalink( $url, $home_url );
 
-			if ( ! $target ) {
-				// If target indexable cannot be found, create one based on the post's post ID.
-				$post_id = $this->get_post_id( $model->type, $permalink );
-				if ( $post_id && $post_id !== 0 ) {
-					$target = $this->indexable_repository->find_by_id_and_type( $post_id, 'post' );
+			return $this->enhance_link_from_indexable( $model, $permalink );
+		}
+
+		if ( $model->type === SEO_Links::TYPE_INTERNAL_IMAGE ) {
+			$permalink = $this->build_permalink( $url, $home_url );
+
+			if ( ! $this->options_helper->get( 'disable-attachment' ) ) {
+				$model = $this->enhance_link_from_indexable( $model, $permalink );
+			}
+			else {
+				$target_post_id = WPSEO_Image_Utils::get_attachment_by_url( $permalink );
+
+				if ( ! empty( $target_post_id ) ) {
+					$model->target_post_id = $target_post_id;
 				}
 			}
 
-			if ( ! $target ) {
-				return $model;
-			}
+			if ( $model->target_post_id ) {
+				$file = \get_attached_file( $model->target_post_id );
 
-			$model->target_indexable_id = $target->id;
-			if ( $target->object_type === 'post' ) {
-				$model->target_post_id = $target->object_id;
+				if ( $file ) {
+					if ( \file_exists( $file ) ) {
+						$model->size = \filesize( $file );
+					}
+					else {
+						$model->size = null;
+					}
+
+					list( , $width, $height ) = \wp_get_attachment_image_src( $model->target_post_id, 'full' );
+					$model->width             = $width;
+					$model->height            = $height;
+				}
+				else {
+					$model->width  = 0;
+					$model->height = 0;
+					$model->size   = 0;
+				}
 			}
 		}
 
-		if ( $is_image && $model->target_post_id ) {
-			list( , $width, $height ) = \wp_get_attachment_image_src( $model->target_post_id, 'full' );
+		return $model;
+	}
 
-			$model->width  = $width;
-			$model->height = $height;
-			$model->size   = \filesize( \get_attached_file( $model->target_post_id ) );
+	/**
+	 * Enhances the link model with information from its indexable.
+	 *
+	 * @param SEO_Links $model     The link's model.
+	 * @param string    $permalink The link's permalink.
+	 *
+	 * @return SEO_Links The enhanced link model.
+	 */
+	protected function enhance_link_from_indexable( $model, $permalink ) {
+		$target = $this->indexable_repository->find_by_permalink( $permalink );
+
+		if ( ! $target ) {
+			// If target indexable cannot be found, create one based on the post's post ID.
+			$post_id = $this->get_post_id( $model->type, $permalink );
+			if ( $post_id && $post_id !== 0 ) {
+				$target = $this->indexable_repository->find_by_id_and_type( $post_id, 'post' );
+			}
+		}
+
+		if ( ! $target ) {
+			return $model;
+		}
+
+		$model->target_indexable_id = $target->id;
+		if ( $target->object_type === 'post' ) {
+			$model->target_post_id = $target->object_id;
 		}
 
 		if ( $model->target_indexable_id ) {
@@ -319,12 +400,31 @@ class Indexable_Link_Builder {
 	}
 
 	/**
+	 * Builds the link's permalink.
+	 *
+	 * @param string $url      The url of the link.
+	 * @param array  $home_url The home url, as parsed by wp_parse_url.
+	 *
+	 * @return string The link's permalink.
+	 */
+	protected function build_permalink( $url, $home_url ) {
+		$permalink = $this->get_permalink( $url, $home_url );
+
+		if ( $this->url_helper->is_relative( $permalink ) ) {
+			// Make sure we're checking against the absolute URL, and add a trailing slash if the site has a trailing slash in its permalink settings.
+			$permalink = $this->url_helper->ensure_absolute_url( \user_trailingslashit( $permalink ) );
+		}
+
+		return $permalink;
+	}
+
+	/**
 	 * Filters out links that point to the same page with a fragment or query.
 	 *
 	 * @param SEO_Links $link        The link.
 	 * @param array     $current_url The url of the page the link is on, as parsed by wp_parse_url.
 	 *
-	 * @return bool. Whether or not the link should be filtered.
+	 * @return bool Whether or not the link should be filtered.
 	 */
 	protected function filter_link( SEO_Links $link, $current_url ) {
 		$url = $link->parsed_url;
@@ -344,7 +444,7 @@ class Indexable_Link_Builder {
 	}
 
 	/**
-	 * Updatates the link counts for related indexables.
+	 * Updates the link counts for related indexables.
 	 *
 	 * @param Indexable   $indexable The indexable.
 	 * @param SEO_Links[] $links     The link models.
@@ -352,26 +452,56 @@ class Indexable_Link_Builder {
 	 * @return void
 	 */
 	protected function update_related_indexables( $indexable, $links ) {
-		$updated_indexable_ids = [];
-		$old_links             = $this->seo_links_repository->find_all_by_indexable_id( $indexable->id );
-		$this->seo_links_repository->delete_all_by_indexable_id( $indexable->id );
-
-		// Old links were only stored by post id, so remove this as well. This can be removed if we ever fully clear all seo links.
+		// Old links were only stored by post id, so remove all old seo links for this post that have no indexable id.
+		// This can be removed if we ever fully clear all seo links.
 		if ( $indexable->object_type === 'post' ) {
-			$this->seo_links_repository->delete_all_by_post_id( $indexable->object_id );
+			$this->seo_links_repository->delete_all_by_post_id_where_indexable_id_null( $indexable->object_id );
 		}
 
-		foreach ( $links as $link ) {
-			$link->save();
+		$updated_indexable_ids = [];
+		$old_links             = $this->seo_links_repository->find_all_by_indexable_id( $indexable->id );
+
+		$links_to_remove = $this->links_diff( $old_links, $links );
+		$links_to_add    = $this->links_diff( $links, $old_links );
+
+		if ( ! empty( $links_to_remove ) ) {
+			$this->seo_links_repository->delete_many_by_id( \wp_list_pluck( $links_to_remove, 'id' ) );
+		}
+
+		if ( ! empty( $links_to_add ) ) {
+			$this->seo_links_repository->insert_many( $links_to_add );
+		}
+
+		foreach ( $links_to_add as $link ) {
 			if ( $link->target_indexable_id ) {
 				$updated_indexable_ids[] = $link->target_indexable_id;
 			}
 		}
-		foreach ( $old_links as $link ) {
-			$updated_indexable_ids[] = $link->target_indexable_id;
+		foreach ( $links_to_remove as $link ) {
+			if ( $link->target_indexable_id ) {
+				$updated_indexable_ids[] = $link->target_indexable_id;
+			}
 		}
 
 		$this->update_incoming_links_for_related_indexables( $updated_indexable_ids );
+	}
+
+	/**
+	 * Creates a diff between two arrays of SEO links, based on urls.
+	 *
+	 * @param SEO_Links[] $links_a The array to compare.
+	 * @param SEO_Links[] $links_b The array to compare against.
+	 *
+	 * @return SEO_Links[] Links that are in $links_a, but not in $links_b.
+	 */
+	protected function links_diff( $links_a, $links_b ) {
+		return \array_udiff(
+			$links_a,
+			$links_b,
+			static function( SEO_Links $link_a, SEO_Links $link_b ) {
+				return \strcmp( $link_a->url, $link_b->url );
+			}
+		);
 	}
 
 	/**
@@ -440,7 +570,9 @@ class Indexable_Link_Builder {
 
 		$counts = $this->seo_links_repository->get_incoming_link_counts_for_indexable_ids( $related_indexable_ids );
 		foreach ( $counts as $count ) {
+
 			$this->indexable_repository->update_incoming_link_count( $count['target_indexable_id'], $count['incoming'] );
+
 		}
 	}
 }

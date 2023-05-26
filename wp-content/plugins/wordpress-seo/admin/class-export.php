@@ -96,8 +96,8 @@ class WPSEO_Export {
 	/**
 	 * Writes a line to the export.
 	 *
-	 * @param string  $line          Line string.
-	 * @param boolean $newline_first Boolean flag whether to prepend with new line.
+	 * @param string $line          Line string.
+	 * @param bool   $newline_first Boolean flag whether to prepend with new line.
 	 */
 	private function write_line( $line, $newline_first = false ) {
 		if ( $newline_first ) {
@@ -125,7 +125,8 @@ class WPSEO_Export {
 			if ( is_array( $elem ) ) {
 				$count = count( $elem );
 				for ( $i = 0; $i < $count; $i++ ) {
-					$this->write_setting( $key . '[]', $elem[ $i ] );
+					$elem_check = isset( $elem[ $i ] ) ? $elem[ $i ] : null;
+					$this->write_setting( $key . '[]', $elem_check );
 				}
 			}
 			else {

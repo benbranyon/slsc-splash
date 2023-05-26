@@ -2,6 +2,7 @@
 
 namespace Yoast\WP\SEO\Routes;
 
+use Exception;
 use WP_Error;
 use WP_REST_Response;
 use Yoast\WP\SEO\Actions\Indexing\Indexable_General_Indexation_Action;
@@ -266,8 +267,6 @@ class Indexing_Route extends Abstract_Indexation_Route {
 		$this->indexable_indexing_complete_action  = $indexable_indexing_complete_action;
 		$this->indexing_complete_action            = $indexing_complete_action;
 		$this->prepare_indexing_action             = $prepare_indexing_action;
-		$this->post_link_indexing_action           = $post_link_indexing_action;
-		$this->term_link_indexing_action           = $term_link_indexing_action;
 		$this->options_helper                      = $options_helper;
 		$this->post_link_indexing_action           = $post_link_indexing_action;
 		$this->term_link_indexing_action           = $term_link_indexing_action;
@@ -400,7 +399,7 @@ class Indexing_Route extends Abstract_Indexation_Route {
 	/**
 	 * Whether or not the current user is allowed to index.
 	 *
-	 * @return boolean Whether or not the current user is allowed to index.
+	 * @return bool Whether or not the current user is allowed to index.
 	 */
 	public function can_index() {
 		return \current_user_can( 'edit_posts' );
@@ -417,10 +416,14 @@ class Indexing_Route extends Abstract_Indexation_Route {
 	protected function run_indexation_action( Indexation_Action_Interface $indexation_action, $url ) {
 		try {
 			return parent::run_indexation_action( $indexation_action, $url );
-		} catch ( \Exception $exception ) {
+		} catch ( Exception $exception ) {
 			$this->indexing_helper->indexing_failed();
 
-			return new WP_Error( 'wpseo_error_indexing', $exception->getMessage() );
+			return new WP_Error(
+				'wpseo_error_indexing',
+				$exception->getMessage(),
+				[ 'stackTrace' => $exception->getTraceAsString() ]
+			);
 		}
 	}
 }

@@ -73,7 +73,7 @@ class WPSEO_Meta {
 	 *   in the relevant child classes (WPSEO_Metabox and WPSEO_Social_admin) as they are only needed there.
 	 * - Beware: even though the meta keys are divided into subsets, they still have to be uniquely named!}}
 	 *
-	 * @var array $meta_fields
+	 * @var array
 	 *            Array format:
 	 *                (required)       'type'          => (string) field type. i.e. text / textarea / checkbox /
 	 *                                                    radio / select / multiselect / upload etc.
@@ -105,18 +105,18 @@ class WPSEO_Meta {
 	 */
 	public static $meta_fields = [
 		'general'  => [
-			'focuskw'        => [
+			'focuskw' => [
 				'type'  => 'hidden',
 				'title' => '',
 			],
-			'title'          => [
+			'title' => [
 				'type'          => 'hidden',
 				'title'         => '', // Translation added later.
 				'default_value' => '',
 				'description'   => '', // Translation added later.
 				'help'          => '', // Translation added later.
 			],
-			'metadesc'       => [
+			'metadesc' => [
 				'type'          => 'hidden',
 				'title'         => '', // Translation added later.
 				'default_value' => '',
@@ -125,15 +125,21 @@ class WPSEO_Meta {
 				'description'   => '', // Translation added later.
 				'help'          => '', // Translation added later.
 			],
-			'linkdex'        => [
+			'linkdex' => [
 				'type'          => 'hidden',
 				'title'         => 'linkdex',
 				'default_value' => '0',
 				'description'   => '',
 			],
-			'content_score'  => [
+			'content_score' => [
 				'type'          => 'hidden',
 				'title'         => 'content_score',
+				'default_value' => '0',
+				'description'   => '',
+			],
+			'inclusive_language_score' => [
+				'type'          => 'hidden',
+				'title'         => 'inclusive_language_score',
 				'default_value' => '0',
 				'description'   => '',
 			],
@@ -319,6 +325,8 @@ class WPSEO_Meta {
 		}
 		unset( $subset, $field_group, $key, $field_def );
 
+		self::filter_schema_article_types();
+
 		add_filter( 'update_post_metadata', [ __CLASS__, 'remove_meta_if_default' ], 10, 5 );
 		add_filter( 'add_post_metadata', [ __CLASS__, 'dont_save_meta_if_default' ], 10, 4 );
 	}
@@ -390,8 +398,16 @@ class WPSEO_Meta {
 				$field_defs['schema_page_type']['default'] = WPSEO_Options::get( 'schema-page-type-' . $post_type );
 
 				$article_helper = new Article_Helper();
-				if ( $post_type !== 'page' && $article_helper->is_author_supported( $post_type ) ) {
-					$field_defs['schema_article_type']['default'] = WPSEO_Options::get( 'schema-article-type-' . $post_type );
+				if ( $article_helper->is_article_post_type( $post_type ) ) {
+					$default_schema_article_type = WPSEO_Options::get( 'schema-article-type-' . $post_type );
+
+					/** This filter is documented in inc/options/class-wpseo-option-titles.php */
+					$allowed_article_types = apply_filters( 'wpseo_schema_article_types', Schema_Types::ARTICLE_TYPES );
+
+					if ( ! \array_key_exists( $default_schema_article_type, $allowed_article_types ) ) {
+						$default_schema_article_type = WPSEO_Options::get_default( 'wpseo_titles', 'schema-article-type-' . $post_type );
+					}
+					$field_defs['schema_article_type']['default'] = $default_schema_article_type;
 				}
 				else {
 					unset( $field_defs['schema_article_type'] );
@@ -563,7 +579,7 @@ class WPSEO_Meta {
 	 * @param string $meta_value New meta value.
 	 * @param string $prev_value The old meta value.
 	 *
-	 * @return null|bool True = stop saving, null = continue saving.
+	 * @return bool|null True = stop saving, null = continue saving.
 	 */
 	public static function remove_meta_if_default( $check, $object_id, $meta_key, $meta_value, $prev_value = '' ) {
 		/* If it's one of our meta fields, check against default. */
@@ -589,7 +605,7 @@ class WPSEO_Meta {
 	 * @param string $meta_key   The full meta key (including prefix).
 	 * @param string $meta_value New meta value.
 	 *
-	 * @return null|bool True = stop saving, null = continue saving.
+	 * @return bool|null True = stop saving, null = continue saving.
 	 */
 	public static function dont_save_meta_if_default( $check, $object_id, $meta_key, $meta_value ) {
 		/* If it's one of our meta fields, check against default. */
@@ -712,9 +728,9 @@ class WPSEO_Meta {
 	 * Deletes a meta value for a post.
 	 *
 	 * @param string $key     The internal key of the meta value to change (without prefix).
-	 * @param int    $post_id The ID of the post to change the meta for.
+	 * @param int    $post_id The ID of the post to delete the meta for.
 	 *
-	 * @return bool Whether the value was changed.
+	 * @return bool Whether the delete was successful or not.
 	 */
 	public static function delete( $key, $post_id ) {
 		return delete_post_meta( $post_id, self::$meta_prefix . $key );
@@ -985,8 +1001,8 @@ class WPSEO_Meta {
 	/**
 	 * Counts the total of all the keywords being used for posts except the given one.
 	 *
-	 * @param string  $keyword The keyword to be counted.
-	 * @param integer $post_id The id of the post to which the keyword belongs.
+	 * @param string $keyword The keyword to be counted.
+	 * @param int    $post_id The id of the post to which the keyword belongs.
 	 *
 	 * @return array
 	 */
@@ -1008,45 +1024,84 @@ class WPSEO_Meta {
 			->where( 'primary_focus_keyword', $keyword )
 			->where( 'object_type', 'post' )
 			->where_not_equal( 'object_id', $post_id )
-			->limit( 2 )
+			->where_not_equal( 'post_status', 'trash' )
+			->limit( 2 )    // Limit to 2 results to save time and resources.
 			->find_array();
 
-		$callback = function ( $row ) {
-			return (int) $row['object_id'];
-		};
-		$post_ids = array_map( $callback, $post_ids );
+		// Get object_id from each subarray in $post_ids.
+		$post_ids = array_map(
+			function( $row ) {
+				return $row['object_id'];
+			},
+			$post_ids
+		);
 
 		/*
-		 * If Yoast SEO Premium is active, get the additional keywords as well.
+		 * If Premium is installed, get the additional keywords as well.
 		 * We only check for the additional keywords if we've not already found two.
 		 * In that case there's no use for an additional query as we already know
 		 * that the keyword has been used multiple times before.
 		 */
-		if ( YoastSEO()->helpers->product->is_premium() && count( $post_ids ) < 2 ) {
-			$query = [
-				'meta_query'     => [
-					[
-						'key'     => '_yoast_wpseo_focuskeywords',
-						'value'   => sprintf( '"keyword":"%s"', $keyword ),
-						'compare' => 'LIKE',
-					],
-				],
-				'post__not_in'   => [ $post_id ],
-				'fields'         => 'ids',
-				'post_type'      => 'any',
-
-				/*
-				 * We only need to return zero, one or two results:
-				 * - Zero: keyword hasn't been used before
-				 * - One: Keyword has been used once before
-				 * - Two or more: Keyword has been used twice or more before
-				 */
-				'posts_per_page' => 2,
-			];
-			$get_posts = new WP_Query( $query );
-			$post_ids  = array_merge( $post_ids, $get_posts->posts );
+		if ( count( $post_ids ) < 2 ) {
+			/**
+			 * Allows enhancing the array of posts' that share their focus keywords with the post's focus keywords.
+			 *
+			 * @param array  $post_ids The array of posts' ids that share their related keywords with the post.
+			 * @param string $keyword  The keyword to search for.
+			 * @param int    $post_id  The id of the post the keyword is associated to.
+			 */
+			$post_ids = apply_filters( 'wpseo_posts_for_focus_keyword', $post_ids, $keyword, $post_id );
 		}
 
 		return $post_ids;
+	}
+
+	/**
+	 * Returns the post types for the given post ids.
+	 *
+	 * @param array $post_ids The post ids to get the post types for.
+	 *
+	 * @return array The post types.
+	 */
+	public static function post_types_for_ids( $post_ids ) {
+
+		/**
+		 * The indexable repository.
+		 *
+		 * @var Indexable_Repository
+		 */
+		$repository = YoastSEO()->classes->get( Indexable_Repository::class );
+
+		// Check if post ids is not empty.
+		if ( ! empty( $post_ids ) ) {
+			// Get the post subtypes for the posts that share the keyword.
+			$post_types = $repository->query()
+				->select( 'object_sub_type' )
+				->where_in( 'object_id', $post_ids )
+				->find_array();
+
+			// Get object_sub_type from each subarray in $post_ids.
+			$post_types = array_map(
+				function( $row ) {
+					return $row['object_sub_type'];
+				},
+				$post_types
+			);
+		}
+		else {
+			$post_types = [];
+		}
+
+		return $post_types;
+	}
+
+	/**
+	 * Filter the schema article types.
+	 *
+	 * @return void
+	 */
+	public static function filter_schema_article_types() {
+		/** This filter is documented in inc/options/class-wpseo-option-titles.php */
+		self::$meta_fields['schema']['schema_article_type']['options'] = apply_filters( 'wpseo_schema_article_types', self::$meta_fields['schema']['schema_article_type']['options'] );
 	}
 }

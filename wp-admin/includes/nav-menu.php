@@ -32,7 +32,7 @@ function _wp_ajax_menu_quick_search( $request = array() ) {
 	}
 
 	if ( 'markup' === $response_format ) {
-		$args['walker'] = new Walker_Nav_Menu_Checklist;
+		$args['walker'] = new Walker_Nav_Menu_Checklist();
 	}
 
 	if ( 'get-post-item' === $type ) {
@@ -154,7 +154,7 @@ function wp_nav_menu_setup() {
 	// If first time editing, disable advanced items by default.
 	if ( false === get_user_option( 'managenav-menuscolumnshidden' ) ) {
 		$user = wp_get_current_user();
-		update_user_option(
+		update_user_meta(
 			$user->ID,
 			'managenav-menuscolumnshidden',
 			array(
@@ -163,8 +163,7 @@ function wp_nav_menu_setup() {
 				2 => 'xfn',
 				3 => 'description',
 				4 => 'title-attribute',
-			),
-			true
+			)
 		);
 	}
 }
@@ -199,7 +198,7 @@ function wp_initial_nav_menu_meta_boxes() {
 	}
 
 	$user = wp_get_current_user();
-	update_user_option( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes, true );
+	update_user_meta( $user->ID, 'metaboxhidden_nav-menus', $hidden_meta_boxes );
 }
 
 /**
@@ -263,22 +262,22 @@ function wp_nav_menu_taxonomy_meta_boxes() {
  * Check whether to disable the Menu Locations meta box submit button and inputs.
  *
  * @since 3.6.0
- * @since 5.3.1 The `$echo` parameter was added.
+ * @since 5.3.1 The `$display` parameter was added.
  *
  * @global bool $one_theme_location_no_menus to determine if no menus exist
  *
  * @param int|string $nav_menu_selected_id ID, name, or slug of the currently selected menu.
- * @param bool       $echo                 Whether to echo or just return the string.
+ * @param bool       $display              Whether to display or just return the string.
  * @return string|false Disabled attribute if at least one menu exists, false if not.
  */
-function wp_nav_menu_disabled_check( $nav_menu_selected_id, $echo = true ) {
+function wp_nav_menu_disabled_check( $nav_menu_selected_id, $display = true ) {
 	global $one_theme_location_no_menus;
 
 	if ( $one_theme_location_no_menus ) {
 		return false;
 	}
 
-	return disabled( $nav_menu_selected_id, 0, $echo );
+	return disabled( $nav_menu_selected_id, 0, $display );
 }
 
 /**
@@ -326,7 +325,7 @@ function wp_nav_menu_item_link_meta_box() {
  * @global int        $_nav_menu_placeholder
  * @global int|string $nav_menu_selected_id
  *
- * @param string $object Not used.
+ * @param string $data_object Not used.
  * @param array  $box {
  *     Post type menu item meta box arguments.
  *
@@ -336,7 +335,7 @@ function wp_nav_menu_item_link_meta_box() {
  *     @type WP_Post_Type $args     Extra meta box arguments (the post type object for this meta box).
  * }
  */
-function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
+function wp_nav_menu_item_post_type_meta_box( $data_object, $box ) {
 	global $_nav_menu_placeholder, $nav_menu_selected_id;
 
 	$post_type_name = $box['args']->name;
@@ -430,14 +429,14 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
 	}
 
 	// @todo Transient caching of these results with proper invalidation on updating of a post of this type.
-	$get_posts = new WP_Query;
+	$get_posts = new WP_Query();
 	$posts     = $get_posts->query( $args );
 
 	// Only suppress and insert when more than just suppression pages available.
 	if ( ! $get_posts->post_count ) {
 		if ( ! empty( $suppress_page_ids ) ) {
 			unset( $args['post__not_in'] );
-			$get_posts = new WP_Query;
+			$get_posts = new WP_Query();
 			$posts     = $get_posts->query( $args );
 		} else {
 			echo '<p>' . __( 'No items.' ) . '</p>';
@@ -462,6 +461,7 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
 			'format'             => '',
 			'prev_text'          => '<span aria-label="' . esc_attr__( 'Previous page' ) . '">' . __( '&laquo;' ) . '</span>',
 			'next_text'          => '<span aria-label="' . esc_attr__( 'Next page' ) . '">' . __( '&raquo;' ) . '</span>',
+			/* translators: Hidden accessibility text. */
 			'before_page_number' => '<span class="screen-reader-text">' . __( 'Page' ) . '</span> ',
 			'total'              => $num_pages,
 			'current'            => $pagenum,
@@ -525,7 +525,7 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
 			</li>
 		</ul><!-- .posttype-tabs -->
 
-		<div id="tabs-panel-posttype-<?php echo $post_type_name; ?>-most-recent" class="tabs-panel <?php echo ( 'most-recent' === $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive' ); ?>" role="region" aria-label="<?php _e( 'Most Recent' ); ?>" tabindex="0">
+		<div id="tabs-panel-posttype-<?php echo $post_type_name; ?>-most-recent" class="tabs-panel <?php echo ( 'most-recent' === $current_tab ? 'tabs-panel-active' : 'tabs-panel-inactive' ); ?>" role="region" aria-label="<?php esc_attr_e( 'Most Recent' ); ?>" tabindex="0">
 			<ul id="<?php echo $post_type_name; ?>checklist-most-recent" class="categorychecklist form-no-clear">
 				<?php
 				$recent_args    = array_merge(
@@ -544,6 +544,11 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
 				 * post type's menu items meta box.
 				 *
 				 * The dynamic portion of the hook name, `$post_type_name`, refers to the post type name.
+				 *
+				 * Possible hook names include:
+				 *
+				 *  - `nav_menu_items_post_recent`
+				 *  - `nav_menu_items_page_recent`
 				 *
 				 * @since 4.3.0
 				 * @since 4.9.0 Added the `$recent_args` parameter.
@@ -578,7 +583,12 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
 			}
 			?>
 			<p class="quick-search-wrap">
-				<label for="quick-search-posttype-<?php echo $post_type_name; ?>" class="screen-reader-text"><?php _e( 'Search' ); ?></label>
+				<label for="quick-search-posttype-<?php echo $post_type_name; ?>" class="screen-reader-text">
+					<?php
+					/* translators: Hidden accessibility text. */
+					_e( 'Search' );
+					?>
+				</label>
 				<input type="search"<?php wp_nav_menu_disabled_check( $nav_menu_selected_id ); ?> class="quick-search" value="<?php echo $searched; ?>" name="quick-search-posttype-<?php echo $post_type_name; ?>" id="quick-search-posttype-<?php echo $post_type_name; ?>" />
 				<span class="spinner"></span>
 				<?php submit_button( __( 'Search' ), 'small quick-search-submit hide-if-js', 'submit', false, array( 'id' => 'submit-quick-search-posttype-' . $post_type_name ) ); ?>
@@ -633,6 +643,11 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
 				 * The dynamic portion of the hook name, `$post_type_name`, refers
 				 * to the slug of the current post type.
 				 *
+				 * Possible hook names include:
+				 *
+				 *  - `nav_menu_items_post`
+				 *  - `nav_menu_items_page`
+				 *
 				 * @since 3.2.0
 				 * @since 4.6.0 Converted the `$post_type` parameter to accept a WP_Post_Type object.
 				 *
@@ -680,7 +695,7 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
  *
  * @global int|string $nav_menu_selected_id
  *
- * @param string $object Not used.
+ * @param string $data_object Not used.
  * @param array  $box {
  *     Taxonomy menu item meta box arguments.
  *
@@ -690,7 +705,7 @@ function wp_nav_menu_item_post_type_meta_box( $object, $box ) {
  *     @type object   $args     Extra meta box arguments (the taxonomy object for this meta box).
  * }
  */
-function wp_nav_menu_item_taxonomy_meta_box( $object, $box ) {
+function wp_nav_menu_item_taxonomy_meta_box( $data_object, $box ) {
 	global $nav_menu_selected_id;
 
 	$taxonomy_name = $box['args']->name;
@@ -748,6 +763,7 @@ function wp_nav_menu_item_taxonomy_meta_box( $object, $box ) {
 			'format'             => '',
 			'prev_text'          => '<span aria-label="' . esc_attr__( 'Previous page' ) . '">' . __( '&laquo;' ) . '</span>',
 			'next_text'          => '<span aria-label="' . esc_attr__( 'Next page' ) . '">' . __( '&raquo;' ) . '</span>',
+			/* translators: Hidden accessibility text. */
 			'before_page_number' => '<span class="screen-reader-text">' . __( 'Page' ) . '</span> ',
 			'total'              => $num_pages,
 			'current'            => $pagenum,
@@ -868,7 +884,12 @@ function wp_nav_menu_item_taxonomy_meta_box( $object, $box ) {
 			}
 			?>
 			<p class="quick-search-wrap">
-				<label for="quick-search-taxonomy-<?php echo $taxonomy_name; ?>" class="screen-reader-text"><?php _e( 'Search' ); ?></label>
+				<label for="quick-search-taxonomy-<?php echo $taxonomy_name; ?>" class="screen-reader-text">
+					<?php
+					/* translators: Hidden accessibility text. */
+					_e( 'Search' );
+					?>
+				</label>
 				<input type="search" class="quick-search" value="<?php echo $searched; ?>" name="quick-search-taxonomy-<?php echo $taxonomy_name; ?>" id="quick-search-taxonomy-<?php echo $taxonomy_name; ?>" />
 				<span class="spinner"></span>
 				<?php submit_button( __( 'Search' ), 'small quick-search-submit hide-if-js', 'submit', false, array( 'id' => 'submit-quick-search-taxonomy-' . $taxonomy_name ) ); ?>
@@ -980,40 +1001,40 @@ function wp_save_nav_menu_items( $menu_id = 0, $menu_data = array() ) {
  *
  * @access private
  *
- * @param object $object The post type or taxonomy meta-object.
+ * @param object $data_object The post type or taxonomy meta-object.
  * @return object The post type or taxonomy object.
  */
-function _wp_nav_menu_meta_box_object( $object = null ) {
-	if ( isset( $object->name ) ) {
+function _wp_nav_menu_meta_box_object( $data_object = null ) {
+	if ( isset( $data_object->name ) ) {
 
-		if ( 'page' === $object->name ) {
-			$object->_default_query = array(
+		if ( 'page' === $data_object->name ) {
+			$data_object->_default_query = array(
 				'orderby'     => 'menu_order title',
 				'post_status' => 'publish',
 			);
 
 			// Posts should show only published items.
-		} elseif ( 'post' === $object->name ) {
-			$object->_default_query = array(
+		} elseif ( 'post' === $data_object->name ) {
+			$data_object->_default_query = array(
 				'post_status' => 'publish',
 			);
 
 			// Categories should be in reverse chronological order.
-		} elseif ( 'category' === $object->name ) {
-			$object->_default_query = array(
+		} elseif ( 'category' === $data_object->name ) {
+			$data_object->_default_query = array(
 				'orderby' => 'id',
 				'order'   => 'DESC',
 			);
 
 			// Custom post types should show only published items.
 		} else {
-			$object->_default_query = array(
+			$data_object->_default_query = array(
 				'post_status' => 'publish',
 			);
 		}
 	}
 
-	return $object;
+	return $data_object;
 }
 
 /**
@@ -1050,7 +1071,7 @@ function wp_get_nav_menu_to_edit( $menu_id = 0 ) {
 		$walker_class_name = apply_filters( 'wp_edit_nav_menu_walker', 'Walker_Nav_Menu_Edit', $menu_id );
 
 		if ( class_exists( $walker_class_name ) ) {
-			$walker = new $walker_class_name;
+			$walker = new $walker_class_name();
 		} else {
 			return new WP_Error(
 				'menu_walker_not_exist',
@@ -1131,13 +1152,13 @@ function _wp_delete_orphaned_draft_menu_items() {
 }
 
 /**
- * Saves nav menu items
+ * Saves nav menu items.
  *
  * @since 3.6.0
  *
  * @param int|string $nav_menu_selected_id    ID, slug, or name of the currently-selected menu.
  * @param string     $nav_menu_selected_title Title of the currently-selected menu.
- * @return array The menu updated message
+ * @return string[] The menu updated messages.
  */
 function wp_nav_menu_update_menu_items( $nav_menu_selected_id, $nav_menu_selected_title ) {
 	$unsorted_menu_items = wp_get_nav_menu_items(
