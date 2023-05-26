@@ -619,6 +619,8 @@ class Stats extends NextGen {
 	 * @param array  $size_stats  Size stats.
 	 * @param string $full_image  Full size image.
 	 *
+	 * TODO: Remove this method as no longer need.
+	 *
 	 * @return array
 	 */
 	private function get_skipped_images( $size_stats, $full_image ) {
