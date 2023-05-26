@@ -4,6 +4,7 @@
 		basePageName: '',
 		panelQueue: [],
 		pendingChanges: {},
+		userIsActivating: false,
 		
 		//Screen sizes
 		SCREEN_XS: 'xs',
@@ -702,15 +703,21 @@
 				settings = {};
 			}
 
-			var prompt = $.tmpl(WFLSVars.modalTemplate, {title: heading, message: body});
+			if (width === null)
+				width = WFLS.screenSize(500) ? '300px' : '400px';
+
+			var includeDefaultButtons = typeof settings.includeDefaultButtons === 'undefined' ? false : settings.includeDefaultButtons;
+			var prompt = $.tmpl(WFLSVars[includeDefaultButtons ? 'modalTemplate' : 'modalNoButtonsTemplate'], {title: heading, message: body});
 
 			if (typeof settings.additional_buttons !== 'undefined') {
 				var buttonSection = prompt.find('.wfls-modal-footer > ul');
 				for(index in settings.additional_buttons) {
 					var buttonSettings = settings.additional_buttons[index];
 					var button = $('<button>').text(buttonSettings.label)
-						.addClass('wfls-btn wfls-btn-default wfls-btn-callout-subtle wfls-additional-button')
+						.addClass('wfls-btn wfls-btn-callout-subtle wfls-additional-button')
 						.attr('id', buttonSettings.id);
+					var buttonType = typeof buttonSettings.type === 'undefined' ? 'default' : buttonSettings.type;
+					button.addClass('wfls-btn-' + buttonType);
 					buttonSection.prepend($("<li>").addClass('wfls-padding-add-left-small').append(button));
 				}
 			}
@@ -731,6 +738,29 @@
 				typeof callback === 'function' && callback();
 			};
 			WFLS.panelHTML(width, promptHTML, settings)
+		},
+
+		/**
+		 * Displays a modal with the given title and message text.
+		 *
+		 * @param string title the modal title
+		 * @param string message the message (this will be treated as text, not HTML)
+		 * @param array buttons the buttons to include in the modal footer
+		 *	Each item in the array should be an object with the following properties:
+		 *		- label: The button text
+		 *		- id: An ID for the button
+		 *		- type: The type of button for styling purposes - i.e. default, primary (default: 'default')
+		 * @param object settings
+		 *
+		 * @see WFLS.panelModal
+		 */
+		displayModalMessage: function(title, message, buttons, settings) {
+			if (typeof settings !== 'object')
+				settings = {};
+			var width = typeof settings.width === 'undefined' ? null : settings.width;
+			settings.includeDefaultButtons = false;
+			settings.additional_buttons = buttons;
+			WFLS.panelModal(width, title, message, settings);
 		},
 
 		/**
