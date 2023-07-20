@@ -27,7 +27,7 @@ $can_use_background = $bg_optimization->can_use_background();
 				<p><?php esc_html_e( 'Get Smush Pro and bulk optimize every image you’ve ever added to your site with one click. Smush images without having to keep the plugin open and serve stunning, high-quality images from 114 locations around the globe with our blazing-fast CDN.', 'wp-smushit' ); ?></p>
 				<p><?php esc_html_e( 'Automatically compress and resize huge photos without any size limitations. Double your savings and fix your Google PageSpeed with the best image optimizer WordPress has ever known.', 'wp-smushit' ); ?></p>
 				<a href="<?php echo esc_url( add_query_arg( 'utm_campaign', 'smush_propage_topbutton', $upgrade_url ) ); ?>" class="sui-button sui-button-lg sui-button-purple" target="_blank">
-					<?php esc_html_e( 'TRY SMUSH PRO NOW', 'wp-smushit' ); ?>
+					<?php esc_html_e( 'UPGRADE TO PRO', 'wp-smushit' ); ?>
 				</a>
 				<div class="sui-reviews">
 					<span class="sui-reviews__stars"></span>

@@ -54,5 +54,5 @@ $can_use_background = $bg_optimization->can_use_background();
 </ol>
 
 <a href="<?php echo esc_url( $upsell_url ); ?>" target="_blank" class="sui-button sui-button-purple sui-margin-top">
-	<?php esc_html_e( 'Try SMUSH Pro today!', 'wp-smushit' ); ?>
+	<?php esc_html_e( 'UNLOCK NOW WITH PRO', 'wp-smushit' ); ?>
 </a>
