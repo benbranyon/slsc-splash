@@ -428,11 +428,11 @@
 				case 'blocked:waf':
 					var data = self.actionData();
 					if (typeof data === 'object') {
-						var paramKey = WFAD.base64_decode(data.paramKey);
-						var paramValue = WFAD.base64_decode(data.paramValue);
+						var paramKey = data.paramKey ? WFAD.base64_decode(data.paramKey) : null;
+						var paramValue = data.paramKey ? WFAD.base64_decode(data.paramValue) : null;
 						// var category = data.category;
 
-						var matches = paramKey.match(/([a-z0-9_]+\.[a-z0-9_]+)(?:\[(.+?)\](.*))?/i);
+						var matches = paramKey !== null && paramKey.match(/([a-z0-9_]+\.[a-z0-9_]+)(?:\[(.+?)\](.*))?/i);
 						desc = self.actionDescription();
 						if (matches) {
 							switch (matches[1]) {

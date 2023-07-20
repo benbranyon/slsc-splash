@@ -1,14 +1,145 @@
 /* ========================================================================
- * Bootstrap: wftooltip.js v3.3.7 and wfpopover.js v3.3.7 (adapted to wf prefix)
- * http://getbootstrap.com/javascript/#wfpopovers
+ * Bootstrap: tooltip.js v3.4.1 and wfpopover.js v3.4.1 (adapted to WF prefix)
+ * https://getbootstrap.com/docs/3.4/javascript/#tooltip
+ * Inspired by the original jQuery.tipsy by Jason Frame
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
-
 +function ($) {
 	'use strict';
+
+	var DISALLOWED_ATTRIBUTES = ['sanitize', 'whiteList', 'sanitizeFn']
+
+	var uriAttrs = [
+		'background',
+		'cite',
+		'href',
+		'itemtype',
+		'longdesc',
+		'poster',
+		'src',
+		'xlink:href'
+	]
+
+	var ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i
+
+	var DefaultWhitelist = {
+		// Global attributes allowed on any supplied element below.
+		'*': ['class', 'dir', 'id', 'lang', 'role', ARIA_ATTRIBUTE_PATTERN],
+		a: ['target', 'href', 'title', 'rel'],
+		area: [],
+		b: [],
+		br: [],
+		col: [],
+		code: [],
+		div: [],
+		em: [],
+		hr: [],
+		h1: [],
+		h2: [],
+		h3: [],
+		h4: [],
+		h5: [],
+		h6: [],
+		i: [],
+		img: ['src', 'alt', 'title', 'width', 'height'],
+		li: [],
+		ol: [],
+		p: [],
+		pre: [],
+		s: [],
+		small: [],
+		span: [],
+		sub: [],
+		sup: [],
+		strong: [],
+		u: [],
+		ul: []
+	}
+
+	/**
+	 * A pattern that recognizes a commonly useful subset of URLs that are safe.
+	 *
+	 * Shoutout to Angular 7 https://github.com/angular/angular/blob/7.2.4/packages/core/src/sanitization/url_sanitizer.ts
+	 */
+	var SAFE_URL_PATTERN = /^(?:(?:https?|mailto|ftp|tel|file):|[^&:/?#]*(?:[/?#]|$))/gi
+
+	/**
+	 * A pattern that matches safe data URLs. Only matches image, video and audio types.
+	 *
+	 * Shoutout to Angular 7 https://github.com/angular/angular/blob/7.2.4/packages/core/src/sanitization/url_sanitizer.ts
+	 */
+	var DATA_URL_PATTERN = /^data:(?:image\/(?:bmp|gif|jpeg|jpg|png|tiff|webp)|video\/(?:mpeg|mp4|ogg|webm)|audio\/(?:mp3|oga|ogg|opus));base64,[a-z0-9+/]+=*$/i
+
+	function allowedAttribute(attr, allowedAttributeList) {
+		var attrName = attr.nodeName.toLowerCase()
+
+		if ($.inArray(attrName, allowedAttributeList) !== -1) {
+			if ($.inArray(attrName, uriAttrs) !== -1) {
+				return Boolean(attr.nodeValue.match(SAFE_URL_PATTERN) || attr.nodeValue.match(DATA_URL_PATTERN))
+			}
+
+			return true
+		}
+
+		var regExp = $(allowedAttributeList).filter(function (index, value) {
+			return value instanceof RegExp
+		})
+
+		// Check if a regular expression validates the attribute.
+		for (var i = 0, l = regExp.length; i < l; i++) {
+			if (attrName.match(regExp[i])) {
+				return true
+			}
+		}
+
+		return false
+	}
+
+	function sanitizeHtml(unsafeHtml, whiteList, sanitizeFn) {
+		if (unsafeHtml.length === 0) {
+			return unsafeHtml
+		}
+
+		if (sanitizeFn && typeof sanitizeFn === 'function') {
+			return sanitizeFn(unsafeHtml)
+		}
+
+		// IE 8 and below don't support createHTMLDocument
+		if (!document.implementation || !document.implementation.createHTMLDocument) {
+			return unsafeHtml
+		}
+
+		var createdDocument = document.implementation.createHTMLDocument('sanitization')
+		createdDocument.body.innerHTML = unsafeHtml
+
+		var whitelistKeys = $.map(whiteList, function (el, i) { return i })
+		var elements = $(createdDocument.body).find('*')
+
+		for (var i = 0, len = elements.length; i < len; i++) {
+			var el = elements[i]
+			var elName = el.nodeName.toLowerCase()
+
+			if ($.inArray(elName, whitelistKeys) === -1) {
+				el.parentNode.removeChild(el)
+
+				continue
+			}
+
+			var attributeList = $.map(el.attributes, function (el) { return el })
+			var whitelistedAttributes = [].concat(whiteList['*'] || [], whiteList[elName] || [])
+
+			for (var j = 0, len2 = attributeList.length; j < len2; j++) {
+				if (!allowedAttribute(attributeList[j], whitelistedAttributes)) {
+					el.removeAttribute(attributeList[j].nodeName)
+				}
+			}
+		}
+
+		return createdDocument.body.innerHTML
+	}
 
 	// TOOLTIP PUBLIC CLASS DEFINITION
 	// ===============================
@@ -25,7 +156,7 @@
 		this.init('wftooltip', element, options)
 	}
 
-	WFTooltip.VERSION  = '3.3.7'
+	WFTooltip.VERSION  = '3.4.1'
 
 	WFTooltip.TRANSITION_DURATION = 150
 
@@ -42,7 +173,10 @@
 		viewport: {
 			selector: 'body',
 			padding: 0
-		}
+		},
+		sanitize : true,
+		sanitizeFn : null,
+		whiteList : DefaultWhitelist
 	}
 
 	WFTooltip.prototype.init = function (type, element, options) {
@@ -50,7 +184,7 @@
 		this.type      = type
 		this.$element  = $(element)
 		this.options   = this.getOptions(options)
-		this.$viewport = this.options.viewport && $($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : (this.options.viewport.selector || this.options.viewport))
+		this.$viewport = this.options.viewport && $(document).find($.isFunction(this.options.viewport) ? this.options.viewport.call(this, this.$element) : (this.options.viewport.selector || this.options.viewport))
 		this.inState   = { click: false, hover: false, focus: false }
 
 		if (this.$element[0] instanceof document.constructor && !this.options.selector) {
@@ -83,13 +217,25 @@
 	}
 
 	WFTooltip.prototype.getOptions = function (options) {
-		options = $.extend({}, this.getDefaults(), this.$element.data(), options)
+		var dataAttributes = this.$element.data()
+
+		for (var dataAttr in dataAttributes) {
+			if (dataAttributes.hasOwnProperty(dataAttr) && $.inArray(dataAttr, DISALLOWED_ATTRIBUTES) !== -1) {
+				delete dataAttributes[dataAttr]
+			}
+		}
+
+		options = $.extend({}, this.getDefaults(), dataAttributes, options)
 
 		if (options.delay && typeof options.delay == 'number') {
 			options.delay = {
 				show: options.delay,
 				hide: options.delay
 			}
+		}
+
+		if (options.sanitize) {
+			options.template = sanitizeHtml(options.template, options.whiteList, options.sanitizeFn)
 		}
 
 		return options
@@ -120,7 +266,7 @@
 		}
 
 		if (self.tip().hasClass('wf-in') || self.hoverState == 'wf-in') {
-			self.hoverState = 'in'
+			self.hoverState = 'wf-in'
 			return
 		}
 
@@ -203,7 +349,7 @@
 				.addClass(placement)
 				.data('bs.' + this.type, this)
 
-			this.options.container ? $tip.appendTo(this.options.container) : $tip.insertAfter(this.$element)
+			this.options.container ? $tip.appendTo($(document).find(this.options.container)) : $tip.insertAfter(this.$element)
 			this.$element.trigger('inserted.bs.' + this.type)
 
 			var pos          = this.getPosition()
@@ -215,10 +361,10 @@
 				var viewportDim = this.getPosition(this.$viewport)
 
 				placement = placement == 'wf-bottom' && pos.bottom + actualHeight > viewportDim.bottom ? 'wf-top'    :
-							placement == 'wf-top'    && pos.top    - actualHeight < viewportDim.top    ? 'wf-bottom' :
-							placement == 'wf-right'  && pos.right  + actualWidth  > viewportDim.width  ? 'wf-left'   :
+					placement == 'wf-top'    && pos.top    - actualHeight < viewportDim.top    ? 'wf-bottom' :
+						placement == 'wf-right'  && pos.right  + actualWidth  > viewportDim.width  ? 'wf-left'   :
 							placement == 'wf-left'   && pos.left   - actualWidth  < viewportDim.left   ? 'wf-right'  :
-							placement
+								placement
 
 				$tip
 					.removeClass(orgPlacement)
@@ -305,7 +451,16 @@
 		var $tip  = this.tip()
 		var title = this.getTitle()
 
-		$tip.find('.wftooltip-inner')[this.options.html ? 'html' : 'text'](title)
+		if (this.options.html) {
+			if (this.options.sanitize) {
+				title = sanitizeHtml(title, this.options.whiteList, this.options.sanitizeFn)
+			}
+
+			$tip.find('.wftooltip-inner').html(title)
+		} else {
+			$tip.find('.wftooltip-inner').text(title)
+		}
+
 		$tip.removeClass('wf-fade wf-in wf-top wf-bottom wf-left wf-right')
 	}
 
@@ -328,7 +483,7 @@
 
 		if (e.isDefaultPrevented()) return
 
-		$tip.removeClass('in')
+		$tip.removeClass('wf-in')
 
 		$.support.transition && $tip.hasClass('wf-fade') ?
 			$tip
@@ -375,7 +530,7 @@
 
 	WFTooltip.prototype.getCalculatedOffset = function (placement, pos, actualWidth, actualHeight) {
 		return placement == 'wf-bottom' ? { top: pos.top + pos.height,   left: pos.left + pos.width / 2 - actualWidth / 2 } :
-				placement == 'wf-top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
+			placement == 'wf-top'    ? { top: pos.top - actualHeight, left: pos.left + pos.width / 2 - actualWidth / 2 } :
 				placement == 'wf-left'   ? { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left - actualWidth } :
 					/* placement == 'wf-right' */ { top: pos.top + pos.height / 2 - actualHeight / 2, left: pos.left + pos.width }
 
@@ -486,11 +641,14 @@
 		})
 	}
 
+	WFTooltip.prototype.sanitizeHtml = function (unsafeHtml) {
+		return sanitizeHtml(unsafeHtml, this.options.whiteList, this.options.sanitizeFn)
+	}
 
 	// TOOLTIP PLUGIN DEFINITION
 	// =========================
 
-	function Plugin(option) {
+	function WFPlugin(option) {
 		return this.each(function () {
 			var $this   = $(this)
 			var data    = $this.data('bs.wftooltip')
@@ -504,7 +662,7 @@
 
 	var old = $.fn.wftooltip
 
-	$.fn.wftooltip             = Plugin
+	$.fn.wftooltip             = WFPlugin
 	$.fn.wftooltip.Constructor = WFTooltip
 
 
@@ -523,7 +681,7 @@
 		this.init('wfpopover', element, options)
 	}
 
-	WFPopover.VERSION  = '3.3.7'
+	WFPopover.VERSION  = '3.4.1'
 
 	WFPopover.DEFAULTS = $.extend({}, $.fn.wftooltip.Constructor.DEFAULTS, {
 		placement: 'wf-right',
@@ -549,10 +707,25 @@
 		var title   = this.getTitle()
 		var content = this.getContent()
 
-		$tip.find('.wfpopover-title')[this.options.html ? 'html' : 'text'](title)
-		$tip.find('.wfpopover-content').children().detach().end()[ // we use append for html objects to maintain js events
-			this.options.html ? (typeof content == 'string' ? 'html' : 'append') : 'text'
-			](content)
+		if (this.options.html) {
+			var typeContent = typeof content
+
+			if (this.options.sanitize) {
+				title = this.sanitizeHtml(title)
+
+				if (typeContent === 'string') {
+					content = this.sanitizeHtml(content)
+				}
+			}
+
+			$tip.find('.wfpopover-title').html(title)
+			$tip.find('.wfpopover-content').children().detach().end()[
+				typeContent === 'string' ? 'html' : 'append'
+				](content)
+		} else {
+			$tip.find('.wfpopover-title').text(title)
+			$tip.find('.wfpopover-content').children().detach().end().text(content)
+		}
 
 		$tip.removeClass('wf-fade wf-top wf-bottom wf-left wf-right wf-in')
 
@@ -583,7 +756,7 @@
 	// POPOVER PLUGIN DEFINITION
 	// =========================
 
-	function Plugin(option) {
+	function WFPlugin(option) {
 		return this.each(function () {
 			var $this   = $(this)
 			var data    = $this.data('bs.wfpopover')
@@ -597,7 +770,7 @@
 
 	var old = $.fn.wfpopover
 
-	$.fn.wfpopover             = Plugin
+	$.fn.wfpopover             = WFPlugin
 	$.fn.wfpopover.Constructor = WFPopover
 
 

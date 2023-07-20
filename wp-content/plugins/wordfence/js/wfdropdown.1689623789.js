@@ -1,8 +1,8 @@
 /* ========================================================================
- * Bootstrap: dropdown.js v3.3.7 (adapted to WF prefix)
- * http://getbootstrap.com/javascript/#dropdowns
+ * Bootstrap: dropdown.js v3.4.1 (adapted to WF prefix)
+ * https://getbootstrap.com/docs/3.4/javascript/#dropdowns
  * ========================================================================
- * Copyright 2011-2016 Twitter, Inc.
+ * Copyright 2011-2019 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  * ======================================================================== */
 
@@ -19,7 +19,7 @@
 		$(element).on('click.bs.wf-dropdown', this.toggle)
 	}
 
-	WFDropdown.VERSION = '3.3.7'
+	WFDropdown.VERSION = '3.4.1'
 
 	function getParent($this) {
 		var selector = $this.attr('data-target')
@@ -29,7 +29,7 @@
 			selector = selector && /#[A-Za-z]/.test(selector) && selector.replace(/.*(?=#[^\s]*$)/, '') // strip for ie7
 		}
 
-		var $parent = selector && $(selector)
+		var $parent = selector !== '#' ? $(document).find(selector) : null
 
 		return $parent && $parent.length ? $parent : $this.parent()
 	}
@@ -127,7 +127,7 @@
 	// DROPDOWN PLUGIN DEFINITION
 	// ==========================
 
-	function Plugin(option) {
+	function WFPlugin(option) {
 		return this.each(function () {
 			var $this = $(this)
 			var data  = $this.data('bs.wf-dropdown')
@@ -139,7 +139,7 @@
 
 	var old = $.fn.wfdropdown
 
-	$.fn.wfdropdown             = Plugin
+	$.fn.wfdropdown             = WFPlugin
 	$.fn.wfdropdown.Constructor = WFDropdown
 
 
