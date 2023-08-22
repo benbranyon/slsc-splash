@@ -8,6 +8,7 @@ function KTT_load_common_stylesheets() {
     * material angular css
     */
     wp_enqueue_style( KTT_var_name('-angular-material.min'));
+    print_r(KTT_var_name('-angular-material.min'));exit;
 
     /**
     * Our base style, all pages should load this
