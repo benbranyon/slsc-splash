@@ -53,3 +53,6 @@ function add_type_attribute($tag, $handle, $src) {
     $tag = '<script type="module" src="' . esc_url( $src ) . '"></script>';
     return $tag;
 }
+
+//Remove core block styles
+add_filter( 'should_load_separate_core_block_assets', '__return_true' );
