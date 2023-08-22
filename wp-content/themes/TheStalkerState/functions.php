@@ -36,7 +36,9 @@ add_filter('script_loader_tag', 'add_type_attribute' , 10, 3);
 
 function slsc_defer_scripts( $tag, $handle, $src ) {
   $defer = array( 
-    'main',
+    'three-js',
+    'cannon-js',
+    'tween-js',
   );
   if ( in_array( $handle, $defer ) ) {
      return '<script src="' . $src . '" defer="defer" type="text/javascript"></script>' . "\n";
