@@ -34,20 +34,6 @@ add_action( 'wp_enqueue_scripts', 'TheStalkerState_enqueue_child_styles' );
 
 add_filter('script_loader_tag', 'add_type_attribute' , 10, 3);
 
-function slsc_defer_scripts( $tag, $handle, $src ) {
-  $defer = array( 
-    'three-js',
-    'cannon-js',
-    'tween-js',
-  );
-  if ( in_array( $handle, $defer ) ) {
-     return '<script src="' . $src . '" defer="defer" type="text/javascript"></script>' . "\n";
-  }
-    
-    return $tag;
-} 
-add_filter( 'script_loader_tag', 'slsc_defer_scripts', 10, 3 );
-
 function add_type_attribute($tag, $handle, $src) {
     // if not your script, do nothing and return original $tag
     if ( 'main' !== $handle ) {
