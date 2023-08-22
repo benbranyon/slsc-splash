@@ -49,7 +49,6 @@ function slsc_defer_scripts( $tag, $handle, $src ) {
     'three-js',
     'cannon-js',
     'tween-js',
-    'main',
   );
   if ( in_array( $handle, $defer ) ) {
      return '<script src="' . $src . '" defer="defer" type="text/javascript"></script>' . "\n";
