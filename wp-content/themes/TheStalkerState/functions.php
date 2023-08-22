@@ -26,7 +26,7 @@ if ( ! function_exists( 'suffice_child_enqueue_child_styles' ) ) {
 	    	wp_enqueue_script( 'three-js', get_stylesheet_directory_uri() . '/js/libraries/three.min.js', array('jquery'), '20151215', true );
 	    	wp_enqueue_script( 'cannon-js', 'https://cdnjs.cloudflare.com/ajax/libs/cannon.js/0.6.2/cannon.min.js', array('jquery'), true);
 	    	wp_enqueue_script( 'tween-js', 'https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js', array('jquery'), true);
-	    	wp_enqueue_script( 'main', get_stylesheet_directory_uri() .'/js/main.js', array('three'));
+	    	wp_enqueue_script( 'main', get_stylesheet_directory_uri() .'/js/main.js', array('three-js'));
 	    }
 	 }
 }
