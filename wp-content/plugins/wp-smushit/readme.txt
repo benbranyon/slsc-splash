@@ -1,13 +1,13 @@
 === Smush - Lazy Load Images, Optimize & Compress Images ===
 Plugin Name: Smush - Lazy Load Images, Optimize & Compress Images
-Version: 3.13.2
+Version: 3.14.1
 Author: WPMU DEV
 Author URI: https://wpmudev.com/
 Contributors: WPMUDEV, alexdunae
 Tags: optimize images, convert webp, lazy load, resize images, compress images, webp, performance, optimization, photography, optimizer, image optimizer, image compress, image optimize, webp format
 Requires at least: 5.3
-Tested up to: 6.2
-Stable tag: 3.13.2
+Tested up to: 6.3
+Stable tag: 3.14.1
 Requires PHP: 5.6
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -24,8 +24,9 @@ Image optimization is the easiest way to make your site load super fast!
 ### Award Winning Image Optimizer
 Smush has been benchmarked and tested number one for speed and quality. It is also the [award-winning](https://torquemag.io/2018/04/smush-image-compression-wins-2018-plugin-madness/), back-to-back proven crowd favorite image optimization & image compression plugin for WordPress.
 
-- Super Smush - Optimize images up to 2x more than regular with our multi-pass lossy compression.
-- Lossless Compression – Strip unused data and compress images without affecting image quality.
+- Basic Smush - Strip unused data and compress images without affecting image quality with lossless compression.
+- Super Smush - Optimize images up to 2x more than regular with our cutting-edge multi-pass lossy compression.
+- Ultra Smush (Pro only) - Skyrocket to the next level with 5x compressing power! Your images are as light, fast, and high quality as possible.
 - Lazy Load - Defer offscreen images with the flip of a switch.
 - Bulk Smush - Optimize & compress images in bulk with one click.
 - Background Optimization (Pro Only) - Smush’s powerful optimization features will continue to run in the background, even when the plugin is closed.
@@ -194,6 +195,15 @@ It depends what side of the pond you live on...but whether you say optimize, opt
 4. Set automatic smush to resize and optimize every image as it is uploaded.
 
 == Changelog ==
+
+= 3.14.1 ( 2023-07-24 ) =
+- Improvement: Minor code improvements and fixes
+
+= 3.14.0 ( 2023-07-17 ) =
+- New: Ultra Smush - Level up your image compression, while preserving remarkable image quality
+- Fix: Resolved issue with image resize in WP versions < 6.0
+- Fix: Resolved PHP 8.x error on GoDaddy Managed WP Hosting
+- Fix: Other minor bug fixes and UI improvements
 
 = 3.13.2 ( 2023-07-05 ) =
 - Improvement: Small code and text improvements
