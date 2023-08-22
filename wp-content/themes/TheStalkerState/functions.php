@@ -44,5 +44,20 @@ function add_type_attribute($tag, $handle, $src) {
     return $tag;
 }
 
+function slsc_defer_scripts( $tag, $handle, $src ) {
+  $defer = array( 
+    'three-js',
+    'cannon-js',
+    'tween-js',
+    'main',
+  );
+  if ( in_array( $handle, $defer ) ) {
+     return '<script src="' . $src . '" defer="defer" type="text/javascript"></script>' . "\n";
+  }
+    
+    return $tag;
+} 
+add_filter( 'script_loader_tag', 'slsc_defer_scripts', 10, 3 );
+
 //Remove core block styles
 add_filter( 'should_load_separate_core_block_assets', '__return_true' );
