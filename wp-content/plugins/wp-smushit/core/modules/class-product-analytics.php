@@ -11,7 +11,9 @@ use Smush\Core\Modules\Background\Background_Process;
 use Smush\Core\Server_Utils;
 use Smush\Core\Settings;
 use Smush\Core\Stats\Global_Stats;
+use Smush\Core\Webp\Webp_Configuration;
 use WP_Smush;
+use WPMUDEV_Analytics;
 
 class Product_Analytics {
 	const PROJECT_TOKEN = '5d545622e3a040aca63f2089b0e6cae7';
@@ -31,6 +33,11 @@ class Product_Analytics {
 	 * @var Media_Library_Scan_Background_Process
 	 */
 	private $scan_background_process;
+	private $scanner_slice_size;
+	/**
+	 * @var bool
+	 */
+	private $scan_background_process_dead = false;
 
 	public function __construct() {
 		$this->settings                = Settings::get_instance();
@@ -46,6 +53,7 @@ class Product_Analytics {
 		add_action( 'wp_smush_settings_updated', array( $this, 'intercept_settings_update' ), 10, 2 );
 		add_action( 'wp_smush_settings_deleted', array( $this, 'intercept_reset' ) );
 		add_action( 'wp_smush_settings_updated', array( $this, 'track_integrations_saved' ), 10, 2 );
+		add_action( 'wp_smush_settings_updated', array( $this, 'track_toggle_local_webp_fallback' ), 10, 2 );
 
 		if ( ! $this->settings->get( 'usage' ) ) {
 			return;
@@ -56,11 +64,20 @@ class Product_Analytics {
 		add_action( 'wp_smush_bulk_smush_start', array( $this, 'track_bulk_smush_start' ) );
 		add_action( 'wp_smush_bulk_smush_completed', array( $this, 'track_bulk_smush_completed' ) );
 		add_action( 'wp_smush_config_applied', array( $this, 'track_config_applied' ) );
+		add_action( 'wp_smush_webp_method_changed', array( $this, 'track_webp_method_changed' ) );
+		add_action( 'wp_smush_webp_status_changed', array( $this, 'track_webp_status_changed' ) );
+		add_action( 'wp_smush_after_delete_all_webp_files', array(
+			$this,
+			'track_webp_after_deleting_all_webp_files',
+		) );
+		add_action( 'wp_ajax_smush_toggle_webp_wizard', array( $this, 'track_webp_reconfig' ), - 1 );
 
 		$identifier = $this->scan_background_process->get_identifier();
 
-		add_action( "{$identifier}_before_start", array( $this, 'track_background_scan_start' ) );
-		add_action( "{$identifier}_completed", array( $this, 'track_background_scan_end' ) );
+		add_action( "{$identifier}_before_start", array( $this, 'record_scan_death' ), 10, 2 );
+		add_action( "{$identifier}_started", array( $this, 'track_background_scan_start' ), 10, 2 );
+		add_action( "{$identifier}_revived", array( $this, 'track_background_scan_revival' ), 10, 2 );
+		add_action( "{$identifier}_completed", array( $this, 'track_background_scan_end' ), 10, 2 );
 
 		add_action(
 			"{$identifier}_cancelled",
@@ -72,6 +89,12 @@ class Product_Analytics {
 			array( $this, 'track_background_scan_process_death' ),
 			10, 2
 		);
+
+		add_action( 'wp_smush_plugin_activated', array( $this, 'track_plugin_activation' ) );
+		if ( defined( 'WP_SMUSH_BASENAME' ) ) {
+			$plugin_basename = WP_SMUSH_BASENAME;
+			add_action( "deactivate_{$plugin_basename}", array( $this, 'track_plugin_deactivation' ) );
+		}
 	}
 
 	/**
@@ -116,6 +139,7 @@ class Product_Analytics {
 		$changed = array();
 		foreach ( $settings as $setting_key => $setting_value ) {
 			$old_setting_value = isset( $old_settings[ $setting_key ] ) ? $old_settings[ $setting_key ] : '';
+			$setting_value     = isset( $setting_value ) ? $setting_value : '';
 			if ( $old_setting_value !== $setting_value ) {
 				$changed[ $setting_key ] = $setting_value;
 			}
@@ -138,7 +162,7 @@ class Product_Analytics {
 		$image_sizes     = Settings::get_instance()->get_setting( 'wp-smush-image_sizes' );
 		$bulk_properties = array(
 			'Image Sizes'         => empty( $image_sizes ) ? 'All' : 'Custom',
-			'Mode'                => $this->settings->get_current_lossy_level_label(),
+			'Mode'                => $this->get_current_lossy_level_label(),
 			'Parallel Processing' => defined( 'WP_SMUSH_PARALLEL' ) && WP_SMUSH_PARALLEL ? 'Enabled' : 'Disabled',
 		);
 		foreach ( $bulk_property_labels as $bulk_setting => $bulk_property_label ) {
@@ -149,6 +173,20 @@ class Product_Analytics {
 		}
 
 		return $bulk_properties;
+	}
+
+	private function get_current_lossy_level_label() {
+		$lossy_level = $this->settings->get_lossy_level_setting();
+		$smush_modes = array(
+			Settings::LEVEL_LOSSLESS    => 'Basic',
+			Settings::LEVEL_SUPER_LOSSY => 'Super',
+			Settings::LEVEL_ULTRA_LOSSY => 'Ultra',
+		);
+		if ( ! isset( $smush_modes[ $lossy_level ] ) ) {
+			$lossy_level = Settings::LEVEL_LOSSLESS;
+		}
+
+		return $smush_modes[ $lossy_level ];
 	}
 
 	private function track_detection_feature_toggle( $setting_value ) {
@@ -180,16 +218,27 @@ class Product_Analytics {
 		return true;
 	}
 
+	private function get_webp_referer() {
+		$page                   = $this->get_referer_page();
+		$webp_configuration     = Webp_Configuration::get_instance();
+		$is_user_on_wizard_webp = 'smush-webp' === $page
+		                          && $webp_configuration->should_show_wizard()
+		                          && ! $webp_configuration->direct_conversion_enabled();
+
+		if ( $is_user_on_wizard_webp ) {
+			return 'Wizard';
+		}
+
+		return $this->identify_referrer();
+	}
+
 	private function identify_referrer() {
 		$onboarding_request = ! empty( $_REQUEST['action'] ) && 'smush_setup' === $_REQUEST['action'];
 		if ( $onboarding_request ) {
 			return 'Wizard';
 		}
 
-		$path       = parse_url( wp_get_referer(), PHP_URL_QUERY );
-		$query_vars = array();
-		parse_str( $path, $query_vars );
-		$page           = empty( $query_vars['page'] ) ? '' : $query_vars['page'];
+		$page           = $this->get_referer_page();
 		$triggered_from = array(
 			'smush'              => 'Dashboard',
 			'smush-bulk'         => 'Bulk Smush',
@@ -207,7 +256,11 @@ class Product_Analytics {
 	}
 
 	private function prepare_mixpanel_instance() {
-		$mixpanel = new Mixpanel( $this->get_token() );
+		if ( ! class_exists( 'WPMUDEV_Analytics' ) ) {
+			require_once WP_SMUSH_DIR . 'core/external/wpmudev-analytics/autoload.php';
+		}
+
+		$mixpanel = new WPMUDEV_Analytics( 'smush', 'Smush', 75, $this->get_token() );
 		$mixpanel->identify( $this->get_unique_id() );
 		$mixpanel->registerAll( $this->get_super_properties() );
 
@@ -340,18 +393,42 @@ class Product_Analytics {
 	}
 
 	public function get_unique_id() {
-		return $this->normalize_url( home_url() );
+		$site_url         = home_url();
+		$has_valid_domain = $this->has_valid_domain( $site_url );
+		if ( ! $has_valid_domain ) {
+			$site_url         = site_url();
+			$has_valid_domain = $this->has_valid_domain( $site_url );
+		}
+		return $has_valid_domain ? $this->normalize_url( $site_url ) : '';
 	}
 
 	public function get_token() {
+		if ( empty( $this->get_unique_id() ) ) {
+			return '';
+		}
 		return self::PROJECT_TOKEN;
+	}
+
+	private function has_valid_domain( $url ) {
+		$pattern = '/^(https?:\/\/)?([a-z0-9-]+\.)*[a-z0-9-]+(\.[a-z]{2,})/i';
+		return preg_match( $pattern, $url );
 	}
 
 	public function track_opt_toggle( $old_settings, $settings ) {
 		$settings = $this->remove_unchanged_settings( $old_settings, $settings );
 
 		if ( isset( $settings['usage'] ) ) {
-			$this->get_mixpanel()->track( $settings['usage'] ? 'Opt In' : 'Opt Out' );
+			// Following the new change, the location for Opt In/Out is lowercase and none whitespace.
+			// @see SMUSH-1538.
+			$location = str_replace( ' ', '_', $this->identify_referrer() );
+			$location = strtolower( $location );
+			$this->get_mixpanel()->track(
+				$settings['usage'] ? 'Opt In' : 'Opt Out',
+				array(
+					'Location'       => $location,
+					'active_plugins' => $this->get_active_plugins(),
+				)
+			);
 		}
 	}
 
@@ -402,26 +479,58 @@ class Product_Analytics {
 
 	public function intercept_reset() {
 		if ( $this->settings->get( 'usage' ) ) {
-			$this->get_mixpanel()->track( 'Opt Out' );
+			$this->get_mixpanel()->track(
+				'Opt Out',
+				array(
+					'Location'       => 'reset',
+					'active_plugins' => $this->get_active_plugins(),
+				)
+			);
 		}
 	}
 
-	public function track_background_scan_start() {
+	public function record_scan_death() {
+		$this->scan_background_process_dead = $this->scan_background_process->get_status()->is_dead();
+	}
+
+	public function track_background_scan_start( $identifier, $background_process ) {
+		$type = $this->scan_background_process_dead
+			? 'Retry'
+			: 'New';
+
+		$this->_track_background_scan_start( $type, $background_process );
+	}
+
+	public function track_background_scan_revival( $identifier, $background_process ) {
+		$this->_track_background_scan_start( 'Auto', $background_process );
+	}
+
+	private function _track_background_scan_start( $type, $background_process ) {
 		$properties = array(
-			'Scan Type' => $this->scan_background_process->get_status()->is_dead() ? 'Retry' : 'New',
+			'Scan Type' => $type,
 		);
 
 		$this->get_mixpanel()->track( 'Scan Started', array_merge(
 			$properties,
 			$this->get_bulk_properties(),
-			$this->get_scan_properties()
+			$this->get_scan_properties( $background_process )
 		) );
 	}
 
-	public function track_background_scan_end() {
+	/**
+	 * @param $identifier
+	 * @param $background_process Background_Process
+	 *
+	 * @return void
+	 */
+	public function track_background_scan_end( $identifier, $background_process ) {
+		$properties = array(
+			'Retry Attempts' => $background_process->get_revival_count(),
+		);
 		$this->get_mixpanel()->track( 'Scan Ended', array_merge(
+			$properties,
 			$this->get_bulk_properties(),
-			$this->get_scan_properties()
+			$this->get_scan_properties( $background_process )
 		) );
 	}
 
@@ -432,9 +541,16 @@ class Product_Analytics {
 	 * @return void
 	 */
 	public function track_background_scan_process_cancellation( $identifier, $background_process ) {
+		$properties = array(
+			'Retry Attempts' => $background_process->get_revival_count(),
+			'Slice Size'     => $this->get_scanner_slice_size(),
+		);
 		$this->get_mixpanel()->track(
 			'Background Scan Process Cancelled',
-			$this->get_background_process_status_properties( $background_process )
+			array_merge(
+				$properties,
+				$this->get_background_process_status_properties( $background_process )
+			)
 		);
 	}
 
@@ -445,20 +561,25 @@ class Product_Analytics {
 	 * @return void
 	 */
 	public function track_background_scan_process_death( $identifier, $background_process ) {
-		$scanner = new Media_Library_Scanner();
-
 		$this->get_mixpanel()->track(
 			'Background Scan Process Dead',
 			array_merge(
-				array( 'Slice Size' => $scanner->get_slice_size() ),
+				array(
+					'Slice Size'     => $this->get_scanner_slice_size(),
+					'Retry Attempts' => $background_process->get_revival_count(),
+				),
 				$this->get_background_process_status_properties( $background_process )
 			)
 		);
 	}
 
-	private function get_scan_properties() {
+	private function get_scan_properties( $background_process ) {
 		$global_stats       = Global_Stats::get();
 		$global_stats_array = $global_stats->to_array();
+		$properties         = array(
+			'scan_id'    => $background_process->get_process_id(),
+			'Slice Size' => $this->get_scanner_slice_size(),
+		);
 
 		$labels = array(
 			'image_attachment_count' => 'Image Attachment Count',
@@ -502,6 +623,7 @@ class Product_Analytics {
 		$properties                = array();
 		if ( $background_process_status ) {
 			$properties = array(
+				'scan_id'         => $background_process->get_process_id(),
 				'Total Items'     => $background_process_status->get_total_items(),
 				'Processed Items' => $background_process_status->get_processed_items(),
 				'Failed Items'    => $background_process_status->get_failed_items(),
@@ -517,5 +639,217 @@ class Product_Analytics {
 		}
 		$unit_mb = pow( 1024, 2 );
 		return round( $size_in_bytes / $unit_mb, 2 );
+	}
+
+	private function get_scanner_slice_size() {
+		if ( is_null( $this->scanner_slice_size ) ) {
+			$this->scanner_slice_size = ( new Media_Library_Scanner() )->get_slice_size();
+		}
+
+		return $this->scanner_slice_size;
+	}
+
+	public function track_toggle_local_webp_fallback( $old_settings, $settings ) {
+		if (
+			empty( $settings['usage'] ) ||
+			empty( $settings['webp_mod'] ) ||
+			did_action( 'wp_smush_webp_status_changed' ) // Tracked.
+		) {
+			return;
+		}
+
+		$modified_settings = $this->remove_unchanged_settings( $old_settings, $settings );
+		if ( ! isset( $modified_settings['webp_fallback'] ) ) {
+			return;
+		}
+
+		$modify_type               = ! empty( $modified_settings['webp_fallback'] ) ? 'browser_support_on' : 'browser_support_off';
+		$direct_conversion_enabled = ! empty( $settings['webp_direct_conversion'] );// WebP method might or might not be changed.
+		$webp_method               = $direct_conversion_enabled ? 'direct' : 'server_redirect';
+		$local_webp_properites     = $this->get_local_webp_properties();
+		$this->get_mixpanel()->track(
+			'local_webp_updated',
+			array_merge(
+				$local_webp_properites,
+				array(
+					'update_type' => 'modify',
+					'modify_type' => $modify_type,
+					'Method'      => $webp_method,
+				)
+			)
+		);
+	}
+
+	public function track_webp_after_deleting_all_webp_files() {
+		$local_webp_properites = $this->get_local_webp_properties();
+		$this->get_mixpanel()->track(
+			'local_webp_updated',
+			array_merge(
+				$local_webp_properites,
+				array(
+					'update_type' => 'modify',
+					'modify_type' => 'delete_files',
+				)
+			)
+		);
+	}
+
+	public function track_webp_method_changed() {
+		$local_webp_properites = $this->get_local_webp_properties();
+		$this->get_mixpanel()->track(
+			'local_webp_updated',
+			array_merge(
+				$local_webp_properites,
+				array(
+					'update_type' => 'switch_method',
+					'modify_type' => 'na',
+				)
+			)
+		);
+	}
+
+	public function track_webp_status_changed() {
+		$local_webp_properites = $this->get_local_webp_properties();
+		$update_type           = $this->settings->is_webp_module_active() ? 'activate' : 'deactivate';
+		$this->get_mixpanel()->track(
+			'local_webp_updated',
+			array_merge(
+				$local_webp_properites,
+				array(
+					'update_type' => $update_type,
+					'modify_type' => 'na',
+				)
+			)
+		);
+	}
+
+	private function get_local_webp_properties() {
+		$location = $this->get_webp_referer();
+		// Directly check webp_direct_conversion option to identify webp method even webp module is disabled.
+		$direct_conversion_enabled = $this->settings->get( 'webp_direct_conversion' );
+		$webp_method               = $direct_conversion_enabled ? 'direct' : 'server_redirect';
+		$webp_status_notice        = $this->get_webp_status_notice();
+
+		return array(
+			'Location'      => $location,
+			'Method'        => $webp_method,
+			'status_notice' => $webp_status_notice,
+		);
+	}
+
+	private function get_webp_status_notice() {
+		if ( ! $this->settings->is_webp_module_active() ) {
+			return 'na';
+		}
+
+		$webp_configuration = Webp_Configuration::get_instance();
+		if ( ! $webp_configuration->is_configured() ) {
+			return $webp_configuration->server_configuration()->get_configuration_error_code();
+		}
+
+		if ( is_multisite() ) {
+			return 'active_subsite';// Activated but required run Bulk Smush on subsites.
+		}
+
+		$required_bulk_smush = Global_Stats::get()->is_outdated() || Global_Stats::get()->get_remaining_count() > 0;
+		if ( $required_bulk_smush ) {
+			return 'active_need_smush';
+		}
+
+		$auto_smush_enabled = $this->settings->is_automatic_compression_active();
+		if ( $auto_smush_enabled ) {
+			return 'active_automatic_enabled';
+		}
+
+		return 'active_automatic_disabled';
+	}
+
+	public function track_webp_reconfig() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			return;
+		}
+		$local_webp_properites = $this->get_local_webp_properties();
+		$this->get_mixpanel()->track(
+			'local_webp_updated',
+			array_merge(
+				$local_webp_properites,
+				array(
+					'update_type' => 'modify',
+					'modify_type' => 'reconfig',
+				)
+			)
+		);
+	}
+
+	private function get_referer_page() {
+		$path       = parse_url( wp_get_referer(), PHP_URL_QUERY );
+		$query_vars = array();
+		parse_str( $path, $query_vars );
+
+		return empty( $query_vars['page'] ) ? '' : $query_vars['page'];
+	}
+
+	public function track_plugin_activation() {
+		$this->get_mixpanel()->track(
+			'Opt In',
+			array(
+				'Location'       => 'reactivate',
+				'active_plugins' => $this->get_active_plugins(),
+			)
+		);
+	}
+
+	public function track_plugin_deactivation() {
+		$location = $this->get_deactivation_location();
+		$this->get_mixpanel()->track(
+			'Opt Out',
+			array(
+				'Location'       => $location,
+				'active_plugins' => $this->get_active_plugins(),
+			)
+		);
+	}
+
+	private function get_deactivation_location() {
+		$is_hub_request = ! empty( $_REQUEST['wpmudev-hub'] );
+		if ( $is_hub_request ) {
+			return 'deactivate_hub';
+		}
+
+		$is_dashboard_request = wp_doing_ajax() &&
+								! empty( $_REQUEST['action'] ) &&
+								'wdp-project-deactivate' === wp_unslash( $_REQUEST['action'] );
+
+		if ( $is_dashboard_request ) {
+			return 'deactivate_dashboard';
+		}
+
+		return 'deactivate_pluginlist';
+	}
+
+	private function get_active_plugins() {
+		$active_plugins      = array();
+		$active_plugin_files = $this->get_active_and_valid_plugin_files();
+		foreach ( $active_plugin_files as $plugin_file ) {
+			$plugin_name = $this->get_plugin_name( $plugin_file );
+			if ( $plugin_name ) {
+				$active_plugins[] = $plugin_name;
+			}
+		}
+
+		return $active_plugins;
+	}
+
+	private function get_active_and_valid_plugin_files() {
+		$active_plugins = is_multisite() ? wp_get_active_network_plugins() : array();
+		$active_plugins = array_merge( $active_plugins, wp_get_active_and_valid_plugins() );
+
+		return array_unique( $active_plugins );
+	}
+
+	private function get_plugin_name( $plugin_file ) {
+		$plugin_data = get_plugin_data( $plugin_file );
+
+		return ! empty( $plugin_data['Name'] ) ? $plugin_data['Name'] : '';
 	}
 }

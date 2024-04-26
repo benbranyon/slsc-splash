@@ -10,20 +10,25 @@
 
 namespace Smush\Core;
 
-use Smush\Core\Backups\Backups_Backward_Compatibility;
 use Smush\Core\Backups\Backups_Controller;
+use Smush\Core\CDN\CDN_Controller;
+use Smush\Core\CDN\CDN_Settings_Ui_Controller;
+use Smush\Core\CDN\CDN_Srcset_Controller;
+use Smush\Core\Lazy_Load\Lazy_Load_Controller;
 use Smush\Core\Media\Media_Item_Controller;
 use Smush\Core\Media_Library\Ajax_Media_Library_Scanner;
 use Smush\Core\Media_Library\Background_Media_Library_Scanner;
 use Smush\Core\Media_Library\Media_Library_Slice_Data_Fetcher;
 use Smush\Core\Media_Library\Media_Library_Watcher;
+use Smush\Core\Modules\CDN;
+use Smush\Core\Photon\Photon_Controller;
 use Smush\Core\Png2Jpg\Png2Jpg_Controller;
 use Smush\Core\Resize\Resize_Controller;
 use Smush\Core\S3\S3_Controller;
 use Smush\Core\Smush\Smush_Controller;
 use Smush\Core\Stats\Global_Stats_Controller;
+use Smush\Core\Transform\Transformation_Controller;
 use Smush\Core\Webp\Webp_Controller;
-use Smush\Core\Photon\Photon_Controller;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -72,7 +77,7 @@ class Modules {
 	/**
 	 * CDN module.
 	 *
-	 * @var Modules\CDN
+	 * @var CDN
 	 */
 	public $cdn;
 
@@ -81,7 +86,7 @@ class Modules {
 	 *
 	 * @since 3.2
 	 *
-	 * @var Modules\Lazy
+	 * @var \Smush\Core\Modules\Lazy
 	 */
 	public $lazy;
 
@@ -126,12 +131,16 @@ class Modules {
 		$this->png2jpg = new Modules\Png2jpg();
 		$this->resize  = new Modules\Resize();
 
-		$page_parser = new Modules\Helpers\Parser();
-		$page_parser->init();
+		$transformation_controller = new Transformation_Controller();
+		$transformation_controller->init();
 
-		$this->cdn               = new Modules\CDN( $page_parser );
+		$this->cdn = new CDN();
+
+		$cdn_srcset_controller = CDN_Srcset_Controller::get_instance();
+		$cdn_srcset_controller->init();
+
 		$this->webp              = new Modules\WebP();
-		$this->lazy              = new Modules\Lazy( $page_parser );
+		$this->lazy              = new Modules\Lazy();
 		$this->product_analytics = new Modules\Product_Analytics();
 
 		$this->bg_optimization = new Modules\Bulk\Background_Bulk_Smush();
@@ -150,9 +159,6 @@ class Modules {
 
 		$s3_controller = new S3_Controller();
 		$s3_controller->init();
-
-		$this->backward_compatibility = new Backups_Backward_Compatibility();
-		$this->backward_compatibility->init();
 
 		$backups_controller = new Backups_Controller();
 		$backups_controller->init();
@@ -186,6 +192,19 @@ class Modules {
 
 		$photon_controller = new Photon_Controller();
 		$photon_controller->init();
+
+		// CDN
+		$cdn_controller = new CDN_Controller();
+		$cdn_controller->init();
+
+		$cdn_settings_ui_controller = new CDN_Settings_Ui_Controller();
+		$cdn_settings_ui_controller->init();
+
+		$cache_controller = new Cache_Controller();
+		$cache_controller->init();
+
+		$lazy_load_controller = Lazy_Load_Controller::get_instance();
+		$lazy_load_controller->init();
 	}
 
 }

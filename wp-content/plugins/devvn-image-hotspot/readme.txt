@@ -4,7 +4,7 @@ Donate link: https://levantoan.com/donate/
 Tags: hotspot, points, image, maps, image hotspot
 Requires at least: 4.3
 Tested up to: 5.9.1
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0
 

@@ -161,6 +161,12 @@ function SmushFetcher() {
 				} );
 			},
 		},
+
+		webp: {
+			switchMethod: ( method ) => {
+				return request( 'webp_switch_method', { method } );
+			},
+		}
 	};
 
 	assign(this, methods);

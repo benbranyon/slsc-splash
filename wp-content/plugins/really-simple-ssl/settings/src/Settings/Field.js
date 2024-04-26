@@ -8,7 +8,7 @@ import { __ } from '@wordpress/i18n';
 import License from "./License/License";
 import Password from "./Password";
 import SelectControl from "./SelectControl";
-import Host from "./Host";
+import Host from "./Host/Host";
 import Hyperlink from "../utils/Hyperlink";
 import LetsEncrypt from "../LetsEncrypt/LetsEncrypt";
 import Activate from "../LetsEncrypt/Activate";
@@ -19,7 +19,7 @@ import Support from "./Support";
 import LearningMode from "./LearningMode/LearningMode";
 import RiskComponent from "./RiskConfiguration/RiskComponent";
 import VulnerabilitiesOverview from "./RiskConfiguration/vulnerabilitiesOverview";
-import IpAddressDatatable from "./LimitLoginAttempts/IpAddressDatatable";
+import IpAddressDatatable  from "./LimitLoginAttempts/IpAddressDatatable";
 import TwoFaRolesDropDown from "./TwoFA/TwoFaRolesDropDown";
 import Button from "./Button";
 import Icon from "../utils/Icon";
@@ -34,6 +34,9 @@ import CountryDatatable from "./LimitLoginAttempts/CountryDatatable";
 // import DynamicDataTable from "./DynamicDataTable/DynamicDataTable";
 import TwoFaDataTable from "./TwoFA/TwoFaDataTable";
 import EventLogDataTable from "./EventLog/EventLogDataTable";
+import DOMPurify from "dompurify";
+import RolesDropDown from "./RolesDropDown";
+
 const Field = (props) => {
     let scrollAnchor = React.createRef();
     const {updateField, setChangedField, highLightField} = useFields();
@@ -67,8 +70,7 @@ const Field = (props) => {
     }
     const onChangeHandler = (fieldValue) => {
         let field = props.field;
-        //if there's a pattern, validate it.
-        if ( field.pattern ) {
+        if (field.pattern) {
             const regex = new RegExp(field.pattern, 'g');
             const allowedCharactersArray = fieldValue.match(regex);
             fieldValue = allowedCharactersArray ? allowedCharactersArray.join('') : '';
@@ -78,6 +80,7 @@ const Field = (props) => {
         // we can configure other fields if a field is enabled, or set to a certain value.
         let configureFieldCondition = false;
         if ( field.configure_on_activation ) {
+
             if ( field.configure_on_activation.hasOwnProperty('condition') && props.field.value==field.configure_on_activation.condition ) {
                 configureFieldCondition = true;
             }
@@ -126,7 +129,7 @@ const Field = (props) => {
         disabled = true;
         field.comment = <>
             {__("This feature is only available networkwide.","really-simple-ssl")}
-            <Hyperlink target="_blank" text={__("Network settings","really-simple-ssl")} url={rsssl_settings.network_link}/>
+            <Hyperlink target="_blank" rel="noopener noreferrer" text={__("Network settings","really-simple-ssl")} url={rsssl_settings.network_link}/>
         </>
     }
 
@@ -140,17 +143,19 @@ const Field = (props) => {
         );
     }
 
-    if ( field.type==='checkbox' ){
+    if ( field.type==='checkbox' ) {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
                 <CheckboxControl
-                  label={labelWrap(field)}
-                  field={field}
-                  disabled={disabled}
-                  onChangeHandler={ ( fieldValue ) => onChangeHandler(fieldValue) }
+                    label={labelWrap(field)}
+                    field={field}
+                    disabled={disabled}
+                    onChangeHandler={ ( fieldValue ) => onChangeHandler( fieldValue ) }
                 />
-
-                {field.comment && <div className="rsssl-comment" dangerouslySetInnerHTML={{__html:field.comment}}></div>}
+                { field.comment &&
+                    <div className="rsssl-comment" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(field.comment) }} />
+                    /* nosemgrep: react-dangerouslysetinnerhtml */
+                }
             </div>
         );
     }
@@ -164,12 +169,12 @@ const Field = (props) => {
     if ( field.type==='radio' ){
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <RadioControl
-                  label={labelWrap(field)}
-                  onChange={ ( fieldValue ) => onChangeHandler(fieldValue) }
-                  selected={ fieldValue }
-                  options={ options }
-              />
+                <RadioControl
+                    label={labelWrap(field)}
+                    onChange={ ( fieldValue ) => onChangeHandler(fieldValue) }
+                    selected={ fieldValue }
+                    options={ options }
+                />
             </div>
         );
     }
@@ -191,10 +196,10 @@ const Field = (props) => {
                 />
                 { sendVerificationEmailField &&
                     <div className="rsssl-email-verified" >
-                    {emailIsVerified
-                        ? <Icon name='circle-check' color={'green'} />
-                        : <Icon name='circle-times' color={'red'} />}
-                </div>
+                        {emailIsVerified
+                            ? <Icon name='circle-check' color={'green'} />
+                            : <Icon name='circle-times' color={'red'} />}
+                    </div>
                 }
             </div>
         );
@@ -240,13 +245,13 @@ const Field = (props) => {
     if ( field.type==='textarea' ){
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <TextareaControl
-                  label={ field.label }
-                  help={ field.comment }
-                  value= { fieldValue }
-                  onChange={ ( fieldValue ) => onChangeHandler(fieldValue) }
-                  disabled={ field.disabled }
-              />
+                <TextareaControl
+                    label={ field.label }
+                    help={ field.comment }
+                    value= { fieldValue }
+                    onChange={ ( fieldValue ) => onChangeHandler(fieldValue) }
+                    disabled={ field.disabled }
+                />
             </div>
         );
     }
@@ -256,7 +261,7 @@ const Field = (props) => {
         let fieldValue = field.value;
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <License index={props.index} field={field} fieldValue={fieldValue}/>
+                <License index={props.index} field={field} fieldValue={fieldValue}/>
             </div>
 
         );
@@ -289,10 +294,10 @@ const Field = (props) => {
     if ( field.type==='host') {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <Host
-                  index={props.index}
-                  field={props.field}
-              />
+                <Host
+                    index={props.index}
+                    field={props.field}
+                />
             </div>
         )
     }
@@ -300,14 +305,14 @@ const Field = (props) => {
     if ( field.type==='select') {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <SelectControl
-                  disabled={ disabled }
-                  label={labelWrap(field)}
-                  onChangeHandler={ ( fieldValue ) => onChangeHandler(fieldValue) }
-                  value= { fieldValue }
-                  options={ options }
-                  field={field}
-              />
+                <SelectControl
+                    disabled={ disabled }
+                    label={labelWrap(field)}
+                    onChangeHandler={ ( fieldValue ) => onChangeHandler(fieldValue) }
+                    value= { fieldValue }
+                    options={ options }
+                    field={field}
+                />
             </div>
         )
     }
@@ -315,7 +320,7 @@ const Field = (props) => {
     if ( field.type==='support' ) {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <Support/>
+                <Support/>
             </div>
         )
     }
@@ -323,14 +328,14 @@ const Field = (props) => {
     if ( field.type==='postdropdown' ) {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <PostDropdown field={props.field}/>
+                <PostDropdown field={props.field}/>
             </div>
         )
     }
     if ( field.type==='permissionspolicy' ) {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <PermissionsPolicy disabled={disabled} field={props.field} options={options}/>
+                <PermissionsPolicy disabled={disabled} field={props.field} options={options}/>
             </div>
         )
     }
@@ -338,7 +343,7 @@ const Field = (props) => {
     if ( field.type==='learningmode' ) {
         return(
             <div className={highLightClass} ref={scrollAnchor}>
-              <LearningMode disabled={disabled} field={props.field}/>
+                <LearningMode disabled={disabled} field={props.field}/>
             </div>
         )
     }
@@ -352,7 +357,7 @@ const Field = (props) => {
     if ( field.type === 'mixedcontentscan' ) {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <MixedContentScan field={props.field}/>
+                <MixedContentScan field={props.field}/>
             </div>
         )
     }
@@ -360,7 +365,7 @@ const Field = (props) => {
     if (field.type === 'vulnerabilitiestable') {
         return (
             <div className={highLightClass} ref={scrollAnchor}>
-              <VulnerabilitiesOverview field={props.field} />
+                <VulnerabilitiesOverview field={props.field} />
             </div>
         )
     }
@@ -440,6 +445,17 @@ const Field = (props) => {
             </div>
         )
     }
+    if (field.type === 'roles_dropdown') {
+        return (
+            <div className={highLightClass} ref={scrollAnchor}>
+                <label htmlFor="rsssl-roles-dropdown-{field.id}">
+                    {labelWrap(field)}
+                </label>
+                <RolesDropDown field={props.field}
+                />
+            </div>
+        );
+    }
 
     if(field.type === 'notificationtester') {
         return (
@@ -450,15 +466,15 @@ const Field = (props) => {
     }
 
     if ( field.type === 'letsencrypt' ) {
-            return (
-               <LetsEncrypt field={field} />
-            )
+        return (
+            <LetsEncrypt field={field} />
+        )
     }
 
     if ( field.type === 'activate' ) {
-            return (
-               <Activate field={field}/>
-            )
+        return (
+            <Activate field={field}/>
+        )
     }
 
     return (

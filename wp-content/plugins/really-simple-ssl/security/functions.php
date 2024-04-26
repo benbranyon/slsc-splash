@@ -49,10 +49,12 @@ if ( !function_exists('rsssl_has_fix')) {
 if ( !function_exists('rsssl_admin_url')) {
 	/**
 	 * Get admin url, adjusted for multisite
+	 * @param string $path
 	 * @return string|null
 	 */
-	function rsssl_admin_url(){
-		return is_multisite() ? network_admin_url('settings.php') : admin_url("options-general.php");
+	function rsssl_admin_url(string $path = ''): string {
+		$url = is_multisite() ? network_admin_url('settings.php') : admin_url("options-general.php");
+		return $url.$path;
 	}
 }
 
@@ -113,7 +115,8 @@ if ( !function_exists('rsssl_remove_htaccess_security_edits') ) {
 	 *
 	 * @return void
 	 */
-	function rsssl_remove_htaccess_security_edits(){
+	function rsssl_remove_htaccess_security_edits() {
+
 		if ( ! rsssl_user_can_manage()  ) {
 			return;
 		}
@@ -123,7 +126,7 @@ if ( !function_exists('rsssl_remove_htaccess_security_edits') ) {
 		}
 
 		$htaccess_file = RSSSL()->admin->htaccess_file();
-		if ( !file_exists( $htaccess_file ) ) {
+		if ( ! file_exists( $htaccess_file ) ) {
 			return;
 		}
 
@@ -364,7 +367,8 @@ function rsssl_gather_warning_blocks_for_mail( array $changed_fields ){
 			$email_condition_result = rsssl_get_option($fieldname) === $value;
 	    } else {
 			//function check
-		    $email_condition_result = call_user_func($field['email']['condition']);
+		    $function  = $field['email']['condition'];
+		    $email_condition_result = function_exists($function) && $function();
 	    }
         return isset($field['email']['message']) && $field['value'] && $email_condition_result;
     });
@@ -391,6 +395,11 @@ add_action('rsssl_after_saved_fields', 'rsssl_gather_warning_blocks_for_mail', 4
  * @return bool
  */
 function rsssl_uses_htaccess() {
+	//when using WP CLI, the get_server check does not work, so we assume .htaccess is being used
+	//and rely on the file exists check to catch if not.
+	if ( defined( 'WP_CLI' ) && WP_CLI ) {
+		return true;
+	}
 	return rsssl_get_server() === 'apache' || rsssl_get_server() === 'litespeed';
 }
 
@@ -528,4 +537,13 @@ function rsssl_is_email_verified() {
     }
 
     return false;
+}
+
+function rsssl_remove_prefix_from_version($version) {
+	return preg_replace('/^[^\d]*(?=\d)/', '', $version);
+}
+function rsssl_version_compare($version, $compare_to, $operator = null) {
+	$version = rsssl_remove_prefix_from_version($version);
+	$compare_to = rsssl_remove_prefix_from_version($compare_to);
+	return version_compare($version, $compare_to, $operator);
 }

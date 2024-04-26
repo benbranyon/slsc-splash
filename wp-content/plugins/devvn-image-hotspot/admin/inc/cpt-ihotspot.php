@@ -93,7 +93,7 @@ function devvn_ihotspot_manage_points_image_columns( $column, $post_id ) {
 	global $post;
 	switch( $column ) {
 		case 'shortcode' :
-			echo '[devvn_ihotspot id="'.$post->ID.'"]';
+			echo '[devvn_ihotspot id="'.intval($post->ID).'"]';
 			break;
 		default :
 			break;

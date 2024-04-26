@@ -18,14 +18,19 @@
  * @var string          $background_in_processing_notice
  * @var string  		$in_processing_notice
  */
+use Smush\Core\Stats\Global_Stats;
+use Smush\App\Admin;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
-use Smush\Core\Stats\Global_Stats;
+
+$start_bulk_webp_conversion = ! empty( $_GET['smush-action'] ) && 'start-bulk-webp-conversion' === wp_unslash( $_GET['smush-action'] );
 
 if ( 0 !== absint( $total_count ) ) :
-	if ( $background_processing_enabled ) {
+	if ( $start_bulk_webp_conversion && $this->settings->is_webp_module_active() ) {
+		$msg = __( 'When Local WebP is enabled, Bulk Smush will convert your images to .webp format in addition to its regular smushing for optimal performance.', 'wp-smushit' );
+	} elseif ( $background_processing_enabled ) {
 		$msg = __( 'Bulk smush detects images that can be optimized and allows you to compress them in bulk in the background without any quality loss.', 'wp-smushit' );
 	} else {
 		$msg = __( 'Bulk smush detects images that can be optimized and allows you to compress them in bulk.', 'wp-smushit' );
@@ -89,8 +94,12 @@ $this->view( 'list-errors', array(), 'views/bulk' );
 </div>
 <?php
 if ( ! $can_use_background ) {
-	$global_upsell_desc = __( 'Process images 2x faster, leave this page while Bulk Smush runs in the background, and serve streamlined next-gen images via Smush’s 114-point CDN and Local WebP features.', 'wp-smushit' );
-	
+	$global_upsell_desc = sprintf(
+		/* translators: %d: Number of CDN PoP locations */
+		__( 'Process images 2x faster, leave this page while Bulk Smush runs in the background, and serve streamlined next-gen images via Smush’s %d-point CDN and Local WebP features.', 'wp-smushit' ),
+		Admin::CDN_POP_LOCATIONS
+	);
+
 	$this->view(
 		'global-upsell',
 		array(
