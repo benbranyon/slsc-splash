@@ -1,33 +1,33 @@
 /* global wp_smush_mixpanel */
 
-import mixpanel from "mixpanel-browser";
+import mixpanel from 'mixpanel-browser';
 
 class MixPanel {
 	constructor() {
 		// Opt out event is not triggered via js so only initial mixpanel when it's enabled.
-		this.mixpanelInstance = this.allowToTrack() && mixpanel.init(wp_smush_mixpanel.token, {
+		this.mixpanelInstance = this.allowToTrack() && mixpanel.init( wp_smush_mixpanel.token, {
 			opt_out_tracking_by_default: ! this.allowToTrack(),
-			loaded: (mixpanel) => {
-				mixpanel.identify(wp_smush_mixpanel.unique_id);
-				mixpanel.register(wp_smush_mixpanel.super_properties);
+			loaded: ( mixpanel ) => {
+				mixpanel.identify( wp_smush_mixpanel.unique_id );
+				mixpanel.register( wp_smush_mixpanel.super_properties );
 
-				if (mixpanel.has_opted_in_tracking() !== this.allowToTrack()) {
+				if ( mixpanel.has_opted_in_tracking() !== this.allowToTrack() ) {
 					// The status cached by MixPanel in the local storage is different from the settings. Clear the cache.
 					mixpanel.clear_opt_in_out_tracking();
 				}
 			}
-		}, 'smush');
+		}, 'smush' );
 	}
 
 	allowToTrack() {
-		return !! wp_smush_mixpanel.opt_in;
+		return !! ( wp_smush_mixpanel.token && wp_smush_mixpanel.opt_in );
 	}
 
-	track(event, properties = {}) {
+	track( event, properties = {} ) {
 		if ( wp_smush_mixpanel.debug ) {
 			console.log( 'Event:', event, properties );
 		}
-		this.mixpanelInstance && this.mixpanelInstance.track(event, properties);
+		this.mixpanelInstance && this.mixpanelInstance.track( event, properties );
 	}
 
 	trackBulkSmushCompleted( globalStats ) {
@@ -39,24 +39,30 @@ class MixPanel {
 			count_resize,
 			savings_resize
 		 } = globalStats;
-		this.track('Bulk Smush Completed', {
+		this.track( 'Bulk Smush Completed', {
 			'Total Savings': this.convertToMegabytes( savings_bytes ),
 			'Total Images': count_images,
 			'Media Optimization Percentage': parseFloat( percent_optimized ),
 			'Percentage of Savings': parseFloat( savings_percent ),
 			'Images Resized': count_resize,
 			'Resize Savings': this.convertToMegabytes( savings_resize )
-		});
+		} );
 	}
 
 	trackBulkSmushCancel() {
-		this.track('Bulk Smush Cancelled');
+		this.track( 'Bulk Smush Cancelled' );
 	}
 
 	convertToMegabytes( sizeInBytes ) {
 		const unitMB = Math.pow( 1024, 2 );
-		const sizeInMegabytes = sizeInBytes/unitMB;
-		return  sizeInMegabytes && parseFloat(sizeInMegabytes.toFixed(2)) || 0;
+		const sizeInMegabytes = sizeInBytes / unitMB;
+		return sizeInMegabytes && parseFloat( sizeInMegabytes.toFixed( 2 ) ) || 0;
+	}
+
+	trackUpgradeModalDisplayed( action ) {
+		this.track( 'update_modal_displayed', {
+			Action: action,
+		} );
 	}
 }
 
@@ -69,7 +75,7 @@ const mixPanelInstance = () => {
 			}
 			return instance;
 		}
-	}
-}
+	};
+};
 
 export default mixPanelInstance();

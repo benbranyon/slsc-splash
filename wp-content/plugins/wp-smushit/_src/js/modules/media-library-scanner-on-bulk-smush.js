@@ -382,4 +382,20 @@ import { GlobalStats } from '../common/globalStats';
 		bulkSmushButton.addEventListener( 'click', handleScanAndBulkSmush );
 	};
 	registerScanAndBulkSmushEvent();
+
+	const autoStartBulkWebpConversionEvent = () => {
+		if ( ! bulkSmushButton || ! window.location.search.includes( 'smush-action=start-bulk-webp-conversion' ) ) {
+			return;
+		}
+
+		bulkSmushButton.click();
+
+		const removeSmushActionFromURLAddress = () => {
+			const cleanedURL = window.location.href.replace( '&smush-action=start-bulk-webp-conversion', '' );
+			window.history.pushState( null, null, cleanedURL );
+		};
+		removeSmushActionFromURLAddress();
+	};
+
+	autoStartBulkWebpConversionEvent();
 }() );

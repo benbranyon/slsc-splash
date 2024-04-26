@@ -11,9 +11,9 @@ namespace Smush\App\Pages;
 use Smush\App\Abstract_Summary_Page;
 use Smush\App\Interface_Page;
 use Smush\Core\Array_Utils;
-use Smush\Core\Resize\Resize_Optimization;
+use Smush\Core\CDN\CDN_Helper;
 use Smush\Core\Settings;
-use Smush\Core\Stats\Global_Stats;
+use Smush\Core\Webp\Webp_Configuration;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -176,10 +176,9 @@ class Dashboard extends Abstract_Summary_Page implements Interface_Page {
 		$core         = WP_Smush::get_instance()->core();
 		$array_utils  = new Array_Utils();
 		$global_stats = $core->get_global_stats();
-
-		$args = array(
+		$args         = array(
 			'human_bytes'       => $array_utils->get_array_value( $global_stats, 'human_bytes' ),
-			'cdn_status'        => WP_Smush::get_instance()->core()->mod->cdn->status(),
+			'cdn_status'        => CDN_Helper::get_instance()->get_cdn_status_string(),
 			'is_cdn'            => $this->settings->get( 'cdn' ),
 			'is_lazy_load'      => $this->settings->get( 'lazy_load' ),
 			'is_local_webp'     => $this->settings->get( 'webp_mod' ),
@@ -188,7 +187,7 @@ class Dashboard extends Abstract_Summary_Page implements Interface_Page {
 			'stats_percent'     => $array_utils->get_array_value( $global_stats, 'savings_percent' ),
 			'upsell_url_cdn'    => $upsell_url_cdn,
 			'upsell_url_webp'   => $upsell_url_webp,
-			'webp_configured'   => true === WP_Smush::get_instance()->core()->mod->webp->is_configured(),
+			'webp_configured'   => Webp_Configuration::get_instance()->is_configured(),
 			'percent_grade'     => $array_utils->get_array_value( $global_stats, 'percent_grade' ),
 			'percent_metric'    => $array_utils->get_array_value( $global_stats, 'percent_metric' ),
 			'percent_optimized' => $array_utils->get_array_value( $global_stats, 'percent_optimized' ),
@@ -279,10 +278,13 @@ class Dashboard extends Abstract_Summary_Page implements Interface_Page {
 			$this->upgrade_url
 		);
 
-		$webp = WP_Smush::get_instance()->core()->mod->webp;
+		$webp_configuration = Webp_Configuration::get_instance();
+		$is_webp_configured = $webp_configuration->is_configured();
+		$error_message      = $is_webp_configured ? '' : $webp_configuration->server_configuration()->get_configuration_message();
 
 		$args = array(
-			'is_configured'  => $webp->get_is_configured_with_error_message(),
+			'is_configured'  => $is_webp_configured,
+			'error_message'  => $error_message,
 			'is_webp_active' => $this->settings->get( 'webp_mod' ),
 			'upsell_url'     => $upsell_url,
 		);
@@ -386,7 +388,7 @@ class Dashboard extends Abstract_Summary_Page implements Interface_Page {
 		);
 
 		$args = array(
-			'cdn_status' => WP_Smush::get_instance()->core()->mod->cdn->status(),
+			'cdn_status' => CDN_Helper::get_instance()->get_cdn_status_string(),
 			'is_webp'    => $this->settings->get( 'webp' ),
 			'upsell_url' => $upsell_url,
 		);

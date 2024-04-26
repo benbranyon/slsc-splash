@@ -14,7 +14,7 @@ class Mixpanel {
 	private $mixpanel;
 
 	public function __construct( $project_token ) {
-		$this->mixpanel = class_exists( '\Mixpanel' ) && method_exists( '\Mixpanel', 'getInstance' )
+		$this->mixpanel = class_exists( '\Mixpanel' ) && method_exists( '\Mixpanel', 'getInstance' ) && $project_token
 			? \Mixpanel::getInstance( $project_token, array(
 				'error_callback' => array( $this, 'handle_error' ),
 			) )
@@ -26,7 +26,7 @@ class Mixpanel {
 	}
 
 	public function __call( $name, $arguments ) {
-		if ( method_exists( $this->mixpanel, $name ) ) {
+		if ( $this->mixpanel && method_exists( $this->mixpanel, $name ) ) {
 			return call_user_func_array(
 				array( $this->mixpanel, $name ),
 				$arguments

@@ -2,6 +2,7 @@
 
 namespace Smush\Core\Media_Library;
 
+use Smush\Core\CDN\CDN_Helper;
 use Smush\Core\Helper;
 use Smush\Core\Media\Media_Item;
 use Smush\Core\Media\Media_Item_Cache;
@@ -61,7 +62,11 @@ class Media_Library_Row {
 		}
 
 		if ( $this->optimizer->has_errors() ) {
-			return $this->optimizer->get_errors();
+			$optimization_errors = $this->optimizer->get_errors();
+			if ( $optimization_errors->get_error_message( 'in_progress' ) ) {
+				$optimization_errors->remove( 'in_progress' );
+			}
+			return $optimization_errors;
 		}
 
 		return new WP_Error();
@@ -128,8 +133,7 @@ class Media_Library_Row {
 	}
 
 	private function get_animated_cdn_notice_with_config_link() {
-		$cdn = WP_Smush::get_instance()->core()->mod->cdn;
-		if ( $cdn->get_status() ) {
+		if ( CDN_Helper::get_instance()->is_cdn_active() ) {
 			return '<span class="smush-cdn-notice">' . esc_html__( 'GIFs are serving from global CDN', 'wp-smushit' ) . '</span>';
 		}
 		$cdn_link = Helper::get_page_url( 'smush-cdn' );
@@ -292,7 +296,7 @@ class Media_Library_Row {
 		switch ( $this->errors->get_error_code() ) {
 			case 'file_not_found':
 			case 'no_file_meta':
-				if ( $this->media_item->backup_file_exists() ) {
+				if ( $this->media_item->can_be_restored() ) {
 					$error_suggestion['message'] = esc_html__( 'We recommend using the restore image function to regenerate the thumbnails.', 'wp-smushit' );
 				} else {
 					$error_suggestion['message'] = esc_html__( 'We recommend regenerating the thumbnails.', 'wp-smushit' );
@@ -602,7 +606,7 @@ class Media_Library_Row {
 	 * @return string|void
 	 */
 	private function get_restore_link() {
-		if ( ! $this->media_item->backup_file_exists() ) {
+		if ( ! $this->media_item->can_be_restored() ) {
 			return;
 		}
 
