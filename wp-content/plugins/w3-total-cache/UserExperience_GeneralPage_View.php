@@ -90,10 +90,10 @@ Util_Ui::config_overloading_button( array( 'key' => 'lazyload.configuration_over
 			'extension_id'   => 'user-experience-defer-scripts',
 			'checkbox_label' => esc_html__( 'Delay Scripts', 'w3-total-cache' ),
 			'description'    => __(
-				'Delay the loading of specified interal/external JavaScript sources on your pages separate from Minify. For best results it is recommended to enable the Minify feature to optimize internal sources and to then use the Delay JavaScript feature to handle external sources and/or any internal sources excluded from Minify.',
+				'Delay the loading of specified interal/external JavaScript sources on your pages separate from Minify.',
 				'w3-total-cache'
 			) . (
-				Util_Environment::is_w3tc_pro( $config ) && $config->is_extension_active( 'user-experience-defer-scripts' )
+				UserExperience_DeferScripts_Extension::is_enabled()
 				? wp_kses(
 					sprintf(
 						// translators: 1 opening HTML a tag to W3TC User Experience page, 2 closing HTML a tag.
@@ -101,7 +101,73 @@ Util_Ui::config_overloading_button( array( 'key' => 'lazyload.configuration_over
 							' Settings can be found on the %1$sUser Experience page%2$s.',
 							'w3-total-cache'
 						),
-						'<a href="' . Util_Ui::admin_url( 'admin.php?page=w3tc_userexperience#application' ) . '">',
+						'<a href="' . Util_Ui::admin_url( 'admin.php?page=w3tc_userexperience#defer-scripts' ) . '">',
+						'</a>'
+					),
+					array(
+						'a' => array(
+							'href' => array(),
+						),
+					)
+				)
+				: ''
+			),
+			'label_class'    => 'w3tc_single_column',
+			'pro'            => true,
+			'disabled'       => ! Util_Environment::is_w3tc_pro( $config ) ? true : false,
+		)
+	);
+
+	Util_Ui::config_item_extension_enabled(
+		array(
+			'extension_id'   => 'user-experience-remove-cssjs',
+			'checkbox_label' => esc_html__( 'Remove Unwanted/Unused CSS/JS', 'w3-total-cache' ),
+			'description'    => __(
+				'Removes specfied CSS/JS tags from the homepage or on a per page basis.',
+				'w3-total-cache'
+			) . (
+				UserExperience_Remove_CssJs_Extension::is_enabled()
+				? wp_kses(
+					sprintf(
+						// translators: 1 opening HTML a tag to W3TC User Experience page, 2 closing HTML a tag.
+						__(
+							' Settings can be found on the %1$sUser Experience page%2$s.',
+							'w3-total-cache'
+						),
+						'<a href="' . Util_Ui::admin_url( 'admin.php?page=w3tc_userexperience#remove-cssjs' ) . '">',
+						'</a>'
+					),
+					array(
+						'a' => array(
+							'href' => array(),
+						),
+					)
+				)
+				: ''
+			),
+			'label_class'    => 'w3tc_single_column',
+			'pro'            => true,
+			'disabled'       => ! Util_Environment::is_w3tc_pro( $config ) ? true : false,
+		)
+	);
+
+	Util_Ui::config_item_extension_enabled(
+		array(
+			'extension_id'   => 'user-experience-preload-requests',
+			'checkbox_label' => esc_html__( 'Preload Requests', 'w3-total-cache' ),
+			'description'    => __(
+				'DNS prefetching, preconnecting, and preloading are essential web optimization techniques that enhance website performance by proactively resolving network-related tasks.',
+				'w3-total-cache'
+			) . (
+				UserExperience_Preload_Requests_Extension::is_enabled()
+				? wp_kses(
+					sprintf(
+						// translators: 1 opening HTML a tag to W3TC User Experience page, 2 closing HTML a tag.
+						__(
+							' Settings can be found on the %1$sUser Experience page%2$s.',
+							'w3-total-cache'
+						),
+						'<a href="' . Util_Ui::admin_url( 'admin.php?page=w3tc_userexperience#preload-requests' ) . '">',
 						'</a>'
 					),
 					array(
