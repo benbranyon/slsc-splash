@@ -22,32 +22,32 @@ function devvn_ihp_callback(){
     $popup_type = devvn_get_ihp_options('popup_type');
     ?>
     <div class="wrap">
-        <h1><?php _e('Image Hotspot settings', 'devvn-image-hotspot');?></h1>
+        <h1><?php esc_html_e('Image Hotspot settings', 'devvn-image-hotspot');?></h1>
         <form method="post" action="options.php" novalidate="novalidate">
             <?php settings_fields( 'ihp-options-group' );?>
             <table class="form-table">
                 <tbody>
                 <tr>
-                    <th scope="row"><label><?php _e('Popup type on mobile', 'devvn-image-hotspot')?></label></th>
+                    <th scope="row"><label><?php esc_html_e('Popup type on mobile', 'devvn-image-hotspot')?></label></th>
                     <td>
                         <div class="tet_style_radio tet_style_radio_banner">
                             <label style="margin-right: 10px;">
-                                <input type="radio" name="ihp_options[popup_type]" value="2" <?php checked('2', $popup_type, true);?>> Full Screen
+                                <input type="radio" name="ihp_options[popup_type]" value="2" <?php checked('2', $popup_type);?>> Full Screen
                             </label>
                             <label>
-                                <input type="radio" name="ihp_options[popup_type]" value="1" <?php checked('1', $popup_type, true);?>> Normal - Tooltip
+                                <input type="radio" name="ihp_options[popup_type]" value="1" <?php checked('1', $popup_type);?>> Normal - Tooltip
                             </label>
                         </div>
                     </td>
                 </tr>
                 </tbody>
             </table>
-            <?php do_settings_sections('ihp-options-group', 'default'); ?>
+            <?php do_settings_sections('ihp-options-group'); ?>
 
             <?php submit_button();?>
         </form>
         <p><strong>Buy me a Coffee to keep me awake :)</strong></p>
-        <?php echo devvn_ihotspot_donate_shortcode_callback();?>
+        <?php echo devvn_ihotspot_donate_shortcode_callback();//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	?>
     </div>
 <?php
 }

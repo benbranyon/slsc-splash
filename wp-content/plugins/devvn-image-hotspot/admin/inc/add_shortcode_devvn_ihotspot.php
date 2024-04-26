@@ -33,9 +33,9 @@ function devvn_ihotspot_shortcode_func($atts){
 	?>
 	<div class="wrap_svl_center">
 	<div class="wrap_svl_center_box">
-	<div class="wrap_svl" id="body_drag_<?php echo $idPost;?>">
+	<div class="wrap_svl" id="body_drag_<?php echo esc_attr($idPost);?>">
 		<div class="images_wrap">
-		<img src="<?php echo $maps_images; ?>">
+		<img src="<?php echo esc_attr($maps_images); ?>">
 		</div>	
 		 <?php if(is_array($data_points)):?>
 		 <?php $stt = 1;foreach ($data_points as $point):
@@ -57,7 +57,7 @@ function devvn_ihotspot_shortcode_func($atts){
 		 ob_start();?>
 		 <?php if(isset($point['content'])):?>
 			 <?php if(!empty($point['content'])):?>
-                 <div class="box_view_html"><span class="close_ihp"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve"><g><path d="M153.7,153.7C57.9,249.5,10,365.3,10,499c0,135.7,47.9,251.5,143.7,347.3l0,0C249.5,942.1,363.3,990,499,990c135.7,0,251.5-47.9,347.3-143.7C942.1,750.5,990,634.7,990,499c0-135.7-47.9-249.5-143.7-345.3l0,0C750.5,57.9,634.7,10,499,10C365.3,10,249.5,57.9,153.7,153.7z M209.6,211.6l2-2C289.4,129.7,387.2,89.8,499,89.8c113.8,0,209.6,39.9,291.4,121.8c79.8,77.8,119.8,175.6,119.8,287.4c0,113.8-39.9,209.6-119.8,291.4C708.6,870.3,612.8,910.2,499,910.2c-111.8,0-209.6-39.9-287.4-119.8C129.8,708.6,89.8,612.8,89.8,499C89.8,387.2,129.8,289.4,209.6,211.6z"/><path d="M293.4,331.3c0,12,4,22,12,29.9L443.1,497L305.4,632.7c-8,8-12,18-12,29.9c0,10,4,18,12,26c8,8,18,12,28,12c12,0,20-4,27.9-10L499,552.9l135.7,137.7c8,6,16,10,28,10c12,0,21.9-4,27.9-10c8-8,12-18,12-28c0-12-4-21.9-12-29.9L554.9,497l135.7-135.7c8-8,12-18,12-27.9c0-12-4-22-12-29.9c-6-8-16-12-25.9-12c-12,0-21.9,4-29.9,12L499,441.1L363.3,303.4c-8-8-18-12-29.9-12c-10,0-20,4-28,12C297.4,311.4,293.4,321.4,293.4,331.3z"/></g></svg></span><?php echo apply_filters('the_content', $point['content']);?></div>
+                 <div class="box_view_html"><span class="close_ihp"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 1000 1000" enable-background="new 0 0 1000 1000" xml:space="preserve"><g><path d="M153.7,153.7C57.9,249.5,10,365.3,10,499c0,135.7,47.9,251.5,143.7,347.3l0,0C249.5,942.1,363.3,990,499,990c135.7,0,251.5-47.9,347.3-143.7C942.1,750.5,990,634.7,990,499c0-135.7-47.9-249.5-143.7-345.3l0,0C750.5,57.9,634.7,10,499,10C365.3,10,249.5,57.9,153.7,153.7z M209.6,211.6l2-2C289.4,129.7,387.2,89.8,499,89.8c113.8,0,209.6,39.9,291.4,121.8c79.8,77.8,119.8,175.6,119.8,287.4c0,113.8-39.9,209.6-119.8,291.4C708.6,870.3,612.8,910.2,499,910.2c-111.8,0-209.6-39.9-287.4-119.8C129.8,708.6,89.8,612.8,89.8,499C89.8,387.2,129.8,289.4,209.6,211.6z"/><path d="M293.4,331.3c0,12,4,22,12,29.9L443.1,497L305.4,632.7c-8,8-12,18-12,29.9c0,10,4,18,12,26c8,8,18,12,28,12c12,0,20-4,27.9-10L499,552.9l135.7,137.7c8,6,16,10,28,10c12,0,21.9-4,27.9-10c8-8,12-18,12-28c0-12-4-21.9-12-29.9L554.9,497l135.7-135.7c8-8,12-18,12-27.9c0-12-4-22-12-29.9c-6-8-16-12-25.9-12c-12,0-21.9,4-29.9,12L499,441.1L363.3,303.4c-8-8-18-12-29.9-12c-10,0-20,4-28,12C297.4,311.4,293.4,321.4,293.4,331.3z"/></g></svg></span><?php echo apply_filters('the_content', $point['content']); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?></div>
 			 <?php else :
 			 $noTooltip = true;
 			 endif;?>
@@ -65,14 +65,14 @@ function devvn_ihotspot_shortcode_func($atts){
 		 <?php
 		 $view_html = ob_get_clean();
 		 ?>
-		 <div class="drag_element tips <?php echo ($pins_class)?$pins_class:''?>" style="top:<?php echo $point['top']?>%;left:<?php echo $point['left']?>%;" <?php echo ($pins_id)?'id="'.$pins_id.'"':''?>>
+		 <div class="drag_element tips <?php echo ($pins_class)?esc_attr($pins_class):''?>" style="top:<?php echo esc_attr($point['top'])?>%;left:<?php echo esc_attr($point['left'])?>%;" <?php echo ($pins_id)?'id="'.esc_attr($pins_id).'"':''?>>
 		 	<div class="point_style <?php echo ($pins_image_hover)?'has-hover':''?> ihotspot_tooltop_html" data-placement="<?php echo esc_attr($placement);?>" data-html="<?php echo esc_html($view_html)?>">
-		 		<?php if($linkpins):?><a href="<?php echo $linkpins;?>" title="" <?php echo ($link_target)?'target="'.$link_target.'"':'';?>><?php endif;?>
+		 		<?php if($linkpins):?><a href="<?php echo esc_attr($linkpins);?>" title="" <?php echo ($link_target)?'target="'.esc_attr($link_target).'"':'';?>><?php endif;?>
 			 		<?php if($pins_more_option['pins_animation'] != 'none'):?>
-			 			<div class="pins_animation ihotspot_<?php echo $pins_more_option['pins_animation'];?>" style="top:-<?php echo $pins_more_option['custom_top']?>px;left:-<?php echo $pins_more_option['custom_left']?>px;height:<?php echo intval($pins_more_option['custom_top']*2)?>px;width:<?php echo intval($pins_more_option['custom_left']*2)?>px"></div>
+			 			<div class="pins_animation ihotspot_<?php echo esc_attr($pins_more_option['pins_animation']);?>" style="top:-<?php echo esc_attr($pins_more_option['custom_top'])?>px;left:-<?php echo esc_attr($pins_more_option['custom_left'])?>px;height:<?php echo intval($pins_more_option['custom_top']*2)?>px;width:<?php echo intval($pins_more_option['custom_left']*2)?>px"></div>
 			 		<?php endif;?>
-			 		<img src="<?php echo $pins_image?>" class="pins_image <?php if(!$noTooltip):?>ihotspot_hastooltop<?php endif;?>" style="top:-<?php echo $pins_more_option['custom_top']?>px;left:-<?php echo $pins_more_option['custom_left']?>px">
-			 		<?php if($pins_image_hover):?><img src="<?php echo $pins_image_hover?>" class="pins_image_hover <?php if(!$noTooltip):?>ihotspot_hastooltop<?php endif;?>"  style="top:-<?php echo $pins_more_option['custom_hover_top']?>px;left:-<?php echo $pins_more_option['custom_hover_left']?>px"><?php endif;?>
+			 		<img src="<?php echo esc_attr($pins_image)?>" class="pins_image <?php if(!$noTooltip):?>ihotspot_hastooltop<?php endif;?>" style="top:-<?php echo esc_attr($pins_more_option['custom_top'])?>px;left:-<?php echo esc_attr($pins_more_option['custom_left'])?>px">
+			 		<?php if($pins_image_hover):?><img src="<?php echo esc_attr($pins_image_hover)?>" class="pins_image_hover <?php if(!$noTooltip):?>ihotspot_hastooltop<?php endif;?>"  style="top:-<?php echo esc_attr($pins_more_option['custom_hover_top'])?>px;left:-<?php echo esc_attr($pins_more_option['custom_hover_left'])?>px"><?php endif;?>
 		 		<?php if($linkpins):?></a><?php endif;?>
 		 	</div>
 		 </div>

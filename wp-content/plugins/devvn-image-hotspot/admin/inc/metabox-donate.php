@@ -23,5 +23,5 @@ function devvn_ihotspot_donate_shortcode_callback(){
 		<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" alt=""/>
 	</a>
 	<?php
-	echo ob_get_clean();
+	echo ob_get_clean();// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 }

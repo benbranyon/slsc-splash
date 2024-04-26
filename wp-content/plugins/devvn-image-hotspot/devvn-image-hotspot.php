@@ -4,7 +4,7 @@ Plugin Name: Image Hotspot by DevVN
 Plugin URI: https://levantoan.com/devvn-image-hotspot
 Description: Image Hotspot help you add hotspot to your images.
 Author: Le Van Toan
-Version: 1.2.2
+Version: 1.2.3
 Author URI: https://levantoan.com/
 Text Domain: devvn-image-hotspot
 Domain Path: /languages
@@ -29,7 +29,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
 
-define('DEVVN_IHOTSPOT_VER', '1.2.2');
+define('DEVVN_IHOTSPOT_VER', '1.2.3');
 define('DEVVN_IHOTSPOT_DEV_MOD', true);
 if ( !defined( 'DEVVN_IHOTSPOT_BASENAME' ) )
     define( 'DEVVN_IHOTSPOT_BASENAME', plugin_basename( __FILE__ ) );
@@ -119,78 +119,78 @@ function devvn_ihotspot_meta_box_callback( $post ) {
 	<table class="svl-table">
 		<tbody>
 			<tr>
-				<td class="svl-label"><?php _e('Pins Image','devvn-image-hotspot')?></td>
+				<td class="svl-label"><?php esc_html_e('Pins Image','devvn-image-hotspot')?></td>
 				<td class="svl-input">
-					<div class="svl-upload-image <?=($pins_image)?'has-image':''?>">						
+					<div class="svl-upload-image <?php echo ($pins_image)?'has-image':''?>">
 						<div class="view-has-value">
-							<input type="hidden" name="pins_image" class="pins_image" value="<?php echo $pins_image; ?>" />								
-							<img src="<?=$pins_image?>" class="image_view pins_img"/>									
+							<input type="hidden" name="pins_image" class="pins_image" value="<?php echo esc_attr($pins_image); ?>" />
+							<img src="<?php echo esc_attr($pins_image)?>" class="image_view pins_img"/>
 							<a href="#" class="svl-delete-image">x</a>
 						</div>
-						<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php _e( 'Select pins', 'devvn-image-hotspot' )?>" /></div>
+						<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php esc_html_e( 'Select pins', 'devvn-image-hotspot' )?>" /></div>
 					</div>
 				</td>
 			</tr>
 			<tr>
-				<td class="svl-label"><?php _e('Pins Hover Image','devvn-image-hotspot')?></td>
+				<td class="svl-label"><?php esc_html_e('Pins Hover Image','devvn-image-hotspot')?></td>
 				<td class="svl-input">
-					<div class="svl-upload-image <?=($pins_image_hover)?'has-image':''?>">						
+					<div class="svl-upload-image <?php echo ($pins_image_hover)?'has-image':''?>">
 						<div class="view-has-value">
-							<input type="hidden" name="pins_image_hover" class="pins_image_hover" value="<?php echo $pins_image_hover; ?>" />								
-							<img src="<?=$pins_image_hover?>" class="image_view pins_img_hover"/>									
+							<input type="hidden" name="pins_image_hover" class="pins_image_hover" value="<?php echo esc_attr($pins_image_hover); ?>" />
+							<img src="<?php echo esc_attr($pins_image_hover)?>" class="image_view pins_img_hover"/>
 							<a href="#" class="svl-delete-image">x</a>
 						</div>
-						<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php _e( 'Select pins hover', 'devvn-image-hotspot' )?>" /></div>
+						<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php esc_html_e( 'Select pins hover', 'devvn-image-hotspot' )?>" /></div>
 					</div>
 				</td>				
 			</tr>
 			<tr>
-				<td class="svl-label"><?php _e('Pins Center Position','devvn-image-hotspot')?></td>
+				<td class="svl-label"><?php esc_html_e('Pins Center Position','devvn-image-hotspot')?></td>
 				<td class="svl-input">
 					<div class="pins-position-wrap">
 						<p>
-							<label><input type="radio" name="choose_type" value="center_center" <?=($pins_more_option['position'] == 'center_center'?'checked="checked"':'')?>><?php _e('Center center','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="top_left" <?=($pins_more_option['position'] == 'top_left'?'checked="checked"':'')?>><?php _e('Top Left','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="top_center" <?=($pins_more_option['position'] == 'top_center'?'checked="checked"':'')?>><?php _e('Top Center','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="top_right" <?=($pins_more_option['position'] == 'top_right'?'checked="checked"':'')?>><?php _e('Top Right','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="right_center" <?=($pins_more_option['position'] == 'right_center'?'checked="checked"':'')?>><?php _e('Right Center','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="bottom_right" <?=($pins_more_option['position'] == 'bottom_right'?'checked="checked"':'')?>><?php _e('Bottom Right','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="bottom_center" <?=($pins_more_option['position'] == 'bottom_center'?'checked="checked"':'')?>><?php _e('Bottom Center','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="bottom_left" <?=($pins_more_option['position'] == 'bottom_left'?'checked="checked"':'')?>><?php _e('Bottom Left','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="left_center" <?=($pins_more_option['position'] == 'left_center'?'checked="checked"':'')?>><?php _e('Left Center','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="choose_type" value="custom_center" <?=($pins_more_option['position'] == 'custom_center'?'checked="checked"':'')?>><?php _e('Custom','devvn-image-hotspot')?></label>
-							<label><?php _e('Top: -','devvn-image-hotspot')?> <input type="number" name="custom_top" value="<?=$pins_more_option['custom_top']?>" min="0" step="any"> px</label>
-							<label><?php _e('Left: -','devvn-image-hotspot')?> <input type="number" name="custom_left" value="<?=$pins_more_option['custom_left']?>" min="0" step="any"> px</label>
-							<input type="hidden" name="custom_hover_top" value="<?=$pins_more_option['custom_hover_top']?>" min="0" step="any">
-							<input type="hidden" name="custom_hover_left" value="<?=$pins_more_option['custom_hover_left']?>" min="0" step="any">
+							<label><input type="radio" name="choose_type" value="center_center" <?php echo ($pins_more_option['position'] == 'center_center'?'checked="checked"':'')?>><?php esc_html_e('Center center','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="top_left" <?php echo ($pins_more_option['position'] == 'top_left'?'checked="checked"':'')?>><?php esc_html_e('Top Left','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="top_center" <?php echo ($pins_more_option['position'] == 'top_center'?'checked="checked"':'')?>><?php esc_html_e('Top Center','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="top_right" <?php echo ($pins_more_option['position'] == 'top_right'?'checked="checked"':'')?>><?php esc_html_e('Top Right','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="right_center" <?php echo ($pins_more_option['position'] == 'right_center'?'checked="checked"':'')?>><?php esc_html_e('Right Center','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="bottom_right" <?php echo ($pins_more_option['position'] == 'bottom_right'?'checked="checked"':'')?>><?php esc_html_e('Bottom Right','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="bottom_center" <?php echo ($pins_more_option['position'] == 'bottom_center'?'checked="checked"':'')?>><?php esc_html_e('Bottom Center','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="bottom_left" <?php echo ($pins_more_option['position'] == 'bottom_left'?'checked="checked"':'')?>><?php esc_html_e('Bottom Left','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="left_center" <?php echo ($pins_more_option['position'] == 'left_center'?'checked="checked"':'')?>><?php esc_html_e('Left Center','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="choose_type" value="custom_center" <?php echo ($pins_more_option['position'] == 'custom_center'?'checked="checked"':'')?>><?php esc_html_e('Custom','devvn-image-hotspot')?></label>
+							<label><?php esc_html_e('Top: -','devvn-image-hotspot')?> <input type="number" name="custom_top" value="<?php echo floatval($pins_more_option['custom_top'])?>" min="0" step="any"> px</label>
+							<label><?php esc_html_e('Left: -','devvn-image-hotspot')?> <input type="number" name="custom_left" value="<?php echo floatval($pins_more_option['custom_left'])?>" min="0" step="any"> px</label>
+							<input type="hidden" name="custom_hover_top" value="<?php echo floatval($pins_more_option['custom_hover_top'])?>" min="0" step="any">
+							<input type="hidden" name="custom_hover_left" value="<?php echo floatval($pins_more_option['custom_hover_left'])?>" min="0" step="any">
 						</p>
 					</div>
 				</td>				
 			</tr>
 			<tr>
-				<td class="svl-label"><?php _e('Pins Animation','devvn-image-hotspot')?></td>
+				<td class="svl-label"><?php esc_html_e('Pins Animation','devvn-image-hotspot')?></td>
 				<td class="svl-input">
 					<div class="pins-position-wrap">
 						<p>
-							<label><input type="radio" name="pins_animation" value="none" <?=($pins_more_option['pins_animation'] == 'none'?'checked="checked"':'')?>><?php _e('None','devvn-image-hotspot')?></label>
-							<label><input type="radio" name="pins_animation" value="pulse" <?=($pins_more_option['pins_animation'] == 'pulse'?'checked="checked"':'')?>><?php _e('Pulse','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="pins_animation" value="none" <?php echo ($pins_more_option['pins_animation'] == 'none'?'checked="checked"':'')?>><?php esc_html_e('None','devvn-image-hotspot')?></label>
+							<label><input type="radio" name="pins_animation" value="pulse" <?php echo ($pins_more_option['pins_animation'] == 'pulse'?'checked="checked"':'')?>><?php esc_html_e('Pulse','devvn-image-hotspot')?></label>
 						</p>
 					</div>
 				</td>				
 			</tr>
 		</tbody>
 	</table>
-	<div class="svl-image-wrap <?=($maps_images)?'has-image':''?>">	
+	<div class="svl-image-wrap <?php echo ($maps_images)?'has-image':''?>">
 	<div class="svl-control">
-		<input type="button" id="meta-image-button" class="button" value="<?php _e( 'Upload Image', 'devvn-image-hotspot' )?>" />
-		<input type="hidden" name="maps_images" class="maps_images" id="maps_images" value="<?php echo $maps_images; ?>" />
-		<input type="button" name="add_point" class="add_point button view-has-value" value="<?php _e('Add Point','devvn-image-hotspot');?>"/>
+		<input type="button" id="meta-image-button" class="button" value="<?php esc_attr_e( 'Upload Image', 'devvn-image-hotspot' )?>" />
+		<input type="hidden" name="maps_images" class="maps_images" id="maps_images" value="<?php echo esc_attr($maps_images); ?>" />
+		<input type="button" name="add_point" class="add_point button view-has-value" value="<?php esc_attr_e('Add Point','devvn-image-hotspot');?>"/>
 		<span class="spinner"></span>
 	</div>
 	<div class="wrap_svl view-has-value" id="body_drag">
 		<div class="images_wrap">
 			<?php if($maps_images):?>
-			<img src="<?php echo $maps_images; ?>">
+			<img src="<?php echo esc_attr($maps_images); ?>">
 			<?php endif;?>
 		</div>	
 		<?php if(is_array($data_points)):?>
@@ -209,7 +209,7 @@ function devvn_ihotspot_meta_box_callback( $post ) {
 				'pins_id'	=>	isset($point['pins_id'])?$point['pins_id']:'',
 				'pins_class'	=>	isset($point['pins_class'])?$point['pins_class']:''
 		 	);
-		 	echo devvn_ihotspot_get_pins_default($data_input);?>
+		 	echo devvn_ihotspot_get_pins_default($data_input); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped	?>
 			<?php $stt++;endforeach;?>
 		 <?php endif;?> 	
 	 </div>
@@ -230,7 +230,7 @@ function devvn_ihotspot_meta_box_callback( $post ) {
 				'pins_id'	=>	isset($point['pins_id'])?$point['pins_id']:'',
 				'pins_class'	=>	isset($point['pins_class'])?$point['pins_class']:''
 		 	);
-		 	echo devvn_ihotspot_get_input_point_default($data_input);?> 
+		 	echo devvn_ihotspot_get_input_point_default($data_input);//phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped?>
 	 	 <?php $stt++;endforeach;?>
  	 <?php else:?>
  		<div style="display: none;"><?php wp_editor('', '_devvn_ihotspot_default_content'); ?></div>
@@ -241,10 +241,10 @@ function devvn_ihotspot_meta_box_callback( $post ) {
 function devvn_ihotspot_shortcode_callback( $post ){
 	if(get_post_status($post->ID) == "publish"):
 	?>
-		<span><?php _e('Copy shortcode to view','devvn-image-hotspot')?></span>
-		<input readonly="readonly" class="shortcodemap" value='[devvn_ihotspot id="<?=$post->ID?>"]'/>
+		<span><?php esc_html_e('Copy shortcode to view','devvn-image-hotspot')?></span>
+		<input readonly="readonly" class="shortcodemap" value='[devvn_ihotspot id="<?php echo intval($post->ID)?>"]'/>
 	<?php else:?>
-		<span><?php _e('Publish to view shortcode','devvn-image-hotspot')?></span>
+		<span><?php esc_html_e('Publish to view shortcode','devvn-image-hotspot')?></span>
 	<?php 
 	endif;	
 }
@@ -389,18 +389,16 @@ add_action( 'admin_print_styles', 'devvn_ihotspot_admin_styles' );
 
 /*Add frontend scripts*/
 function devvn_ihotspot_frontend_scripts() {
-	if(is_page('the-architecture-of-lapd-surveillance-infographic')) {
-		if(DEVVN_IHOTSPOT_DEV_MOD){
-			wp_enqueue_style('powertip',plugin_dir_url( __FILE__ ) . 'frontend/css/jquery.powertip.min.css',array(),'1.2.0','all');
-			wp_enqueue_script( 'powertip', plugin_dir_url( __FILE__ ) . 'frontend/js/jquery.powertip.min.js', array('jquery'), '1.2.0', true );
-			
-			wp_enqueue_style('maps-points',plugin_dir_url( __FILE__ ) . 'frontend/css/maps_points.css',array(), DEVVN_IHOTSPOT_VER,'all');
-			wp_enqueue_script( 'maps-points', plugin_dir_url( __FILE__ ) . 'frontend/js/maps_points.js', array('jquery'), DEVVN_IHOTSPOT_VER, true );
-		}else{		
-			wp_enqueue_style('ihotspot',plugin_dir_url( __FILE__ ) . 'frontend/css/ihotspot.min.css',array(),DEVVN_IHOTSPOT_VER,'all');
-			wp_enqueue_script( 'ihotspot-js', plugin_dir_url( __FILE__ ) . 'frontend/js/jquery.ihotspot.min.js', array('jquery'), DEVVN_IHOTSPOT_VER, true );		
-		}	
-	}
+	if(DEVVN_IHOTSPOT_DEV_MOD){
+		wp_enqueue_style('powertip',plugin_dir_url( __FILE__ ) . 'frontend/css/jquery.powertip.min.css',array(),'1.2.0','all');
+		wp_enqueue_script( 'powertip', plugin_dir_url( __FILE__ ) . 'frontend/js/jquery.powertip.min.js', array('jquery'), '1.2.0', true );
+		
+		wp_enqueue_style('maps-points',plugin_dir_url( __FILE__ ) . 'frontend/css/maps_points.css',array(), DEVVN_IHOTSPOT_VER,'all');
+		wp_enqueue_script( 'maps-points', plugin_dir_url( __FILE__ ) . 'frontend/js/maps_points.js', array('jquery'), DEVVN_IHOTSPOT_VER, true );
+	}else{		
+		wp_enqueue_style('ihotspot',plugin_dir_url( __FILE__ ) . 'frontend/css/ihotspot.min.css',array(),DEVVN_IHOTSPOT_VER,'all');
+		wp_enqueue_script( 'ihotspot-js', plugin_dir_url( __FILE__ ) . 'frontend/js/jquery.ihotspot.min.js', array('jquery'), DEVVN_IHOTSPOT_VER, true );		
+	}	
 }
 add_action( 'wp_enqueue_scripts', 'devvn_ihotspot_frontend_scripts' );
 
@@ -421,11 +419,11 @@ function devvn_ihotspot_get_input_point_default($data = array()){
 	$pins_class	= isset($data['pins_class'])?$data['pins_class']:'';
 	ob_start();
 	?>	
-	<div class="devvn-hotspot-popup list_points" tabindex="-1" role="dialog" id="info_draggable<?php echo $countPoint?>" data-popup="info_draggable<?php echo $countPoint?>" data-points="<?php echo $countPoint?>">
+	<div class="devvn-hotspot-popup list_points" tabindex="-1" role="dialog" id="info_draggable<?php echo intval($countPoint)?>" data-popup="info_draggable<?php echo intval($countPoint)?>" data-points="<?php echo intval($countPoint)?>">
 	 	<div class="devvn-hotspot-popup-inner">
 			<div class="devvn-hotspot-popup-modal-content">
 				<div class="devvn-hotspot-popup-modal-header">
-					<h3 class="modal-title"><?php _e('Content','devvn-image-hotspot')?></h3>
+					<h3 class="modal-title"><?php esc_html_e('Content','devvn-image-hotspot')?></h3>
 			  	</div>
 		  		<div class="devvn-hotspot-popup-modal-body">
 					<?php
@@ -443,7 +441,7 @@ function devvn_ihotspot_get_input_point_default($data = array()){
 					<div class="devvn_row">
 						<div class="devvn_col_3">
 							<label>Link to pins<br>
-							<input type="text" name="pointdata[linkpins][]" value="<?php echo $pointLink?>" placeholder="Link to pins"/>
+							<input type="text" name="pointdata[linkpins][]" value="<?php echo esc_attr($pointLink)?>" placeholder="Link to pins"/>
 							</label><br>
 							<label>Link target<br>
 							<select name="pointdata[link_target][]">
@@ -454,25 +452,25 @@ function devvn_ihotspot_get_input_point_default($data = array()){
 
 						</div>	
 						<div class="devvn_col_3">
-							<label><?php _e('Pin Image Custom','devvn-image-hotspot');?></label>
-							<div class="svl-upload-image <?=($pins_image_custom)?'has-image':''?>">						
+							<label><?php esc_html_e('Pin Image Custom','devvn-image-hotspot');?></label>
+							<div class="svl-upload-image <?php echo ($pins_image_custom)?'has-image':''?>">
 								<div class="view-has-value">
-									<input type="hidden" name="pointdata[pins_image_custom][]" class="pins_image" value="<?php echo $pins_image_custom; ?>" />								
-									<img src="<?=$pins_image_custom?>" class="image_view pins_img"/>									
+									<input type="hidden" name="pointdata[pins_image_custom][]" class="pins_image" value="<?php echo esc_attr($pins_image_custom); ?>" />
+									<img src="<?php echo esc_attr($pins_image_custom)?>" class="image_view pins_img"/>
 									<a href="#" class="svl-delete-image">x</a>
 								</div>
-								<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php _e( 'Select pins', 'devvn-image-hotspot' )?>" /></div>
+								<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php esc_attr_e( 'Select pins', 'devvn-image-hotspot' )?>" /></div>
 							</div>
 						</div>
 						<div class="devvn_col_3">
-							<label><?php _e( 'Pins hover image custom', 'devvn-image-hotspot' )?></label>
-							<div class="svl-upload-image <?=($pins_image_hover_custom)?'has-image':''?>">						
+							<label><?php esc_html_e( 'Pins hover image custom', 'devvn-image-hotspot' )?></label>
+							<div class="svl-upload-image <?php echo ($pins_image_hover_custom)?'has-image':''?>">
 								<div class="view-has-value">
-									<input type="hidden" name="pointdata[pins_image_hover_custom][]" class="pins_image_hover" value="<?php echo $pins_image_hover_custom; ?>" />								
-									<img src="<?=$pins_image_hover_custom?>" class="image_view pins_img_hover"/>									
+									<input type="hidden" name="pointdata[pins_image_hover_custom][]" class="pins_image_hover" value="<?php echo esc_attr($pins_image_hover_custom); ?>" />
+									<img src="<?php echo esc_attr($pins_image_hover_custom)?>" class="image_view pins_img_hover"/>
 									<a href="#" class="svl-delete-image">x</a>
 								</div>
-								<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php _e( 'Select pins hover', 'devvn-image-hotspot' )?>" /></div>
+								<div class="hidden-has-value"><input type="button" class="button-upload button" value="<?php esc_attr_e( 'Select pins hover', 'devvn-image-hotspot' )?>" /></div>
 							</div>
 						</div>					
 					</div>
@@ -493,31 +491,31 @@ function devvn_ihotspot_get_input_point_default($data = array()){
 							    );
 							    foreach ($allPlacement as $k=>$v){
                                 ?>
-							    <option value="<?php echo $k;?>" <?php selected($k,$placement)?>><?php echo $v;?></option>
+							    <option value="<?php echo esc_attr($k);?>" <?php selected($k,$placement)?>><?php echo esc_attr($v);?></option>
 							    <?php }?>
                             </select>
 						</div>
 						<div class="devvn_col_3">
 							<label>Pins ID<br>
-							<input type="text" name="pointdata[pins_id][]" value="<?php echo $pins_id?>" placeholder="Type a ID"/>
+							<input type="text" name="pointdata[pins_id][]" value="<?php echo esc_attr($pins_id)?>" placeholder="Type a ID"/>
 							</label>
                         </div>
                         <div class="devvn_col_3">
 							<label>Pins Class<br>
-							<input type="text" name="pointdata[pins_class][]" value="<?php echo $pins_class?>" placeholder="Ex: class_1 class_2 class_3"/>
+							<input type="text" name="pointdata[pins_class][]" value="<?php echo esc_attr($pins_class)?>" placeholder="Ex: class_1 class_2 class_3"/>
 							</label>
                         </div>
 					</div>
 					<p>
-						<input type="hidden" name="pointdata[top][]" min="0" max="100" step="any" value="<?php echo $pointTop?>" />
+						<input type="hidden" name="pointdata[top][]" min="0" max="100" step="any" value="<?php echo esc_attr($pointTop)?>" />
 					</p>
 					<p>
-						<input type="hidden" name="pointdata[left][]" min="0" max="100" step="any" value="<?php echo $pointLeft?>" />
+						<input type="hidden" name="pointdata[left][]" min="0" max="100" step="any" value="<?php echo esc_attr($pointLeft)?>" />
 					</p>
 		  		</div>
 			  	<div class="devvn-hotspot-popup-modal-footer">
-					<button type="button" class="button button-danger button-large button_delete"><?php _e('Delete','devvn-image-hotspot')?></button>
-					<button type="button" class="button button-primary button-large" data-popup-close="info_draggable<?php echo $countPoint?>"><?php _e('Done','devvn-image-hotspot')?></button>
+					<button type="button" class="button button-danger button-large button_delete"><?php esc_html_e('Delete','devvn-image-hotspot')?></button>
+					<button type="button" class="button button-primary button-large" data-popup-close="info_draggable<?php echo esc_attr($countPoint)?>"><?php esc_html_e('Done','devvn-image-hotspot')?></button>
 			  	</div>
 			</div><!-- /.modal-content -->
 		</div><!-- /.modal-dialog -->
@@ -537,10 +535,10 @@ function devvn_ihotspot_get_pins_default($datapin = array()){
 	if($pins_image_custom) $imgPin = $pins_image_custom;
 	ob_start();
 	?>
-	<div id="draggable<?php echo $countPoint?>" data-points="<?php echo $countPoint?>" class="drag_element" <?php if($topPin && $leftPin):?> style="top:<?php echo $topPin?>%; left:<?php echo $leftPin?>%;"<?php endif;?>>
+	<div id="draggable<?php echo esc_attr($countPoint)?>" data-points="<?php echo esc_attr($countPoint)?>" class="drag_element" <?php if($topPin && $leftPin):?> style="top:<?php echo esc_attr($topPin)?>%; left:<?php echo esc_attr($leftPin)?>%;"<?php endif;?>>
 		<div class="point_style">		
-			<a href="#" class="pins_click_to_edit" data-popup-open="info_draggable<?php echo $countPoint?>" data-target="#info_draggable<?php echo $countPoint?>">
-				<img src="<?php echo $imgPin?>">
+			<a href="#" class="pins_click_to_edit" data-popup-open="info_draggable<?php echo esc_attr($countPoint)?>" data-target="#info_draggable<?php echo esc_attr($countPoint)?>">
+				<img src="<?php echo esc_attr($imgPin)?>">
 			</a>
 		</div>
 	</div>
@@ -558,7 +556,7 @@ function devvn_ihotspot_clone_point_func() {
 	}
 	$countPoint = intval($_POST['countpoint']);
 	$imgPin = esc_url($_POST['img_pins']);
-	$countPoint = (isset($countPoint) && !empty($countPoint)) ? $countPoint : mt_rand();
+	$countPoint = (isset($countPoint) && !empty($countPoint)) ? $countPoint : wp_rand();
 	$datapin = array(
 		'countPoint'	=>	$countPoint,
 		'imgPoint'		=>	$imgPin
