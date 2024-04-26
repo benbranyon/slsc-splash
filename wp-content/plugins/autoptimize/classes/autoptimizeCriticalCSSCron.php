@@ -9,6 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 class autoptimizeCriticalCSSCron {
+    /**
+     * Critical CSS object.
+     *
+     * @var object
+     */
+    protected $criticalcss;
+
     public function __construct() {
         $this->criticalcss = autoptimize()->criticalcss();
 
@@ -80,6 +87,13 @@ class autoptimizeCriticalCSSCron {
             $queue = $this->criticalcss->get_option( 'queue' );
             $rtimelimit = $this->criticalcss->get_option( 'rtimelimit' );
 
+            // make sure we have the queue and bail if not.
+            if ( empty( $queue ) || ! is_array( $queue ) ) {
+                $this->criticalcss->log( 'Job processing cannot work on an empty queue, aborting.', 3 );
+                unlink( AO_CCSS_LOCK );
+                return;
+            }
+
             // Initialize counters.
             if ( 0 == $rtimelimit ) {
                 // no time limit set, let's go with 1000 seconds.
@@ -147,7 +161,7 @@ class autoptimizeCriticalCSSCron {
                             $jprops['jvstat'] = 'NONE';
                             $jprops['jftime'] = microtime( true );
                             $this->criticalcss->log( 'API key validation error when processing job id <' . $jprops['ljid'] . '>, job status is now <' . $jprops['jqstat'] . '>', 3 );
-                        } elseif ( array_key_exists( 'job', $apireq ) && array_key_exists( 'status', $apireq['job'] ) && 'JOB_QUEUED' == $apireq['job']['status'] || 'JOB_ONGOING' == $apireq['job']['status'] ) {
+                        } elseif ( array_key_exists( 'job', $apireq ) && array_key_exists( 'status', $apireq['job'] ) && ( 'JOB_QUEUED' == $apireq['job']['status'] || 'JOB_ONGOING' == $apireq['job']['status'] ) ) {
                             // SUCCESS: request has a valid result.
                             // Update job properties.
                             $jprops['jid']    = $apireq['job']['id'];
@@ -761,6 +775,9 @@ class autoptimizeCriticalCSSCron {
             update_option( 'autoptimize_ccss_rules', $rules_raw );
             $this->criticalcss->flush_options();
             $this->criticalcss->log( 'Target rule <' . $srule . '> of type <' . $rtype . '> was ' . $action . ' for job id <' . $ljid . '>', 3 );
+            
+            // and trigger action for whoever needs to be aware.
+            do_action( 'autoptimize_action_ccss_cron_rule_updated', $srule, $file, '' );
         } else {
             $this->criticalcss->log( 'No rule action required', 3 );
         }
