@@ -124,40 +124,46 @@ jQuery(document).ready(function($){
 			  		/* this is need for the tabs to work 
 			  		source https://github.com/ccbgs/load_editor
 			  		*/
-					quicktags({id : fullId});
-					tinymce.init({
-						selector:"#" + fullId,
-						content_css : meta_image.editor_style,
-						min_height: 200,
-				        textarea_name: "pointdata[content][]",						
-						relative_urls:false,
-						remove_script_host:false,
-						convert_urls:false,
-						browser_spellcheck:false,
-						fix_list_elements:true,
-						entities:"38,amp,60,lt,62,gt",
-						entity_encoding:"raw",
-						keep_styles:false,
-						//paste_webkit_styles:"font-weight font-style color",
-						//preview_styles:"font-family font-size font-weight font-style text-decoration text-transform",
-						wpeditimage_disable_captions:false,
-						wpeditimage_html5_captions:true,
-						plugins:"charmap,hr,media,paste,tabfocus,textcolor,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpview",						
-						resize:"vertical",
-						menubar:false,
-						wpautop:true,
-						indent:false,
-						toolbar1:"bold,italic,strikethrough,bullist,numlist,blockquote,hr,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,wp_adv",
-						toolbar2:"formatselect,underline,alignjustify,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
-						toolbar3:"",
-						toolbar4:"",
-						tabfocus_elements:":prev,:next",									
-					});
-					
-					// this is needed for the editor to initiate
-					tinyMCE.execCommand('mceFocus', false, fullId);
-					tinyMCE.execCommand('mceRemoveEditor', false, fullId);
-					tinyMCE.execCommand('mceAddEditor', false, fullId); 					
+					if(typeof quicktags != "undefined") {
+						quicktags({id: fullId});
+					}
+
+					if(typeof tinymce != "undefined") {
+						tinymce.init({
+							selector: "#" + fullId,
+							content_css: meta_image.editor_style,
+							min_height: 200,
+							textarea_name: "pointdata[content][]",
+							relative_urls: false,
+							remove_script_host: false,
+							convert_urls: false,
+							browser_spellcheck: false,
+							fix_list_elements: true,
+							entities: "38,amp,60,lt,62,gt",
+							entity_encoding: "raw",
+							keep_styles: false,
+							//paste_webkit_styles:"font-weight font-style color",
+							//preview_styles:"font-family font-size font-weight font-style text-decoration text-transform",
+							wpeditimage_disable_captions: false,
+							wpeditimage_html5_captions: true,
+							plugins: "charmap,hr,media,paste,tabfocus,textcolor,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,wpview",
+							resize: "vertical",
+							menubar: false,
+							wpautop: true,
+							indent: false,
+							toolbar1: "bold,italic,strikethrough,bullist,numlist,blockquote,hr,alignleft,aligncenter,alignright,link,unlink,wp_more,spellchecker,wp_adv",
+							toolbar2: "formatselect,underline,alignjustify,forecolor,pastetext,removeformat,charmap,outdent,indent,undo,redo,wp_help",
+							toolbar3: "",
+							toolbar4: "",
+							tabfocus_elements: ":prev,:next",
+						});
+
+						// this is needed for the editor to initiate
+						tinyMCE.execCommand('mceFocus', false, fullId);
+						tinyMCE.execCommand('mceRemoveEditor', false, fullId);
+						tinyMCE.execCommand('mceAddEditor', false, fullId);
+
+					}
 					
 			  		doDraggable();
 			  		calc_custom_position();	
