@@ -299,6 +299,26 @@
 			} else {
 				window.location.search = page;
 			}
+		},
+		showModal( modalId ) {
+			if ( ! window.SUI ) {
+				return;
+			}
+
+			const focusAfterClosed = 'wpbody-content',
+			focusWhenOpen = undefined,
+			hasOverlayMask = false,
+			isCloseOnEsc = false,
+			isAnimated = true;
+
+			window.SUI.openModal(
+				modalId,
+				focusAfterClosed,
+				focusWhenOpen,
+				hasOverlayMask,
+				isCloseOnEsc,
+				isAnimated
+			);
 		}
 	};
 

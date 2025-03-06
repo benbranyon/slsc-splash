@@ -15,16 +15,20 @@ use Smush\Core\CDN\CDN_Controller;
 use Smush\Core\CDN\CDN_Settings_Ui_Controller;
 use Smush\Core\CDN\CDN_Srcset_Controller;
 use Smush\Core\Lazy_Load\Lazy_Load_Controller;
+use Smush\Core\Media\Attachment_Url_Cache_Controller;
 use Smush\Core\Media\Media_Item_Controller;
 use Smush\Core\Media_Library\Ajax_Media_Library_Scanner;
 use Smush\Core\Media_Library\Background_Media_Library_Scanner;
+use Smush\Core\Media_Library\Media_Library_Last_Process;
 use Smush\Core\Media_Library\Media_Library_Slice_Data_Fetcher;
 use Smush\Core\Media_Library\Media_Library_Watcher;
+use Smush\Core\Modules\Background\Background_Pre_Flight_Controller;
 use Smush\Core\Modules\CDN;
 use Smush\Core\Photon\Photon_Controller;
 use Smush\Core\Png2Jpg\Png2Jpg_Controller;
 use Smush\Core\Resize\Resize_Controller;
 use Smush\Core\S3\S3_Controller;
+use Smush\Core\Security\Security_Controller;
 use Smush\Core\Smush\Smush_Controller;
 use Smush\Core\Stats\Global_Stats_Controller;
 use Smush\Core\Transform\Transformation_Controller;
@@ -105,7 +109,7 @@ class Modules {
 	public $bg_optimization;
 
 	/**
-	 * @var Modules\Product_Analytics
+	 * @var Modules\Product_Analytics_Controller
 	 */
 	public $product_analytics;
 
@@ -141,11 +145,11 @@ class Modules {
 
 		$this->webp              = new Modules\WebP();
 		$this->lazy              = new Modules\Lazy();
-		$this->product_analytics = new Modules\Product_Analytics();
+		$this->product_analytics = new Modules\Product_Analytics_Controller();
 
-		$this->bg_optimization = new Modules\Bulk\Background_Bulk_Smush();
+		$this->bg_optimization = Modules\Bulk\Background_Bulk_Smush::get_instance();
 
-		$smush_controller = new Smush_Controller();
+		$smush_controller = Smush_Controller::get_instance();
 		$smush_controller->init();
 
 		$png2jpg_controller = Png2Jpg_Controller::get_instance();
@@ -205,6 +209,21 @@ class Modules {
 
 		$lazy_load_controller = Lazy_Load_Controller::get_instance();
 		$lazy_load_controller->init();
+
+		$background_health = Background_Pre_Flight_Controller::get_instance();
+		$background_health->init();
+
+		$media_lib_last_process = Media_Library_Last_Process::get_instance();
+		$media_lib_last_process->init();
+
+		$cron_controller = Cron_Controller::get_instance();
+		$cron_controller->init();
+
+		$security_controller = Security_Controller::get_instance();
+		$security_controller->init();
+
+		$attachment_url_cache_controller = new Attachment_Url_Cache_Controller();
+		$attachment_url_cache_controller->init();
 	}
 
 }

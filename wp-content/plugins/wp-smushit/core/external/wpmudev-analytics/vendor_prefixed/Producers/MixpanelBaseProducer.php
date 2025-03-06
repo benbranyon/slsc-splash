@@ -29,7 +29,7 @@ abstract class Producers_MixpanelBaseProducer extends Base_MixpanelBase
     /**
      * @var array The list of available consumers
      */
-    private $_consumers = array("file" => "ConsumerStrategies_FileConsumer", "curl" => "ConsumerStrategies_CurlConsumer", "socket" => "ConsumerStrategies_SocketConsumer");
+    private $_consumers = array("file" => "WPMUDEV_Analytics_Vendor\ConsumerStrategies_FileConsumer", "curl" => "WPMUDEV_Analytics_Vendor\ConsumerStrategies_CurlConsumer", "socket" => "WPMUDEV_Analytics_Vendor\ConsumerStrategies_SocketConsumer");
     /**
      * If the queue reaches this size we'll auto-flush to prevent out of memory errors
      * @var int

@@ -255,8 +255,15 @@ class Media_Item extends Smush_File {
 	}
 
 	private function prepare_edit_link() {
-		// TODO: copy implementation from Helper::get_image_media_link
-		return '';
+		$mode     = get_user_option( 'media_library_mode' );
+		$image_id = $this->get_id();
+		if ( 'grid' === $mode ) {
+			$edit_link = admin_url( "upload.php?item={$image_id}" );
+		} else {
+			$edit_link = admin_url( "post.php?post={$image_id}&action=edit" );
+		}
+
+		return $edit_link;
 	}
 
 	/**
@@ -382,7 +389,7 @@ class Media_Item extends Smush_File {
 
 	public function prepare_scaled_size() {
 		$file = $this->get_attached_file();
-		if ( $file && $this->file_path_has_scaled_postfix( $file ) ) {
+		if ( $file && $this->separate_original_image_path_exists() ) {
 			$wp_size_metadata = $this->attachment_metadata_as_size_metadata( $file );
 
 			return $this->initialize_size( self::SIZE_KEY_SCALED, $wp_size_metadata );
@@ -391,20 +398,21 @@ class Media_Item extends Smush_File {
 		return null;
 	}
 
-	private function original_image_exists() {
+	private function separate_original_image_path_exists() {
 		$original_image = $this->get_original_image_path();
 		$main_file      = $this->get_attached_file();
 
-		return $original_image !== $main_file
-		       && $this->fs->file_exists( $original_image );
+		return $original_image !== $main_file;
 	}
 
 	public function prepare_full_size() {
-		$original_image_exists = $this->original_image_exists();
+		$original_image_exists = $this->separate_original_image_path_exists();
 
 		if ( $original_image_exists ) {
 			$original_image_file = $this->get_original_image_path();
-			$image_size          = $this->fs->getimagesize( $original_image_file );
+			$image_size          = $this->fs->file_exists( $original_image_file )
+				? $this->fs->getimagesize( $original_image_file )
+				: false;
 			if ( ! $image_size ) {
 				return null;
 			}
@@ -417,12 +425,7 @@ class Media_Item extends Smush_File {
 				'filesize'  => $this->fs->filesize( $original_image_file ),
 			) );
 		} else {
-			$main_file = $this->get_attached_file();
-			if ( $this->file_path_has_scaled_postfix( $main_file ) ) {
-				// No luck, the main file is the scaled file
-				return null;
-			}
-
+			$main_file        = $this->get_attached_file();
 			$wp_size_metadata = $this->attachment_metadata_as_size_metadata( $main_file );
 
 			return $this->initialize_size( self::SIZE_KEY_FULL, $wp_size_metadata );
@@ -655,7 +658,11 @@ class Media_Item extends Smush_File {
 	}
 
 	public function is_valid() {
-		return ! empty( $this->get_wp_metadata() );
+		return ! empty( $this->get_wp_metadata() ) && $this->has_attached_file();
+	}
+
+	private function has_attached_file() {
+		return ! empty( $this->get_attached_file() );
 	}
 
 	/**
@@ -706,7 +713,10 @@ class Media_Item extends Smush_File {
 	}
 
 	private function fetch_post_mime_type() {
-		return $this->get_post()->post_mime_type;
+		$post = $this->get_post();
+		return empty( $post )
+			? ''
+			: $post->post_mime_type;
 	}
 
 	public function set_mime_type( $mime_type ) {
@@ -773,7 +783,20 @@ class Media_Item extends Smush_File {
 			$errors->add( 'no_file_meta', esc_html__( 'No file data found in image meta', 'wp-smushit' ) );
 		}
 
-		if ( ! $this->files_exist() ) {
+		if ( ! $this->has_attached_file() ) {
+			$errors->add( 'no_attached_file', esc_html__( 'Missing attached file data in image metadata', 'wp-smushit' ) );
+		}
+
+		// Verify missing the full size due to the original image not found for wp.com since we only allowed the full size.
+		// @see Photon_Controller::only_handle_full_size().
+		if ( ! $this->get_scaled_or_full_size() ) {
+			$original_file = $this->get_original_image_path();
+			$errors->add(
+				'file_not_found',
+				/* translators: %s: The missing file name */
+				sprintf( esc_html__( 'Skipped (%s), File not found.', 'wp-smushit' ), basename( $original_file ) )
+			);
+		} elseif ( ! $this->files_exist() ) {
 			$errors->add(
 				'file_not_found',
 				/* translators: %s: The missing file name */
@@ -945,7 +968,7 @@ class Media_Item extends Smush_File {
 			'filesize' => $main_size->get_filesize(),
 			'sizes'    => $sizes,
 		);
-		if ( $this->original_image_exists() && $this->has_full_size() ) {
+		if ( $this->separate_original_image_path_exists() && $this->has_full_size() ) {
 			// If the original image exists then we must have used it when preparing the full size,
 			// use it now to update the original_image value in the meta
 			$new_meta['original_image'] = $this->get_full_size()->get_file_name();

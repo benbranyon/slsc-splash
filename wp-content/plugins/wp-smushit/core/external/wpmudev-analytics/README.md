@@ -31,7 +31,7 @@ Example usage:
     if ( ! class_exists( 'WPMUDEV_Analytics' ) ) {
         require_once YOUR_SUBMODULES_DIR . '/wpmudev-analytics/autoload.php';
     }
-    $analytics = new WPMUDEV_Analytics( 'slug', 'Plugin Name', $event_limit, $token );
+    $analytics = new WPMUDEV_Analytics( 'slug', 'Plugin Name', $event_limit, $token, $mixpanel_options );
     $analytics->identify( 'unique_id' );
     $analytics->registerAll( $super_properties );
     $analytics->track($event, $properties);

@@ -2,7 +2,7 @@
  * External dependencies
  */
 import React from 'react';
-import Mixpanel from '../../../js/mixpanel';
+import tracker from '../../../js/utils/tracker';
 
 /**
  * WordPress dependencies
@@ -76,7 +76,7 @@ export default ({smushData}) => {
 								target="_blank"
 								rel="noreferrer"
 								onClick={ () => {
-									Mixpanel.getInstance().track( 'local_webp_upsell', {
+									tracker.track( 'local_webp_upsell', {
 										Location: 'local_webp_page',
 									} );
 								} }

@@ -23,7 +23,7 @@ export const scanProgressBar = ( autoSyncDuration ) => {
 	let prevProcessedItems = window.wp_smushit_data?.media_library_scan?.processed_items || 0;
 	const cacheProcessTimePerItem = [];
 	let durationToHaveChangeOnProgress = autoSyncDuration;
-	let timeLimitToShowNotice = autoSyncDuration * 10;// 15s.
+	let timeLimitToShowNotice = 60000;// 60s.
 	return {
 		update( processedItems, totalItems ) {
 			this.updateRemainingTime( processedItems, totalItems );
@@ -174,6 +174,8 @@ const SmushProgressBar = () => {
 	const bulkSmushDescription = document.querySelector( '.wp-smush-bulk-wrapper' );
 	const bulkRunningNotice = progressBar.querySelector( '#wp-smush-running-notice' );
 	const bulkSmushAllDone = document.querySelector( '.wp-smush-all-done' );
+	const stopBulkSmushModal = document.getElementById( 'smush-stop-bulk-smush-modal' );
+	const holdOnNoticeElement = progressBar.querySelector( '.wp-smush-bulk-hold-on-notice' );
 	let isStateHidden = false;
 	let onCancelCallback = () => {};
 
@@ -206,15 +208,51 @@ const SmushProgressBar = () => {
 				.setOnCancelCallback( () => {} )
 				.update( 0, 0 );
 			this.resetOriginalNotice();
+			this.closeStopBulkSmushModal();
 			return this;
 		},
 		show() {
 			// Show progress bar.
-			cancelBtn.onclick = onCancelCallback;
 			progressBar.classList.remove( 'sui-hidden' );
+			cancelBtn.onclick = this.showStopBulkSmushModal.bind( this );
 			this.hideBulkSmushDescription();
 			this.hideBulkSmushAllDone();
 			this.hideRecheckImagesNotice();
+		},
+		showStopBulkSmushModal() {
+			if ( ! stopBulkSmushModal ) {
+				return;
+			}
+
+			const stopBulkSmushButton = stopBulkSmushModal.querySelector( '.smush-stop-bulk-smush-button' );
+			stopBulkSmushButton.addEventListener( 'click', onCancelCallback, { once: true } );
+
+			// Displays the modal with the release's higlights if it exists.
+			const modalId = stopBulkSmushModal.id,
+			focusAfterClosed = 'wpbody-content',
+			focusWhenOpen = undefined,
+			hasOverlayMask = false,
+			isCloseOnEsc = false,
+			isAnimated = true;
+
+			window.SUI.openModal(
+				modalId,
+				focusAfterClosed,
+				focusWhenOpen,
+				hasOverlayMask,
+				isCloseOnEsc,
+				isAnimated
+			);
+		},
+		closeStopBulkSmushModal() {
+			if ( ! window.SUI ) {
+				return;
+			}
+			const isModalClosed = ( ! stopBulkSmushModal ) || ! stopBulkSmushModal.classList.contains( 'sui-content-fade-in' );
+			if ( isModalClosed ) {
+				return;
+			}
+			window.SUI.closeModal( stopBulkSmushModal.id );
 		},
 		setCancelButtonLabel( textContent ) {
 			cancelBtn.textContent = textContent;
@@ -295,8 +333,17 @@ const SmushProgressBar = () => {
 			if ( recheckImagesNoticeElement ) {
 				recheckImagesNoticeElement.classList.add( 'sui-hidden' );
 			}
-		}
-
+		},
+		showHoldOnNotice() {
+			if ( holdOnNoticeElement ) {
+				holdOnNoticeElement.classList.remove( 'sui-hidden' );
+			}
+		},
+		hideHoldOnNotice() {
+			if ( holdOnNoticeElement ) {
+				holdOnNoticeElement.classList.add( 'sui-hidden' );
+			}
+		},
 	};
 };
 export default new SmushProgressBar();
