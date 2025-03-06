@@ -45,8 +45,9 @@ class wfLog {
 			$UA = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		}
 		
+		$ipHex = wfDB::binaryValueToSQLHex(wfUtils::inet_pton($IP));
 		$table = wfDB::networkTable('wfLiveTrafficHuman');
-		if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$table} WHERE IP = %s AND identifier = %s AND expiration >= UNIX_TIMESTAMP()", wfUtils::inet_pton($IP), hash('sha256', $UA, true)))) {
+		if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$table} WHERE IP = {$ipHex} AND identifier = %s AND expiration >= UNIX_TIMESTAMP()", hash('sha256', $UA, true)))) {
 			return true;
 		}
 		return false;
@@ -70,8 +71,9 @@ class wfLog {
 			$UA = (isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '');
 		}
 		
+		$ipHex = wfDB::binaryValueToSQLHex(wfUtils::inet_pton($IP));
 		$table = wfDB::networkTable('wfLiveTrafficHuman');
-		if ($wpdb->get_var($wpdb->prepare("INSERT IGNORE INTO {$table} (IP, identifier, expiration) VALUES (%s, %s, UNIX_TIMESTAMP() + 86400)", wfUtils::inet_pton($IP), hash('sha256', $UA, true)))) {
+		if ($wpdb->get_var($wpdb->prepare("INSERT IGNORE INTO {$table} (IP, identifier, expiration) VALUES ({$ipHex}, %s, UNIX_TIMESTAMP() + 86400)", hash('sha256', $UA, true)))) {
 			return true;
 		}
 	}
@@ -185,14 +187,14 @@ class wfLog {
 		}
 
 		//Else userID stays 0 but we do log this even though the user doesn't exist.
-		$this->getDB()->queryWrite("insert into " . $this->loginsTable . " (hitID, ctime, fail, action, username, userID, IP, UA) values (%d, %f, %d, '%s', '%s', %s, %s, '%s')",
+		$ipHex = wfDB::binaryValueToSQLHex(wfUtils::inet_pton(wfUtils::getIP()));
+		$this->getDB()->queryWrite("insert into " . $this->loginsTable . " (hitID, ctime, fail, action, username, userID, IP, UA) values (%d, %f, %d, '%s', '%s', %s, {$ipHex}, '%s')",
 			$hitID,
 			sprintf('%.6f', microtime(true)),
 			$fail,
 			$action,
 			$username,
 			$userID,
-			wfUtils::inet_pton(wfUtils::getIP()),
 			(isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '')
 			);
 	}
@@ -268,8 +270,9 @@ class wfLog {
 		global $wpdb;
 		$IPSQL = "";
 		if($IP){
-			$IPSQL = " and IP=%s ";
-			$sqlArgs = array($afterTime, wfUtils::inet_pton($IP), $limit);
+			$ipHex = wfDB::binaryValueToSQLHex(wfUtils::inet_pton($IP));
+			$IPSQL = " and IP={$ipHex} ";
+			$sqlArgs = array($afterTime, $limit);
 		} else {
 			$sqlArgs = array($afterTime, $limit);
 		}
@@ -904,8 +907,8 @@ class wfUserIPRange {
 			return (strcmp($ip1N, $ipN) <= 0 && strcmp($ip2N, $ipN) >= 0);
 		}
 		else { //Treat as a literal IP
-			$ip1 = @wfUtils::inet_pton($ip_string);
-			$ip2 = @wfUtils::inet_pton($ip);
+			$ip1 = wfUtils::inet_pton($ip_string);
+			$ip2 = wfUtils::inet_pton($ip);
 			if ($ip1 !== false && $ip1 == $ip2) {
 				return true;
 			}
@@ -1004,10 +1007,15 @@ class wfUserIPRange {
 		$ip_string = $this->getIPString();
 		if (preg_match('/[^0-9a-f:\.\-]/i', $ip_string)) { return false; }
 		list($ip1, $ip2) = explode("-", $ip_string);
-		$ip1N = @wfUtils::inet_pton($ip1);
-		$ip2N = @wfUtils::inet_pton($ip2);
 		
-		if ($ip1N === false || !wfUtils::isValidIP($ip1) || $ip2N === false || !wfUtils::isValidIP($ip2)) {
+		if (!wfUtils::isValidIP($ip1) || !wfUtils::isValidIP($ip2)) {
+			return false;
+		}
+		
+		$ip1N = wfUtils::inet_pton($ip1);
+		$ip2N = wfUtils::inet_pton($ip2);
+		
+		if ($ip1N === false || $ip2N === false) {
 			return false;
 		}
 		
@@ -2054,6 +2062,10 @@ class wfErrorLogHandler {
 		}
 		
 		$path = untrailingslashit($path);
+		if (empty($path)) {
+			return array();
+		}
+		
 		$contents = @scandir($path);
 		if (!is_array($contents)) {
 			return array();
