@@ -2,12 +2,15 @@
 
 namespace Yoast\WP\SEO\Editors\Framework;
 
+use Yoast\WP\SEO\Editors\Domain\Analysis_Features\Analysis_Feature_Interface;
 use Yoast\WP\SEO\Helpers\Options_Helper;
 
 /**
  * Describes if the Cornerstone content features is enabled.
  */
 class Cornerstone_Content implements Analysis_Feature_Interface {
+
+	public const NAME = 'cornerstoneContent';
 
 	/**
 	 * The options helper.
@@ -40,7 +43,7 @@ class Cornerstone_Content implements Analysis_Feature_Interface {
 	 * @return string The name.
 	 */
 	public function get_name(): string {
-		return 'cornerstoneContent';
+		return self::NAME;
 	}
 
 	/**
