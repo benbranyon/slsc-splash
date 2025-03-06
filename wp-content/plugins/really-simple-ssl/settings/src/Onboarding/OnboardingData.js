@@ -103,9 +103,9 @@ const useOnboardingData = create(( set, get ) => ({
         let currentStep = get().steps[get().currentStepIndex];
         set(
             produce((state) => {
-                state.currentStep = currentStep;
-            }
-        ))
+                    state.currentStep = currentStep;
+                }
+            ))
     },
     fetchOnboardingModalStatus: async () => {
         rsssl_api.doAction('get_modal_status').then((response) => {
@@ -138,30 +138,47 @@ const useOnboardingData = create(( set, get ) => ({
         set((state) => ({processing:false}));
     },
     getSteps: async (forceRefresh) => {
-        const {steps, networkActivationStatus, certificateValid, networkProgress, networkwide, overrideSSL, error, sslEnabled} = await retrieveSteps(forceRefresh);
-        //if ssl is already enabled, the server will send only one step. In that case we can skip the below.
-        //it's only needed when SSL is activated just now, client side.
-        let currentStepIndex = 0;
-        if ( sslEnabled || ( networkwide && networkActivationStatus === 'completed') ) {
-            currentStepIndex = 1;
+        const {steps, networkActivationStatus, certificateValid, networkProgress, networkwide,
+            overrideSSL, error, sslEnabled, upgradedFromFree} = await retrieveSteps(forceRefresh);
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const isVerified = urlParams.get('verified_email') === '1';
+
+        let initialStepIndex = 0;
+        let verified = isVerified;
+
+        // If verified, go to features step
+        if (isVerified) {
+            const featuresIndex = steps.findIndex(step => step.id === 'features');
+            if (featuresIndex !== -1) {
+                initialStepIndex = featuresIndex;
+                // Remove the parameter from URL
+                urlParams.delete('verified_email');
+                const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '');
+                window.history.replaceState({}, '', newUrl);
+            }
+        } else if (!upgradedFromFree && (sslEnabled || (networkwide && networkActivationStatus === 'completed'))) {
+            initialStepIndex = 1;
         }
 
+        // Set all state at once to prevent multiple rerenders
         set({
-            steps: steps,
-            currentStepIndex:currentStepIndex,
-            currentStep: steps[currentStepIndex],
-            networkActivationStatus: networkActivationStatus,
-            certificateValid: certificateValid,
-            networkProgress: networkProgress,
-            networkwide: networkwide,
-            overrideSSL: overrideSSL,
-            sslEnabled: sslEnabled,
+            steps,
+            currentStepIndex: initialStepIndex,
+            currentStep: steps[initialStepIndex],
+            networkActivationStatus,
+            certificateValid,
+            networkProgress,
+            networkwide,
+            overrideSSL,
+            sslEnabled,
             dataLoaded: true,
-            error:error,
+            error,
+            emailVerified: verified
         });
 
-        if (networkActivationStatus==='completed') {
-            set( {networkProgress: 100} );
+        if (networkActivationStatus === 'completed') {
+            set({networkProgress: 100});
         }
     },
     refreshSSLStatus: (e) => {
@@ -227,7 +244,7 @@ const useOnboardingData = create(( set, get ) => ({
                 }
             }
         });
-}
+    }
 }));
 
 const retrieveSteps = (forceRefresh) => {
@@ -242,7 +259,8 @@ const retrieveSteps = (forceRefresh) => {
         let networkwide = response.networkwide;
         let overrideSSL = response.ssl_detection_overridden;
         let error = response.error;
-        return {steps, networkActivationStatus, certificateValid, networkProgress, networkwide, overrideSSL, error, sslEnabled};
+        let upgradedFromFree = response.rsssl_upgraded_from_free;
+        return {steps, networkActivationStatus, certificateValid, networkProgress, networkwide, overrideSSL, error, sslEnabled, upgradedFromFree};
     });
 }
 

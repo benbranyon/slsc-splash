@@ -6,9 +6,10 @@
  * @since 3.12.0
  */
 import Fetcher from '../utils/fetcher';
-import MixPanel from "../mixpanel";
+import tracker from '../utils/tracker';
 import SmushProgress from '../common/progressbar';
 import {GlobalStats, UpsellManger} from "../common/globalStats";
+import loopbackTester from '../loopback-tester';
 
 (function () {
     'use strict';
@@ -43,7 +44,6 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
             return;
         }
 
-        const mixPanel = MixPanel.getInstance();
         const BO = new BackgroundProcess();
         const bulkWrapper = $('.bulk-smush-wrapper');
         const reScanImagesButton = $('.wp-smush-scan');
@@ -99,7 +99,22 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                 // Disable UI.
                 this.onStart();
 
-                // Start BO.
+                loopbackTester.performTest().then( ( res ) => {
+                    const isLoopbackHealthy = res?.loopback;
+                    if ( isLoopbackHealthy ) {
+                         // Start BO.
+                        this.startBulkSmush();
+                    } else {
+                        this.showLoopbackErrorModal();
+                        this.onStartFailure();
+                    }
+                } ).catch( ( error ) => {
+			        console.error( 'Error:', error );
+                    this.showLoopbackErrorModal();
+                    this.onStartFailure();
+                } );
+            },
+            startBulkSmush() {
                 BO.handle('start').then((res) => {
                     if (res.success) {
                         // Update stats.
@@ -112,13 +127,30 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                             GlobalStats.renderStats();
                         }
                     } else {
-                        WP_Smush.helpers.showNotice( res, {
-                            'showdismiss': true,
-                            'autoclose' : false,
-                        } );
-                        this.cancelBulk();
+                        this.showFailureNotice( res );
+                        this.onStartFailure( res );
                     }
                 });
+            },
+            showFailureNotice( res ) {
+                WP_Smush.helpers.showNotice( res, {
+                    'showdismiss': true,
+                    'autoclose' : false,
+                } );
+            },
+            onStartFailure( res ) {
+                this.cancelBulk();
+            },
+            showLoopbackErrorModal() {
+                const loopbackErrorModal = document.getElementById( 'smush-loopback-error-dialog' );
+                if ( ! loopbackErrorModal || ! window.SUI ) {
+                    return;
+                }
+        
+                // Cache current process type.
+                loopbackErrorModal.dataset.processType = 'smush';
+        
+                WP_Smush.helpers.showModal( loopbackErrorModal.id );
             },
             /**
              * Initial state when load the Bulk Smush page while BO is running.
@@ -219,8 +251,6 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                         SmushProgress.showBulkSmushDescription();
                     }
 
-                    mixPanel.trackBulkSmushCancel();
-
                     cancellationInProgress = false;
                 });
             },
@@ -290,6 +320,10 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                         SmushProgress.setNotice( res.data.in_process_notice );
                     }
 
+                    if ( (res.data || {}).is_process_stuck ) {
+                        SmushProgress.showHoldOnNotice();
+                    }
+
                     if (res.success) {
                         // Update stats.
                         if ( this.updateStats(res.data, false) ) {
@@ -307,6 +341,8 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                             this.cancelBulk();
                         } else if (GlobalStats.getBoStats().is_completed) {
                             this.completeBulk();
+                        } else if ( GlobalStats.getBoStats().is_dead ) {
+                            this.onDead();
                         }
                     } else {
                         WP_Smush.helpers.showNotice( res );
@@ -321,8 +357,16 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                 $('.wp-smush-restore').setAttribute('disabled', '');
                 // Show upsell cdn.
                 UpsellManger.maybeShowCDNUpsellForPreSiteOnStart();
-                
+
+                this.hideBulkSmushFailedNotice();
+
 				this.setCancelButtonStateToInitial();
+            },
+            hideBulkSmushFailedNotice() {
+                const bulkSmushFailedNotice = document.querySelector( '.wp-smush-inline-retry-bulk-smush-notice' );
+                if ( bulkSmushFailedNotice ) {
+                    bulkSmushFailedNotice.parentElement.classList.add( 'sui-hidden' );
+                }
             },
             onFinish() {
                 // Clear interval.
@@ -342,6 +386,30 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                 // Show upsell cdn.
                 UpsellManger.maybeShowCDNUpsellForPreSiteOnCompleted();
             },
+            onDead() {
+                this.onFinish();
+                SmushProgress.showBulkSmushDescription();
+                this.showRetryBulkSmushModal();
+            },
+            showRetryBulkSmushModal() {
+                const retryModalElement = document.getElementById( 'smush-retry-bulk-smush-notice' );
+                if ( ! window.SUI || ! retryModalElement ) {
+                    return;
+                }
+        
+                retryModalElement.querySelector('.smush-retry-bulk-smush-notice-button').onclick = (e) => {
+                    e.preventDefault();
+                    window.SUI.closeModal( 'smush-retry-bulk-smush-notice' );
+                    this.start();
+                }
+        
+                window.SUI.openModal(
+                    'smush-retry-bulk-smush-notice',
+                    'wpbody-content',
+                    undefined,
+                    false
+                );
+            },
             init() {
                 if (!startBtn) {
                     return;
@@ -354,6 +422,15 @@ import {GlobalStats, UpsellManger} from "../common/globalStats";
                         return;
                     }
                     this.start();
+                }
+
+                const triggerBulkSmushButton = document.querySelector( '.wp-smush-inline-retry-bulk-smush-notice .wp-smush-trigger-bulk-smush' );
+                if ( triggerBulkSmushButton ) {
+                    triggerBulkSmushButton.addEventListener( 'click', ( e ) => {
+                        e.preventDefault();
+
+                        startBtn.click();
+                    } );
                 }
 
                 // If BO is running, initial new state.

@@ -33,7 +33,7 @@ function SmushFetcher() {
 			args.contentType = false;
 			args.processData = false;
 		} else {
-			data._ajax_nonce = data._ajax_nonce || window.wp_smush_msgs.nonce;
+			data._ajax_nonce = data._ajax_nonce || window.smush_global.nonce || window.wp_smush_msgs.nonce;
 			data.action = action;
 		}
 		args.data = data;
@@ -46,6 +46,7 @@ function SmushFetcher() {
 			return response;
 		}).catch((error) => {
 			console.error('Error:', error);
+			return error;
 		});
 	}
 
@@ -84,6 +85,14 @@ function SmushFetcher() {
 
 			getStats: () => {
 				return request('bulk_smush_get_global_stats');
+			},
+
+			backgroundHealthyCheck: () => {
+				return request('smush_start_background_pre_flight_check');
+			},
+
+			backgroundHealthyStatus: () => {
+				return request('smush_get_background_pre_flight_status');
 			}
 		},
 		smush: {
@@ -127,6 +136,11 @@ function SmushFetcher() {
 			 */
 			hideModal: (modalID) => request('hide_modal', {
 				modal_id: modalID,
+			}),
+
+			track: ( event, properties ) => request('smush_analytics_track_event', {
+				event,
+				properties
 			}),
 
 			/**

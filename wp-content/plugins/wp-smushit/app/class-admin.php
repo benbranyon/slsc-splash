@@ -91,6 +91,9 @@ class Admin {
 		// Filter built-in wpmudev branding script.
 		add_filter( 'wpmudev_whitelabel_plugin_pages', array( $this, 'builtin_wpmudev_branding' ) );
 		add_action( 'wp_smush_header_notices', array( $this, 'maybe_show_local_webp_convert_original_images_notice' ) );
+
+		// Deactivation survey.
+		add_action( 'admin_footer-plugins.php', array( $this, 'load_deactivation_survey_modal' ) );
 	}
 
 	/**
@@ -153,12 +156,27 @@ class Admin {
 			'nonce' => wp_create_nonce( 'wp-smush-ajax' ),
 		) );
 
+		wp_localize_script(
+			'smush-global',
+			'wp_smush_mixpanel',
+			array(
+				'opt_in' => Settings::get_instance()->get( 'usage' ),
+			)
+		);
+
 		$current_page   = '';
 		$current_screen = '';
 
 		if ( function_exists( 'get_current_screen' ) ) {
 			$current_screen = get_current_screen();
 			$current_page   = ! empty( $current_screen ) ? $current_screen->base : $current_page;
+		}
+
+		if ( 'plugins' === $current_page || 'plugins-network' === $current_page ) {
+			$this->register_scripts();
+			wp_enqueue_script( 'smush-sui' );
+			wp_enqueue_style( 'smush-admin' );
+			return;
 		}
 
 		if ( ! in_array( $current_page, Core::$external_pages, true ) && false === strpos( $current_page, 'page_smush' ) ) {
@@ -224,15 +242,15 @@ class Admin {
 			}
 
 			if ( isset( $text ) ) {
-				$links['smush_upgrade'] = '<a href="' . esc_url( $upgrade_url ) . '" aria-label="' . esc_attr( $label ) . '" target="_blank" style="color: #8D00B1;">' . esc_html( $text ) . '</a>';
+				$links['smush_upgrade'] = '<a id="smush-pluginlist-upgrade-link" href="' . esc_url( $upgrade_url ) . '" aria-label="' . esc_attr( $label ) . '" target="_blank" style="color: #8D00B1;">' . esc_html( $text ) . '</a>';
 			}
 		}
 
 		// Documentation link.
-		$docs_link = 'https://wpmudev.com/docs/wpmu-dev-plugins/smush/';
-		if ( ! WP_Smush::is_pro() ) {
-			$docs_link .= '?utm_source=smush&utm_medium=plugin&utm_campaign=smush_pluginlist_docs';
-		}
+		$docs_link           = Helper::get_utm_link(
+			array( 'utm_campaign' => 'smush_pluginlist_docs' ),
+			'https://wpmudev.com/docs/wpmu-dev-plugins/smush/'
+		);
 		$links['smush_docs'] = '<a href="' . esc_url( $docs_link ) . '" aria-label="' . esc_attr( __( 'View Smush Documentation', 'wp-smushit' ) ) . '" target="_blank">' . esc_html__( 'Docs', 'wp-smushit' ) . '</a>';
 
 		// Dashboard link.
@@ -277,11 +295,19 @@ class Admin {
 			$links[] = '<a href="https://wpmudev.com/get-support/" target="_blank" title="' . esc_attr__( 'Premium Support', 'wp-smushit' ) . '">' . esc_html__( 'Premium Support', 'wp-smushit' ) . '</a>';
 		}
 
-		$roadmap_link = 'https://wpmudev.com/roadmap/';
-		if ( ! WP_Smush::is_pro() ) {
-			$roadmap_link .= '?utm_source=smush&utm_medium=plugin&utm_campaign=smush_pluginlist_roadmap';
-		}
-		$links[] = '<a href="' . esc_url( $roadmap_link ) . '" target="_blank" title="' . esc_attr__( 'Roadmap', 'wp-smushit' ) . '">' . esc_html__( 'Roadmap', 'wp-smushit' ) . '</a>';
+		$roadmap_link = Helper::get_utm_link(
+			array(
+				'utm_campaign' => 'smush_pluginlist_roadmap',
+			),
+			'https://wpmudev.com/roadmap/'
+		);
+		$links[]      = '<a href="' . esc_url( $roadmap_link ) . '" target="_blank" title="' . esc_attr__( 'Roadmap', 'wp-smushit' ) . '">' . esc_html__( 'Roadmap', 'wp-smushit' ) . '</a>';
+
+		$links[] = '<a class="wp-smush-review" href="https://wordpress.org/support/plugin/wp-smushit/reviews#new-post" target="_blank" rel="noopener noreferrer" title="' . esc_attr__( 'Rate our plugin', 'wp-smushit' ) . '">
+					<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
+					</a>';
+
+		echo '<style>.wp-smush-review span,.wp-smush-review span:hover{color:#ffb900}.wp-smush-review span:hover~span{color:#888}</style>';
 
 		return $links;
 	}
@@ -329,7 +355,7 @@ class Admin {
 			}
 
 			if ( ! WP_Smush::is_pro() ) {
-				$this->pages['smush-upgrade'] = new Pages\Upgrade( 'smush-upgrade', __( 'Smush Pro', 'wp-smushit' ), 'smush' );
+				new Pages\Upgrade( 'smush_submenu_upsell', __( 'Upgrade for 80% Off!', 'wp-smushit' ), 'smush', true );
 			}
 		}
 
@@ -791,5 +817,17 @@ class Admin {
 
 	public function get_plugin_discount() {
 		return self::PLUGIN_DISCOUNT_PERCENT . '%';
+	}
+
+	public function load_deactivation_survey_modal() {
+		$deactivation_survey_template_file = WP_SMUSH_DIR . 'app/modals/deactivation-survey.php';
+		if ( ! file_exists( $deactivation_survey_template_file ) ) {
+			return;
+		}
+
+		ob_start();
+		include $deactivation_survey_template_file;
+		// Everything escaped in all template files.
+		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }

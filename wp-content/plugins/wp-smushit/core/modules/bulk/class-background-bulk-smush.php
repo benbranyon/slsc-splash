@@ -6,6 +6,8 @@ use Smush\Core\Error_Handler;
 use Smush\Core\Helper;
 use Smush\Core\Server_Utils;
 use Smush\Core\Stats\Global_Stats;
+use Smush\Core\Media_Library\Media_Library_Last_Process;
+
 use WP_Smush;
 
 class Background_Bulk_Smush {
@@ -19,6 +21,21 @@ class Background_Bulk_Smush {
 	private $logger;
 	private $global_stats;
 	private $server_utils;
+
+	/**
+	 * Static instance
+	 *
+	 * @var self
+	 */
+	private static $instance;
+
+	public static function get_instance() {
+		if ( empty( self::$instance ) ) {
+			self::$instance = new self();
+		}
+
+		return self::$instance;
+	}
 
 	public function __construct() {
 		$process_manager          = new Background_Process_Manager(
@@ -42,6 +59,10 @@ class Background_Bulk_Smush {
 
 		add_filter( 'wp_smush_script_data', array( $this, 'localize_background_stats' ) );
 		add_action( 'init', array( $this, 'cancel_programmatically' ) );
+	}
+
+	public function get_background_process() {
+		return $this->background_process;
 	}
 
 	public function cancel_programmatically() {
@@ -70,30 +91,6 @@ class Background_Bulk_Smush {
 			wp_send_json_error();
 		}
 
-		if ( ! Helper::loopback_supported() ) {
-			$this->logger->error( 'Loopback check failed. Not starting a new background process.' );
-			$doc_link = 'https://wpmudev.com/docs/wpmu-dev-plugins/smush/#loopback-request-issue';
-			if ( ! WP_Smush::is_pro() ) {
-				$doc_link = add_query_arg(
-					array(
-						'utm_source' => 'smush',
-						'utm_medium' => 'plugin',
-						'utm_campaign' => 'smush_bulksmush_loopback_notice',
-					),
-					$doc_link
-				);
-			}
-			wp_send_json_error( array(
-				'message' => sprintf(
-					/* translators: %s: a doc link */
-					esc_html__( 'Your site seems to have an issue with loopback requests. Please try again and if the problem persists find out more %s.', 'wp-smushit' ),
-					sprintf( '<a target="_blank" href="%1$s">%2$s</a>', $doc_link, esc_html__( 'here', 'wp-smushit' ) )
-				),
-			) );
-		} else {
-			$this->logger->notice( 'Loopback check successful.' );
-		}
-
 		$tasks = $this->prepare_background_tasks();
 		if ( $tasks ) {
 			do_action( 'wp_smush_bulk_smush_start' );
@@ -109,16 +106,22 @@ class Background_Bulk_Smush {
 	public function bulk_smush_cancel() {
 		$this->check_ajax_referrer();
 
-		$this->background_process->cancel();
+		if ( ! $this->background_process->get_status()->is_cancelled() ) {
+			$this->background_process->cancel();
+		}
+
 		wp_send_json_success();
 	}
 
 	public function bulk_smush_get_status() {
 		$this->check_ajax_referrer();
 
+		$is_process_stuck = Media_Library_Last_Process::get_instance()->is_process_stuck();
+
 		wp_send_json_success( array_merge(
 			$this->background_process->get_status()->to_array(),
 			array(
+				'is_process_stuck'  => $is_process_stuck,
 				'in_process_notice' => $this->get_in_process_notice(),
 			)
 		) );
@@ -223,6 +226,15 @@ class Background_Bulk_Smush {
 	}
 
 	/**
+	 * Whether BO is dead or not.
+	 *
+	 * @return boolean
+	 */
+	public function is_dead() {
+		return $this->background_process->get_status()->is_dead();
+	}
+
+	/**
 	 * Get total items.
 	 *
 	 * @return int
@@ -232,12 +244,37 @@ class Background_Bulk_Smush {
 	}
 
 	/**
+	 * Get processed items.
+	 *
+	 * @return int
+	 */
+	public function get_processed_items() {
+		return $this->background_process->get_status()->get_processed_items();
+	}
+
+	/**
 	 * Get failed items.
 	 *
 	 * @return int
 	 */
 	public function get_failed_items() {
 		return $this->background_process->get_status()->get_failed_items();
+	}
+
+	/**
+	 * Get revival count.
+	 *
+	 * @return int
+	 */
+	public function get_revival_count() {
+		return $this->background_process->get_revival_count();
+	}
+
+	/**
+	 * Get process id.
+	 */
+	public function get_process_id() {
+		return $this->background_process->get_process_id();
 	}
 
 	/**

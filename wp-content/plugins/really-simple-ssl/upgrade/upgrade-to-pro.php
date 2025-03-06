@@ -43,23 +43,13 @@ if ( !class_exists('rsp_upgrade_to_pro') ){
 					case "rsssl_pro":
 						$rsssl_admin_url = is_multisite() ? network_admin_url('settings.php') : admin_url("options-general.php");
 						$this->slug = is_multisite() ? "really-simple-ssl-pro-multisite/really-simple-ssl-pro-multisite.php" :  "really-simple-ssl-pro/really-simple-ssl-pro.php";
-						$this->plugin_name = "Really Simple SSL Pro";
+						$this->plugin_name = "Really Simple Security Pro";
 						$this->plugin_constant = "rsssl_pro";
 						$this->prefix = "rsssl_";
 						$this->api_url = "https://really-simple-ssl.com";
 						$this->dashboard_url = add_query_arg(["page" => "really-simple-security"], $rsssl_admin_url );
 						$this->account_url = 'https://really-simple-ssl.com/account';
 						$this->instructions = 'https://really-simple-ssl.com/knowledge-base/install-really-simple-ssl-pro';
-						break;
-					case "burst_pro":
-						$this->slug = "burst-pro/burst-pro.php";
-						$this->plugin_name = "Burst";
-						$this->plugin_constant = "burst_pro";
-						$this->prefix = "burst_";
-						$this->api_url = "https://burst-statistics.com";
-						$this->dashboard_url = add_query_arg(["page" => "burst"], admin_url( "index.php" ));
-						$this->account_url = 'https://burst-statistics.com/account';
-						$this->instructions = 'https://burst-statistics.com/how-to-install-burst-premium';
 						break;
 					case "cmplz_pro":
 					default:
@@ -123,8 +113,6 @@ if ( !class_exists('rsp_upgrade_to_pro') ){
 				$plugin_to_be_installed = 'complianz-gdpr';
 			} else if (isset($_GET['plugin']) && $_GET['plugin']==='rsssl_pro' ) {
 				$plugin_to_be_installed = 'really-simple-ssl';
-			} else if (isset($_GET['plugin']) && $_GET['plugin']==='burst_pro' ) {
-				$plugin_to_be_installed = 'burst';
 			}
 
 			$path = __FILE__;
@@ -132,24 +120,11 @@ if ( !class_exists('rsp_upgrade_to_pro') ){
 				$current_plugin = 'really-simple-ssl';
 			} else if (strpos($path, 'complianz')!==false){
 				$current_plugin = 'complianz-gdpr';
-			} else if (strpos($path, 'burst')!==false){
-				$current_plugin = 'burst';
 			}
 			$dir_url = plugin_dir_url(__FILE__).'img/';
 
-			$suggestion = $fallback_suggestion = [
-				'icon_url' => $dir_url.'burst.png',
-				'constant' => 'burst_version',
-				'title' => 'Burst – Privacy Friendly Statistics',
-				'description_short' => __('Self-hosted and privacy-friendly analytics tool.', "really-simple-ssl"),
-				'disabled' => '',
-				'button_text' => __("Install", "really-simple-ssl"),
-				'slug' => 'burst-statistics',
-				'description' => __("Get detailed insights into visitors' behaviour with Burst Statistics, the privacy-friendly analytics dashboard from Really Simple Plugins.", "really-simple-ssl"),
-				'install_url' => 'burst%20statistics%20hesseldejong%20%20burst-statistics.com&tab=search&type=term',
-			];
 
-			if ( $plugin_to_be_installed === 'really-simple-ssl' || $plugin_to_be_installed === 'burst' ){
+			if ( $plugin_to_be_installed === 'really-simple-ssl' ){
 				$suggestion = [
 					'icon_url' => $dir_url.'complianz-gdpr.png',
 					'constant' => 'cmplz_version',
@@ -161,21 +136,18 @@ if ( !class_exists('rsp_upgrade_to_pro') ){
 					'description' => __('Configure your Cookie Notice, Consent Management and Cookie Policy with our Wizard and Cookie Scan. Supports GDPR, DSGVO, TTDSG, LGPD, POPIA, RGPD, CCPA and PIPEDA.', "really-simple-ssl"),
 					'install_url' => 'complianz+gdpr+POPIA&tab=search&type=term',
 				];
-				if ($current_plugin==='complianz-gdpr') {
-					$suggestion = $fallback_suggestion;
-				}
 			}
 
 			if ( $plugin_to_be_installed === 'complianz-gdpr' ){
 				$suggestion = [
 					'icon_url' => $dir_url.'really-simple-ssl.png',
 					'constant' => 'rsssl_version',
-					'title' => 'Really Simple SSL',
+					'title' => 'Really Simple Security',
 					'description_short' => __('One click SSL optimization', "really-simple-ssl"),
 					'disabled' => '',
 					'button_text' => __("Install", "really-simple-ssl"),
 					'slug' => 'really-simple-ssl',
-					'description' => __('Really Simple SSL automatically detects your settings and configures your website to run over HTTPS. To keep it lightweight, we kept the options to a minimum. Your website will move to SSL with one click.', "really-simple-ssl"),
+					'description' => __('Easily improve site security with WordPress Hardening, Two-Factor Authentication (2FA), Login Protection, Vulnerability Detection and SSL certificate generation.', "really-simple-ssl"),
 					'install_url' => 'ssl%20really%20simple%20plugins%20complianz+HSTS&tab=search&type=term',
 				];
 				if ( $current_plugin==='really-simple-ssl' ) {
@@ -369,8 +341,8 @@ if ( !class_exists('rsp_upgrade_to_pro') ){
                             <a href="<?php echo $plugins_url ?>" role="button" class="button-primary rsp-red rsp-hidden rsp-btn rsp-cancel">
 								<?php echo __("Cancel", "really-simple-ssl") ?>
                             </a>
-                            <div class="rsp-error-message rsp-folder rsp-package rsp-install rsp-activate rsp-hidden"><span><?php _e('An Error Occurred:',"really-simple-ssl")?></span>&nbsp;<?php printf(__('Install %sManually%s.',"really-simple-ssl").'&nbsp;', '<a target="_blank" rel="noopener noreferrer" href="'.$this->account_url.'">','</a>')?></div>
-                            <div class="rsp-error-message rsp-license rsp-hidden"><span><?php _e('An Error Occurred:',"really-simple-ssl")?></span>&nbsp;<?php printf(__('Check your %slicense%s.',"really-simple-ssl").'&nbsp;', '<a target="_blank" rel="noopener noreferrer" href="'.$this->instructions.'">','</a>')?></div>
+                            <div class="rsp-error-message rsp-folder rsp-package rsp-install rsp-activate rsp-hidden"><span><?php _e('An error occurred:',"really-simple-ssl")?></span>&nbsp;<?php printf(__('Install %sManually%s.',"really-simple-ssl").'&nbsp;', '<a target="_blank" rel="noopener noreferrer" href="'.$this->account_url.'">','</a>')?></div>
+                            <div class="rsp-error-message rsp-license rsp-hidden"><span><?php _e('An error occurred:',"really-simple-ssl")?></span>&nbsp;<?php printf(__('Check your %slicense%s.',"really-simple-ssl").'&nbsp;', '<a target="_blank" rel="noopener noreferrer" href="'.$this->instructions.'">','</a>')?></div>
                         </div>
                     </div>
                 </div>

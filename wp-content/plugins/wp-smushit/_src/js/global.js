@@ -1,8 +1,16 @@
 import '../scss/common.scss';
+import DeactivationSurvey from './modules/deactivation-survey';
+import GlobalTracking from './global-tracking';
 
 /* global ajaxurl */
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener( 'DOMContentLoaded', function() {
+	// Deactivation survey modal.
+	( new DeactivationSurvey() ).init();
+	// Global Trackings.
+	( new GlobalTracking() ).init();
+
+	// Dismiss notices.
 	const dismissNoticeButton = document.querySelectorAll(
 		'.smush-dismissible-notice .smush-dismiss-notice-button'
 	);
@@ -54,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
 			xhr.send();
 		} );
 	}
-
 
 	// Show header notices.
 	const handleHeaderNotice = () => {

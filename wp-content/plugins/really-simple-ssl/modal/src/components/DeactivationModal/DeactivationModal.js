@@ -2,6 +2,7 @@ import {__} from "@wordpress/i18n";
 import {useEffect, useState} from "@wordpress/element";
 
 const DeactivationModal = () => {
+
     const [isOpen, setOpen] = useState(false);
     const [RssslModal, setRssslModal] = useState(false);
     const [targetPluginLink, setTargetPluginLink] = useState(null);
@@ -9,7 +10,7 @@ const DeactivationModal = () => {
 
     useEffect(() => {
         // Dynamically set the targetPluginLink based on isPremium
-        const linkId = isPremium ? 'deactivate-really-simple-ssl-pro' : 'deactivate-really-simple-ssl';
+        const linkId = isPremium ? 'deactivate-really-simple-security-pro' : 'deactivate-really-simple-security';
         const linkElement = document.getElementById(linkId);
         setTargetPluginLink(linkElement);
 
@@ -37,9 +38,7 @@ const DeactivationModal = () => {
 
     const deactivateAndRevert = () => {
         setOpen(false);
-        if (targetPluginLink) {
-            window.location.href = targetPluginLink.getAttribute('href');
-        }
+        window.location.href = rsssl_modal.deactivate_revert_https;
     };
 
     useEffect(() => {
@@ -64,64 +63,59 @@ const DeactivationModal = () => {
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Performant HTTPS redirection", "really-simple-ssl"),
+                'text': __("SSL Encryption", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Vulnerability detection", "really-simple-ssl"),
+                'text': __("Firewall", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Security Headers", "really-simple-ssl"),
+                'text': __("Vulnerability Management", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Advanced hardening", "really-simple-ssl"),
+                'text': __("WordPress Hardening", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Mixed content scan", "really-simple-ssl"),
+                'text': __("Login Protection", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Two-step verification", "really-simple-ssl"),
+                'text': __("Two-Factor Authentication", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Password security", "really-simple-ssl"),
+                'text': __("Limit Login Attempts", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Limit login attempts", "really-simple-ssl"),
+                'text': __("Visitor Protection", "really-simple-ssl"),
             },
         ] :
         [
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Performant HTTPS redirection", "really-simple-ssl"),
+                'text': __("SSL Encryption", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
-                'text': __("Vulnerability detection", "really-simple-ssl"),
+                'text': __("Vulnerability Management", "really-simple-ssl"),
             },
             {
                 'icon': 'circle-times',
                 'color': 'red',
                 'text': __("WordPress hardening", "really-simple-ssl"),
-            },
-            {
-                'icon': 'circle-times',
-                'color': 'red',
-                'text': __("Mixed content fixer", "really-simple-ssl"),
             },
         ];
     return (

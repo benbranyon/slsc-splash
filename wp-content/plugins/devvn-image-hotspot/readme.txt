@@ -2,9 +2,9 @@
 Contributors: levantoan
 Donate link: https://levantoan.com/donate/
 Tags: hotspot, points, image, maps, image hotspot
-Requires at least: 4.3
-Tested up to: 5.9.1
-Stable tag: 1.2.3
+Requires at least: 4.6
+Tested up to: 6.6.1
+Stable tag: 1.2.8
 License: GPLv3
 License URI: http://www.gnu.org/licenses/gpl-3.0
 
@@ -49,6 +49,30 @@ Read here [change the background tooltip and text color](https://github.com/leva
 == Changelog ==
 
 For more information, see [Releases](https://levantoan.com/devvn-image-hotspot).
+
+= 1.2.8 - 26/09/2024 =
+
+* Fix shortcode in content pin.
+* Enable iframe in content pin.
+
+= 1.2.7 - 26/08/2024 =
+
+* Update js to be compatible with lazyload
+* Update .pot file (Thanks to Alex Lion (阿力獅) feedback)
+
+= 1.2.6 - 23/08/2024 =
+
+* Add allowed_classes => false to unserialize. As suggested by "Michelle Porter - Wordfence Web Application Vulnerability Analyst". Many thanks to Michelle Porter
+* Add ALT tag to point
+
+= 1.2.5 - 16/08/2024 =
+
+* Fix serious error in version 1.2.4
+
+= 1.2.4 - 16/08/2024 =
+
+* FIX Authenticated (Author+) PHP Object Injection. Thanks to Lucio Sá
+* Add editor js and tinymce js
 
 = 1.2.2 - 05/03/2022 =
 

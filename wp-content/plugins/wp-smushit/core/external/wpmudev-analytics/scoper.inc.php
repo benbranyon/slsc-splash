@@ -35,7 +35,7 @@ return [
 			      'docs',
 			      'test',
 			      'tests',
-				  'examples'
+			      'examples',
 		      ] )
 		      ->in( [
 			      'vendor/mixpanel/mixpanel-php',
@@ -56,7 +56,23 @@ return [
 	// heart contents.
 	//
 	// For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#patchers
-	'patchers'                => [],
+	'patchers'                => [
+		static function ( string $filePath, string $prefix, string $content ): string {
+			$class_names = array(
+				'ConsumerStrategies_AbstractConsumer',
+				'ConsumerStrategies_FileConsumer',
+				'ConsumerStrategies_CurlConsumer',
+				'ConsumerStrategies_SocketConsumer',
+				'Producers_MixpanelBaseProducer',
+				'Producers_MixpanelEvents',
+				'Producers_MixpanelGroups',
+				'Producers_MixpanelPeople',
+			);
+			$pattern     = '~([\'"])(' . join( '|', $class_names ) . ')\1~';
+
+			return preg_replace( $pattern, '$1WPMUDEV_Analytics_Vendor\\\$2$1', $content );
+		},
+	],
 
 	// List of symbols to consider internal i.e. to leave untouched.
 	//

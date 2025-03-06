@@ -1,21 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import {useRef, useEffect, useState} from '@wordpress/element';
 import Select from 'react-select';
 import useFields from "../FieldsData";
 import useRolesData from './RolesStore';
 import {__} from "@wordpress/i18n";
 import './select.scss';
+
 /**
  * TwoFaRolesDropDown component represents a dropdown select for excluding roles
  * from two-factor authentication email.
  * @param {object} field - The field object containing information about the field.
+ * @param forcedRoledId
+ * @param optionalRolesId
  */
-const TwoFaRolesDropDown = ({ field }) => {
+const TwoFaRolesDropDown = ({ field, forcedRoledId, optionalRolesId }) => {
     const {fetchRoles, roles, rolesLoaded} = useRolesData();
     const [selectedRoles, setSelectedRoles] = useState([]);
     const [otherRoles, setOtherRoles] = useState([]);
-    // Custom hook to manage form fields
-    const { updateField, getFieldValue, setChangedField, getField, fieldsLoaded } = useFields();
-    let enabled = true;
+    const { updateField, getFieldValue, setChangedField, getField, fieldsLoaded, showSavedSettingsNotice, saveField } = useFields();
+    // Reference for tooltip usage
+    const selectRef = useRef(null);
+    // Check if the select component should be disabled based on `rsssl_settings.email_verified`
+    const isSelectDisabled = ! getFieldValue('login_protection_enabled');
 
     useEffect(() => {
         if (!rolesLoaded) {
@@ -24,38 +29,45 @@ const TwoFaRolesDropDown = ({ field }) => {
     }, [rolesLoaded]);
 
     useEffect(() => {
-        if ( field.id==='two_fa_forced_roles' ) {
-            let otherField = getField('two_fa_optional_roles');
+        if ( field.id === forcedRoledId ) {
+            let otherField = getField(optionalRolesId);
             let roles = Array.isArray(otherField.value) ? otherField.value : [];
             setOtherRoles(roles);
         } else {
-            let otherField = getField('two_fa_forced_roles');
+            let otherField = getField(forcedRoledId);
             let roles = Array.isArray(otherField.value) ? otherField.value : [];
             setOtherRoles(roles);
         }
-    }, [selectedRoles, getField('two_fa_optional_roles'), getField('two_fa_forced_roles')]);
+    }, [selectedRoles, getField(optionalRolesId), getField(forcedRoledId)]);
 
     useEffect(() => {
-       if ( !field.value ) {
+        if (!field.value) {
             setChangedField(field.id, field.default);
             updateField(field.id, field.default);
             setSelectedRoles(field.default.map((role, index) => ({ value: role, label: role.charAt(0).toUpperCase() + role.slice(1) })));
-       } else {
-           setSelectedRoles(field.value.map((role, index) => ({ value: role, label: role.charAt(0).toUpperCase() + role.slice(1) })));
-
-       }
+        } else {
+            setSelectedRoles(field.value.map((role, index) => ({ value: role, label: role.charAt(0).toUpperCase() + role.slice(1) })));
+        }
     },[fieldsLoaded]);
 
-    /**
-     * Handles the change event of the react-select component.
-     * @param {array} selectedOptions - The selected options from the dropdown.
-     */
     const handleChange = (selectedOptions) => {
-        // Extract the values of the selected options
         const rolesExcluded = selectedOptions.map(option => option.value);
-        // Update the selectedRoles state
+        let rolesEnabledEmail = getFieldValue('two_fa_enabled_roles_email');
+        let rolesEnabledTotp = getFieldValue('two_fa_enabled_roles_totp');
+        let rolesEnabled = rolesEnabledEmail.concat(rolesEnabledTotp);
+
+        let rolesEnabledContainsSelected = rolesEnabled.filter(role => selectedOptions.map(option => option.value).includes(role));
+        if (rolesEnabledContainsSelected.length === 0 && selectedOptions.length > 0) {
+            showSavedSettingsNotice(__('You have enforced 2FA, but not configured any methods.', 'really-simple-ssl'), 'error');
+        } else {
+            selectedOptions.forEach(role => {
+                if (!rolesEnabled.includes(role.value)) {
+                    showSavedSettingsNotice(__('You have enforced 2FA, but not configured any methods for the role: ', 'really-simple-ssl') + role.label, 'error');
+                }
+            });
+        }
+
         setSelectedRoles(selectedOptions);
-        // Update the field and changedField using the custom hook functions
         updateField(field.id, rolesExcluded);
         setChangedField(field.id, rolesExcluded);
     };
@@ -64,8 +76,7 @@ const TwoFaRolesDropDown = ({ field }) => {
         multiValue: (provided) => ({
             ...provided,
             borderRadius: '10px',
-            backgroundColor: field.id === 'two_fa_forced_roles' ? '#F5CD54' :
-                field.id === 'two_fa_optional_roles' ? '#FDF5DC' : 'default',
+            backgroundColor: field.id === forcedRoledId ? '#F5CD54' : field.id === optionalRolesId ? '#FDF5DC' : 'default',
         }),
         multiValueRemove: (base, state) => ({
             ...base,
@@ -79,17 +90,12 @@ const TwoFaRolesDropDown = ({ field }) => {
         })
     };
 
-    if (field.id === 'two_fa_optional_roles') {
-        enabled = getFieldValue('login_protection_enabled');
-    }
-
     const alreadySelected = selectedRoles.map(option => option.value);
     let filteredRoles = [];
-    //from roles, remove roles in the usedRoles array
-    //merge alreadyselected and otherroles in one array
     let inRolesInUse = [...alreadySelected, ...otherRoles];
+
     roles.forEach(function (item, i) {
-        if ( Array.isArray(inRolesInUse) && inRolesInUse.includes(item.value) ) {
+        if (Array.isArray(inRolesInUse) && inRolesInUse.includes(item.value)) {
             filteredRoles.splice(i, 1);
         } else {
             filteredRoles.push(item);
@@ -97,7 +103,7 @@ const TwoFaRolesDropDown = ({ field }) => {
     });
 
     return (
-        <div style={{marginTop: '5px'}}>
+        <div style={{marginTop: '5px'}} ref={selectRef}>
             <Select
                 isMulti
                 options={filteredRoles}
@@ -105,14 +111,8 @@ const TwoFaRolesDropDown = ({ field }) => {
                 value={selectedRoles}
                 menuPosition={"fixed"}
                 styles={customStyles}
+                isDisabled={isSelectDisabled}
             />
-            {! enabled &&
-                <div className="rsssl-locked">
-                    <div className="rsssl-locked-overlay"><span
-                        className="rsssl-task-status rsssl-open">{__('Disabled', 'really-simple-ssl')}</span><span>{__('Activate login protection to enable this block.', 'really-simple-ssl')}</span>
-                    </div>
-                </div>
-            }
         </div>
     );
 };

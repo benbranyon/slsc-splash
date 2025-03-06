@@ -14,6 +14,7 @@ use Smush\Core\Array_Utils;
 use Smush\Core\CDN\CDN_Helper;
 use Smush\Core\Settings;
 use Smush\Core\Webp\Webp_Configuration;
+use Smush\Core\Media_Library\Background_Media_Library_Scanner;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -28,7 +29,24 @@ class Dashboard extends Abstract_Summary_Page implements Interface_Page {
 	/**
 	 * Function triggered when the page is loaded before render any content.
 	 */
-	public function on_load() {}
+	public function on_load() {
+		add_filter( 'wp_smush_localize_script_messages', array( $this, 'add_dashboard_script_messages' ) );
+	}
+
+	public function add_dashboard_script_messages( $messages ) {
+		$tutorial_link            = self::should_render( 'tutorials' ) ? $this->get_url( 'smush-tutorials' ) : '';
+		$tutorial_removed_message = empty( $tutorial_link ) ?
+			esc_html__( 'The widget has been removed.', 'wp-smushit' ) :
+			sprintf( /* translators: %1$s - opening a tag, %2$s - closing a tag */
+				esc_html__( 'The widget has been removed. Smush tutorials can still be found in the %1$sTutorials tab%2$s any time.', 'wp-smushit' ),
+				'<a href=' . esc_url( $tutorial_link ) . '>',
+				'</a>'
+			);
+
+		$messages['tutorialsRemoved'] = $tutorial_removed_message;
+
+		return $messages;
+	}
 
 	/**
 	 * Enqueue scripts.
@@ -217,6 +235,7 @@ class Dashboard extends Abstract_Summary_Page implements Interface_Page {
 		$bg_optimization               = WP_Smush::get_instance()->core()->mod->bg_optimization;
 		$background_processing_enabled = $bg_optimization->should_use_background();
 		$background_in_processing      = $background_processing_enabled && $bg_optimization->is_in_processing();
+		$background_scan_status        = Background_Media_Library_Scanner::get_instance()->get_background_process()->get_status();
 
 		$args = array(
 			'total_count'                     => (int) $array_utils->get_array_value( $global_stats, 'count_total' ),
@@ -225,6 +244,8 @@ class Dashboard extends Abstract_Summary_Page implements Interface_Page {
 			'background_processing_enabled'   => $background_processing_enabled,
 			'background_in_processing'        => $background_in_processing,
 			'background_in_processing_notice' => $bg_optimization->get_in_process_notice(),
+			'bulk_background_process_dead'    => $background_processing_enabled && $bg_optimization->is_dead(),
+			'scan_background_process_dead'    => $background_scan_status->is_dead(),
 		);
 
 		$this->view( 'dashboard/bulk/meta-box', $args );

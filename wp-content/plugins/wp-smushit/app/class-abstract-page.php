@@ -8,6 +8,7 @@
 namespace Smush\App;
 
 use Smush\Core\Helper;
+use Smush\Core\Modules\Helpers\WhiteLabel;
 use Smush\Core\Settings;
 use WP_Smush;
 use WPMUDEV_Dashboard;
@@ -74,6 +75,14 @@ abstract class Abstract_Page {
 	 */
 	protected $upgrade_url = 'https://wpmudev.com/project/wp-smush-pro/';
 
+
+	/**
+	 * Whitle Label
+	 *
+	 * @var WhiteLabel
+	 */
+	protected $whitelabel;
+
 	/**
 	 * Abstract_Page constructor.
 	 *
@@ -82,9 +91,10 @@ abstract class Abstract_Page {
 	 * @param bool   $parent   Does a page have a parent (will be added as a sub menu).
 	 * @param bool   $nextgen  Is that a NextGen subpage.
 	 */
-	public function __construct( $slug, $title, $parent = false, $nextgen = false ) {
-		$this->slug     = $slug;
-		$this->settings = Settings::get_instance();
+	public function __construct( $slug, $title, $parent = false, $nextgen = false, $is_upsell_link = false ) {
+		$this->whitelabel = new WhiteLabel();
+		$this->slug       = $slug;
+		$this->settings   = Settings::get_instance();
 
 		if ( ! $parent ) {
 			$this->page_id = add_menu_page(
@@ -101,8 +111,13 @@ abstract class Abstract_Page {
 				$title,
 				$title,
 				$nextgen ? 'NextGEN Manage gallery' : 'manage_options',
-				$this->slug,
-				array( $this, 'render' )
+				$is_upsell_link ?
+					$this->get_utm_link(
+						array(
+							'utm_campaign' => $slug,
+						)
+					) : $this->slug,
+				$is_upsell_link ? null : array( $this, 'render' )
 			);
 		}
 
@@ -599,10 +614,10 @@ abstract class Abstract_Page {
 	 * @return string
 	 */
 	public function get_doc_url() {
-		$doc = 'https://wpmudev.com/docs/wpmu-dev-plugins/smush/';
-		if ( ! WP_Smush::is_pro() ) {
-			$doc = 'https://wpmudev.com/docs/wpmu-dev-plugins/smush/?utm_source=smush&utm_medium=plugin&utm_campaign=smush_pluginlist_docs';
-		}
+		$doc = $this->get_utm_link(
+			array( 'utm_campaign' => 'smush_pluginlist_docs' ),
+			'https://wpmudev.com/docs/wpmu-dev-plugins/smush/'
+		);
 
 		switch ( $this->get_slug() ) {
 			case 'smush-bulk':
@@ -958,8 +973,8 @@ abstract class Abstract_Page {
 					'configsPage'   => network_admin_url( 'admin.php?page=smush-settings&view=configs' ),
 					'accordionImg'  => WP_SMUSH_URL . 'app/assets/images/smush-config-icon@2x.png',
 					'hubConfigs'    => 'https://wpmudev.com/hub2/configs/my-configs',
-					'hubWelcome'    => $this->get_utm_link( array( 'utm_campaign' => 'smush_hub_config' ), 'https://wpmudev.com/hub-welcome/' ),
-					'freeNoticeHub' => $this->get_utm_link( array( 'utm_campaign' => 'smush_hub_config' ), 'https://wpmudev.com/hub-welcome/' ),
+					'hubWelcome'    => $this->get_utm_link( array( 'utm_campaign' => 'smush_hub_config' ), 'https://wpmudev.com/site-management/' ),
+					'freeNoticeHub' => $this->get_utm_link( array( 'utm_campaign' => 'smush_hub_config' ), 'https://wpmudev.com/site-management/' ),
 				),
 				'requestsData' => array(
 					'root'           => esc_url_raw( rest_url( 'wp-smush/v1/preset_configs' ) ),
@@ -1016,17 +1031,7 @@ abstract class Abstract_Page {
 			$url = $this->upgrade_url;
 		}
 
-		if ( WP_Smush::is_pro() ) {
-			return $url;
-		}
-
-		$default = array(
-			'utm_source' => 'smush',
-			'utm_medium' => 'plugin',
-		);
-		$args    = wp_parse_args( $args, $default );
-
-		return add_query_arg( $args, $url );
+		return Helper::get_utm_link( $args, $url );
 	}
 
 	public function get_connect_site_link() {

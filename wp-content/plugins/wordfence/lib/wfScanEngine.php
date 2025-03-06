@@ -9,17 +9,20 @@ require_once(__DIR__ . '/wfUtils.php');
 require_once(__DIR__ . '/wfFileUtils.php');
 require_once(__DIR__ . '/wfScanPath.php');
 require_once(__DIR__ . '/wfScanFile.php');
+require_once(__DIR__ . '/wfScanFileListItem.php');
 require_once(__DIR__ . '/wfScanEntrypoint.php');
 require_once(__DIR__ . '/wfCurlInterceptor.php');
 
 class wfScanEngine {
 	const SCAN_MANUALLY_KILLED = -999;
+	const SCAN_CHECK_INTERVAL = 10; //Seconds
 	
 	private static $scanIsRunning = false; //Indicates that the scan is running in this specific process
 
 	public $api = false;
 	private $dictWords = array();
 	private $forkRequested = false;
+	private $lastCheck = 0;
 
 	//Beginning of serialized properties on sleep
 	/** @var wordfenceHash */
@@ -350,33 +353,36 @@ class wfScanEngine {
 		}
 	}
 
-	public function shouldFork() {
-		static $lastCheck = 0;
+	private function checkScanStatus() {
+		wfIssues::updateScanStillRunning();
+		$this->checkForCoreVersionChange();
+		self::checkForKill();
+		$this->checkForDurationLimit();
+	}
 
-		if (time() - $this->cycleStartTime > $this->maxExecTime) {
+	public function shouldFork() {
+		$timestamp = time();
+
+		if ($timestamp - $this->cycleStartTime > $this->maxExecTime) {
+			$this->checkScanStatus();
 			return true;
 		}
 
-		if ($lastCheck > time() - $this->maxExecTime) {
+		if ($this->lastCheck > $timestamp - $this->maxExecTime) {
 			return false;
 		}
-		$lastCheck = time();
 
-		$this->checkForCoreVersionChange();
-		wfIssues::updateScanStillRunning();
-		self::checkForKill();
-		$this->checkForDurationLimit();
+		if ($timestamp - $this->lastCheck > self::SCAN_CHECK_INTERVAL)
+			$this->checkScanStatus();
+
+		$this->lastCheck = $timestamp;
 
 		return false;
 	}
 
 	public function forkIfNeeded() {
-		wfIssues::updateScanStillRunning();
-		$this->checkForCoreVersionChange();
-		self::checkForKill();
-		$this->checkForDurationLimit();
-		if (time() - $this->cycleStartTime > $this->maxExecTime) {
-			wordfence::status(4, 'info', __("Forking during hash scan to ensure continuity.", 'wordfence'));
+		if ($this->shouldFork()) {
+			wordfence::status(4, 'info', __("Forking during malware scan to ensure continuity.", 'wordfence'));
 			$this->fork();
 		}
 	}
@@ -1263,7 +1269,7 @@ class wfScanEngine {
 					'postBadTitle',
 					wfIssues::SEVERITY_HIGH,
 					$row['ID'],
-					md5($row['post_title']),
+					md5(wfUtils::ifnull($row['post_title'])),
 					__("Post title contains suspicious code", 'wordfence'),
 					__("This post contains code that is suspicious. Please check the title of the post and confirm that the code in the title is not malicious.", 'wordfence'),
 					array(
@@ -1320,7 +1326,7 @@ class wfScanEngine {
 					$uctype = ucfirst($type);
 					$postDate = $post['post_date'];
 					$title = $post['post_title'];
-					$contentMD5 = md5($post['post_content']);
+					$contentMD5 = md5(wfUtils::ifnull($post['post_content']));
 				}
 
 				if ($result['badList'] == 'goog-malware-shavar') {
@@ -1466,7 +1472,7 @@ class wfScanEngine {
 					$uctype = ucfirst($type);
 					$author = $comment['comment_author'];
 					$date = $comment['comment_date'];
-					$contentMD5 = md5($comment['comment_content'] . $comment['comment_author'] . $comment['comment_author_url']);
+					$contentMD5 = md5(wfUtils::ifnull($comment['comment_content'] . $comment['comment_author'] . $comment['comment_author_url']));
 				}
 
 				if ($result['badList'] == 'goog-malware-shavar') {
@@ -1780,8 +1786,8 @@ class wfScanEngine {
 		$this->statusIDX['diskSpace'] = wfIssues::statusStart(__('Scanning to check available disk space', 'wordfence'));
 		$this->scanController->startStage(wfScanner::STAGE_SERVER_STATE);
 		wfUtils::errorsOff();
-		$total = function_exists('disk_total_space')?@disk_total_space('.'):false;
-		$free = function_exists('disk_free_space')?@disk_free_space('.'):false; //Normally false if unreadable but can return 0 on some hosts even when there's space available
+		$total = wfUtils::funcEnabled('disk_total_space') ? disk_total_space('.') : false;
+		$free = wfUtils::funcEnabled('disk_free_space') ? disk_free_space('.') : false; //Normally false if unreadable but can return 0 on some hosts even when there's space available
 		wfUtils::errorsOn();
 		if (!$total || !$free) {
 			$this->status(2, 'info', __('Unable to access available disk space information', 'wordfence'));
@@ -1858,15 +1864,10 @@ class wfScanEngine {
 		$this->scanController->startStage(wfScanner::STAGE_VULNERABILITY_SCAN);
 
 		$this->updateCheck = new wfUpdateCheck();
-		if ($this->isFullScan()) {
-			$this->updateCheck->checkAllUpdates(false);
-			$this->updateCheck->checkCoreVulnerabilities();
-			$this->updateCheck->checkPluginVulnerabilities();
-			$this->updateCheck->checkThemeVulnerabilities();
-		} else {
-			$this->updateCheck->checkAllUpdates();
-			$this->updateCheck->checkCoreVulnerabilities();
-		}
+		$this->updateCheck->checkCoreVulnerabilities();
+		$this->updateCheck->checkPluginVulnerabilities();
+		$this->updateCheck->checkThemeVulnerabilities();
+		$this->updateCheck->checkAllUpdates(!$this->isFullScan());
 
 		foreach ($this->updateCheck->getPluginSlugs() as $slug) {
 			$this->pluginRepoStatus[$slug] = false;
@@ -2709,24 +2710,27 @@ class wfScanEngine {
 		if (!$staySilent) {
 			wordfence::status(4, 'info', sprintf(/* translators: PHP ini value. */ __("Got max_execution_time value from ini: %s", 'wordfence'), $ini));
 		}
-		if (is_numeric($ini) && $ini >= WORDFENCE_SCAN_MIN_EXECUTION_TIME) {
-			if ($ini > WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME) {
-				if (!$staySilent) {
-					wordfence::status(4, 'info', sprintf(
-					/* translators: 1. PHP ini setting. 2. Time in seconds. */
-						__('ini value of %1$d is higher than value for WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME (%2$d), reducing', 'wordfence'),
-						$ini,
-						WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME
-					));
+		if (is_numeric($ini)) {
+			$ini = (int) $ini;
+			if ($ini >= WORDFENCE_SCAN_MIN_EXECUTION_TIME) {
+				if ($ini > WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME) {
+					if (!$staySilent) {
+						wordfence::status(4, 'info', sprintf(
+						/* translators: 1. PHP ini setting. 2. Time in seconds. */
+							__('ini value of %1$d is higher than value for WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME (%2$d), reducing', 'wordfence'),
+							$ini,
+							WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME
+						));
+					}
+					$ini = WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME;
 				}
-				$ini = WORDFENCE_SCAN_MAX_INI_EXECUTION_TIME;
+				
+				$ini = floor($ini / 2);
+				if (!$staySilent) {
+					wordfence::status(4, 'info', sprintf(/* translators: PHP ini setting. */ __("getMaxExecutionTime() returning half ini value: %d", 'wordfence'), $ini));
+				}
+				return $ini;
 			}
-
-			$ini = floor($ini / 2);
-			if (!$staySilent) {
-				wordfence::status(4, 'info', sprintf(/* translators: PHP ini setting. */ __("getMaxExecutionTime() returning half ini value: %d", 'wordfence'), $ini));
-			}
-			return $ini;
 		}
 
 		if (!$staySilent) {
@@ -2767,7 +2771,8 @@ class wfScanEngine {
 					'Name'     => $data['Name'],
 					'Version'  => $data['Version'],
 					'ShortDir' => $pluginDir,
-					'FullDir'  => $pluginFullDir
+					'FullDir'  => $pluginFullDir,
+					'UpdateURI' => isset($data['UpdateURI']) ? $data['UpdateURI'] : '', //WP 5.8+
 				);
 			}
 			if (!$this->pluginsCounted) {
@@ -2801,7 +2806,8 @@ class wfScanEngine {
 					'Name'     => $themeVal['Name'],
 					'Version'  => $themeVal['Version'],
 					'ShortDir' => $shortDir,
-					'FullDir'  => $fullDir
+					'FullDir'  => $fullDir,
+					'UpdateURI' => $themeVal->get('UpdateURI') === false ? '' : $themeVal->get('UpdateURI'), //WP 6.1+
 				);
 			}
 			if (!$this->themesCounted) {
@@ -2827,6 +2833,25 @@ class wfScanEngine {
 		} else {
 			$this->metrics[$type][$key][] = $value;
 		}
+	}
+
+	/**
+	 * Queries the is_safe_file endpoint. If provided an array, it does a bulk check and returns an array containing the
+	 * hashes that were marked as safe. If provided a string, it returns a boolean to indicate the safeness of the file.
+	 *
+	 * @param string|array $shac
+	 * @return array|bool
+	 */
+	public function isSafeFile($shac) {
+		if (is_array($shac)) {
+			$result = $this->api->call('is_safe_file', array(), array('multipleSHAC' => json_encode($shac)));
+			if (isset($result['isSafe'])) {
+				return $result['isSafe'];
+			}
+			return array();
+		}
+		$result = $this->api->call('is_safe_file', array(), array('shac' => strtoupper($shac)));
+		return isset($result['isSafe']) && $result['isSafe'] == 1;
 	}
 }
 

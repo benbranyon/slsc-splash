@@ -49,12 +49,14 @@ if ( !function_exists('rsssl_has_fix')) {
 if ( !function_exists('rsssl_admin_url')) {
 	/**
 	 * Get admin url, adjusted for multisite
-	 * @param string $path
-	 * @return string|null
+	 * @param array $args //query args
+	 * @param string $path //hash slug for the settings pages (e.g. #dashboard)
+	 * @return string
 	 */
-	function rsssl_admin_url(string $path = ''): string {
-		$url = is_multisite() ? network_admin_url('settings.php') : admin_url("options-general.php");
-		return $url.$path;
+	function rsssl_admin_url(array $args = [], string $path = ''): string {
+		$url = is_multisite() ? network_admin_url('admin.php') : admin_url('admin.php');
+		$args = wp_parse_args($args, ['page' => 'really-simple-security']);
+		return add_query_arg($args, $url) . $path;
 	}
 }
 
@@ -153,7 +155,7 @@ if ( !function_exists('rsssl_remove_htaccess_security_edits') ) {
 		$content_htaccess = file_get_contents($htaccess_file);
 		//remove old style rules
 		$pattern_1 = "/#\s?BEGIN\s?rlrssslReallySimpleSSL.*?#\s?END\s?rlrssslReallySimpleSSL/s";
-		$pattern_2 = "/#\s?BEGIN\s?Really Simple SSL Redirect.*?#\s?END\s?Really Simple SSL Redirect/s";
+		$pattern_2 = "/#\s?BEGIN\s?Really Simple Security Redirect.*?#\s?END\s?Really Simple Security Redirect/s";
 		$content_htaccess = preg_replace([$pattern_1, $pattern_2], "", $content_htaccess);
 		if (preg_match($pattern, $content_htaccess) && is_writable( $htaccess_file ) ) {
 			$content_htaccess = preg_replace($pattern, "", $content_htaccess);
@@ -178,6 +180,10 @@ if ( ! function_exists('rsssl_wrap_htaccess' ) ) {
 		}
 
 		if ( rsssl_get_option('do_not_edit_htaccess') ) {
+			if ( !empty( get_site_option('rsssl_htaccess_error') ) ) {
+				delete_site_option( 'rsssl_htaccess_error' );
+				delete_site_option( 'rsssl_htaccess_rules' );
+			}
 			return;
 		}
 
@@ -290,7 +296,7 @@ if ( ! function_exists('rsssl_wrap_htaccess' ) ) {
 			$content_htaccess = preg_replace(
 				[
 					"/#\s?BEGIN\s?rlrssslReallySimpleSSL.*?#\s?END\s?rlrssslReallySimpleSSL/s",
-					"/#\s?BEGIN\s?Really Simple SSL Redirect.*?#\s?END\s?Really Simple SSL Redirect/s"
+					"/#\s?BEGIN\s?Really Simple Security Redirect.*?#\s?END\s?Really Simple Security Redirect/s"
 				], "", $content_htaccess);
 			preg_match( $pattern_content, $content_htaccess, $matches );
 
@@ -430,21 +436,35 @@ function rsssl_uploads_htaccess_status(){
  * @return string|null
  * Get the wp-config.php path
  */
-function rsssl_find_wp_config_path()
-{
-	if ( !rsssl_user_can_manage() ) {
+function rsssl_find_wp_config_path() {
+	if ( ! rsssl_user_can_manage() ) {
 		return null;
 	}
-    //limit nr of iterations to 5
-    $i = 0;
-    $dir = __DIR__;
-    do {
-        $i++;
-        if (file_exists($dir . "/wp-config.php")) {
-            return $dir . "/wp-config.php";
-        }
-    } while (($dir = realpath("$dir/..")) && ($i < 10));
-    return null;
+
+	// Allow the wp-config.php path to be overridden via a filter.
+	$filtered_path = apply_filters( 'rsssl_wpconfig_path', '' );
+
+	// If a filtered path is provided, validate it.
+	if ( ! empty( $filtered_path ) ) {
+		$directory = dirname( $filtered_path );
+
+		// Ensure the directory exists before checking for the file.
+		if ( is_dir( $directory ) && file_exists( $filtered_path ) ) {
+			return $filtered_path;
+		}
+	}
+
+	// Limit number of iterations to 10
+	$i   = 0;
+	$dir = __DIR__;
+	do {
+		$i ++;
+		if ( file_exists( $dir . "/wp-config.php" ) ) {
+			return $dir . "/wp-config.php";
+		}
+	} while ( ( $dir = realpath( "$dir/.." ) ) && ( $i < 10 ) );
+
+	return null;
 }
 
 /**
@@ -511,31 +531,16 @@ function rsssl_list_users_where_display_name_is_login_name() {
 }
 
 /**
- * @return bool|void
- *
  * Check if user e-mail is verified
+ * @return bool
  */
 function rsssl_is_email_verified() {
-
-    if ( ! rsssl_user_can_manage() ) {
-        return false;
-    }
-
-    if ( get_option('rsssl_email_verification_status') == 'completed' ) {
-        // completed
+    $verificationStatus = get_option('rsssl_email_verification_status');
+    if (rsssl_user_can_manage() && $verificationStatus == 'completed') {
         return true;
     }
 
-    if ( get_option('rsssl_email_verification_status') == 'started' ) {
-	    // started
-        return false;
-    }
-
-	if ( get_option('rsssl_email_verification_status') == 'email_changed' ) {
-	    // e-mail changed, has to re-verify
-        return false;
-    }
-
+    // User cannot manage or status is ['started', 'email_changed']
     return false;
 }
 
@@ -546,4 +551,18 @@ function rsssl_version_compare($version, $compare_to, $operator = null) {
 	$version = rsssl_remove_prefix_from_version($version);
 	$compare_to = rsssl_remove_prefix_from_version($compare_to);
 	return version_compare($version, $compare_to, $operator);
+}
+
+function rsssl_maybe_disable_404_blocking() {
+	$option_value = get_option( 'rsssl_homepage_contains_404_resources', false );
+	// Explicitly check for boolean true or string "true"
+	return $option_value === true || $option_value === "true";
+}
+
+function rsssl_lock_file_exists() {
+	if ( file_exists( trailingslashit( WP_CONTENT_DIR ) . 'rsssl-safe-mode.lock' ) ) {
+		return true;
+	}
+
+	return false;
 }
