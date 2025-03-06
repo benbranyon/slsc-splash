@@ -38,7 +38,8 @@ Util_Ui::postbox_header_tabs(
 	),
 	'',
 	'cdn',
-	Util_UI::admin_url( 'admin.php?page=w3tc_cdn' )
+	Util_UI::admin_url( 'admin.php?page=w3tc_cdn' ),
+	'w3tc_premium_services'
 );
 Util_Ui::config_overloading_button(
 	array(
@@ -71,14 +72,10 @@ Util_Ui::config_overloading_button(
 			array(
 				'strong' => array(),
 				'img'    => array(
-					'src'   => array(),
-					'alt'   => array(),
-					'width' => array(),
-				),
-				'img'    => array(
 					'class'  => array(),
 					'src'    => array(),
 					'alt'    => array(),
+					'width'  => array(),
 					'height' => array(),
 				),
 				'input'  => array(
@@ -102,18 +99,17 @@ Util_Ui::config_overloading_button(
 
 	if ( in_array( $cdn_engine, $stackpaths, true ) || in_array( $cdnfsd_engine, $stackpaths, true ) ) {
 		?>
-		<div class="notice notice-warning inline">
+		<div class="notice notice-warning inline w3tc-postbox-notice">
 			<p>
 				<?php
 				// StackPath sunset is 12:00 am Central (UTC-6:00) on November, 22, 2023 (1700629200).
-				$date_time_format = \get_option( 'date_format' ) . ' ' . \get_option( 'time_format' );
 				\printf(
 					// translators: 1 StackPath sunset datetime.
 					\esc_html__(
-						'StackPath will cease operations at %1$s.',
+						'StackPath ceased operations on %1$s.',
 						'w3-total-cache'
 					),
-					\wp_date( $date_time_format, '1700629200' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					\wp_date( \get_option( 'date_format' ), '1700629200' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				?>
 			</p>
@@ -121,18 +117,17 @@ Util_Ui::config_overloading_button(
 		<?php
 	} elseif ( 'highwinds' === $cdn_engine || 'highwinds' === $cdnfsd_engine ) {
 		?>
-		<div class="notice notice-warning inline">
+		<div class="notice notice-warning inline w3tc-postbox-notice">
 			<p>
 				<?php
 				// HighWinds sunset is 12:00 am Central (UTC-6:00) on November, 22, 2023 (1700629200).
-				$date_time_format = \get_option( 'date_format' ) . ' ' . \get_option( 'time_format' );
 				\printf(
 					// translators: 1 HighWinds sunset datetime.
 					\esc_html__(
-						'HighWinds will cease operations at %1$s.',
+						'HighWinds ceased operations on %1$s.',
 						'w3-total-cache'
 					),
-					\wp_date( $date_time_format, '1700629200' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					\wp_date( \get_option( 'date_format' ), '1700629200' ) // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				);
 				?>
 			</p>

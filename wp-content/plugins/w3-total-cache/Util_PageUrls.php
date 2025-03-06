@@ -973,7 +973,7 @@ class Util_PageUrls {
 				'parent_link' => esc_url( Util_Ui::admin_url( 'admin.php?page=w3tc_extensions#swarmify' ) ),
 			),
 			'cloudflare'                       => array(
-				'page_name'   => 'CloudFlare',
+				'page_name'   => 'Cloudflare',
 				'parent_name' => esc_html__( 'Extensions', 'w3-total-cache' ),
 				'parent_link' => esc_url( Util_Ui::admin_url( 'admin.php?page=w3tc_extensions#cloudflare' ) ),
 			),
@@ -981,6 +981,11 @@ class Util_PageUrls {
 				'page_name'   => 'AMP',
 				'parent_name' => esc_html__( 'Extensions', 'w3-total-cache' ),
 				'parent_link' => esc_url( Util_Ui::admin_url( 'admin.php?page=w3tc_extensions#amp' ) ),
+			),
+			'alwayscached'                     => array(
+				'page_name'   => esc_html__( 'Always Cached', 'w3-total-cache' ),
+				'parent_name' => esc_html__( 'Extensions', 'w3-total-cache' ),
+				'parent_link' => esc_url( Util_Ui::admin_url( 'admin.php?page=w3tc_extensions#alwayscached' ) ),
 			),
 		);
 
