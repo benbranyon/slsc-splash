@@ -3,6 +3,7 @@ import {produce} from 'immer';
 import * as rsssl_api from "../utils/api";
 import {__} from '@wordpress/i18n';
 import {toast} from 'react-toastify';
+import {ReactConditions} from "../utils/ReactConditions";
 
 const fetchFields = () => {
     return rsssl_api.getFields().then((response) => {
@@ -26,7 +27,7 @@ const useFields = create(( set, get ) => ({
     refreshTests:false,
     highLightField: '',
     setHighLightField: (highLightField) => {
-        set(state => ({ highLightField }))
+        set({ highLightField });
     },
 
     setRefreshTests: (refreshTests) => set(state => ({ refreshTests })),
@@ -53,8 +54,8 @@ const useFields = create(( set, get ) => ({
             })
         )
     },
-    showSavedSettingsNotice : (text) => {
-        handleShowSavedSettingsNotice(text);
+    showSavedSettingsNotice : (text , type = 'success') => {
+        handleShowSavedSettingsNotice(text, type);
     },
 
     updateField: (id, value) => {
@@ -149,7 +150,7 @@ const useFields = create(( set, get ) => ({
         }
         return false;
     },
-    saveFields: async (skipRefreshTests, showSavedNotice) => {
+    saveFields: async (skipRefreshTests, showSavedNotice, force = false) => {
         let refreshTests = typeof skipRefreshTests !== 'undefined' ? skipRefreshTests : true;
         showSavedNotice = typeof showSavedNotice !== 'undefined' ? showSavedNotice : true;
         let fields = get().fields;
@@ -161,7 +162,7 @@ const useFields = create(( set, get ) => ({
             let fieldIsIncluded = changedFields.filter(changedField => changedField.id === field.id).length > 0;
             //also check if there's no saved value yet for radio fields, by checking the never_saved attribute.
             //a radio or select field looks like it's completed, but won't save if it isn't changed.
-            //this should not be the case for disabled fields, as these fields often are enabled server side because they're enabled outside Really Simple SSL.
+            //this should not be the case for disabled fields, as these fields often are enabled server side because they're enabled outside Really Simple Security.
             let select_or_radio = field.type === 'select' || field.type === 'radio';
             if (fieldIsIncluded || (field.never_saved && !field.disabled && select_or_radio)) {
                 saveFields.push(field);
@@ -169,7 +170,7 @@ const useFields = create(( set, get ) => ({
         }
 
         //if no fields were changed, do nothing.
-        if (saveFields.length > 0) {
+        if (saveFields.length > 0 || force === true) {
             let response = rsssl_api.setFields(saveFields).then((response) => {
                 return response;
             })
@@ -262,110 +263,49 @@ const updateFieldsListWithConditions = (fields) => {
         return [];
     }
     fields.forEach(function(field, i) {
-        let enabled = !( field.hasOwnProperty('react_conditions') && !validateConditions(field.react_conditions, fields, field.id) );
-        let previouslyEnabled = !field.conditionallyDisabled;
+        // Create instance to evaluate the react_conditions of a field
+        let reactConditions = new ReactConditions(field, fields);
+        let fieldCurrentlyEnabled = reactConditions.isEnabled();
+
         //we want to update the changed fields if this field has just become visible. Otherwise the new field won't get saved.
         const newField = {...field};
-        newField.conditionallyDisabled = !enabled;
-        newField.visible = !(!enabled && (newField.type === 'letsencrypt' || newField.condition_action === 'hide'));
+        newField.conditionallyDisabled = (fieldCurrentlyEnabled === false);
 
+        // ReactConditions will keep the original disabledTooltipText if the
+        // field is not disabled by the react_conditions. Key differs from the
+        // one in the config on purpose to prevent overwriting the config value.
+        newField.disabledTooltipHoverText = reactConditions.getDisabledTooltipText();
+
+        // If the field is a letsencrypt field or has a condition_action of
+        // 'hide', it should be hidden if the field is disabled.
+        newField.visible = !(!fieldCurrentlyEnabled && (newField.type === 'letsencrypt' || newField.condition_action === 'hide'));
         newFields.push(newField);
-        //if this is a learning mode field, do not add it to the changed fields list
-        if ( !previouslyEnabled && newField.enabled && field.type!=='learningmode') {
-            set().setChangedField(field.id, field.value);
-        }
     });
     return newFields;
 }
 
-const handleShowSavedSettingsNotice = (text) => {
+const handleShowSavedSettingsNotice = ( text, type ) => {
     if (typeof text === 'undefined') {
-        text = __( 'Settings Saved', 'really-simple-ssl' );
+        text = __( 'Settings saved', 'really-simple-ssl' );
     }
 
-    toast.success(text);
-}
-
-
-
-const validateConditions = (conditions, fields, fieldId) => {
-    let relation = conditions[0].relation === 'OR' ? 'OR' : 'AND';
-    let conditionApplies = relation==='AND';
-    for (const key in conditions) {
-        if ( conditions.hasOwnProperty(key) ) {
-            let thisConditionApplies = relation==='AND';
-            let subConditionsArray = conditions[key];
-            if ( subConditionsArray.hasOwnProperty('relation') ) {
-                thisConditionApplies = validateConditions(subConditionsArray, fields, fieldId)
-            } else {
-                for ( let conditionField in subConditionsArray ) {
-                    let invert = conditionField.indexOf('!')===0;
-                    if ( subConditionsArray.hasOwnProperty(conditionField) ) {
-                        let conditionValue = subConditionsArray[conditionField];
-                        conditionField = conditionField.replace('!','');
-                        let conditionFields = fields.filter(field => field.id === conditionField);
-                        if ( conditionFields.hasOwnProperty(0) ){
-                            let field = conditionFields[0];
-                            let actualValue = field.value;
-                            if ( field.type==='text_checkbox' ) {
-                                thisConditionApplies = actualValue.hasOwnProperty('show') && actualValue['show'] == conditionValue;//can be 1/true or 0/false
-                            } else if ( field.type==='checkbox' ) {
-                                thisConditionApplies = actualValue == conditionValue;//can be 1/true or 0/false
-                            } else if ( field.type==='multicheckbox' ) {
-                                //multicheckbox conditions
-                                //loop through objects
-                                thisConditionApplies = false;
-                                let arrayValue = actualValue;
-                                if ( arrayValue.length===0 ) {
-                                    thisConditionApplies = false;
-                                } else {
-                                    for (const key of Object.keys(arrayValue)) {
-                                        if ( !Array.isArray(conditionValue) ) conditionValue = [conditionValue];
-                                        if ( conditionValue.includes(arrayValue[key])){
-                                            thisConditionApplies = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            } else if ( field.type==='radio' ) {
-                                //as the regions field can be both radio and multicheckbox, an array is possible for a radio field
-                                if ( Array.isArray(conditionValue) ) {
-                                    thisConditionApplies = conditionValue.includes(actualValue);
-                                } else {
-                                    thisConditionApplies = conditionValue === actualValue;
-                                }
-
-                            } else {
-                                if (conditionValue === true ) {
-                                    thisConditionApplies = actualValue===1 || actualValue === "1" || actualValue === true;
-                                } else if (conditionValue === false ) {
-                                    thisConditionApplies = actualValue === 0 || actualValue === "0" || actualValue === false;
-                                } else if (conditionValue.indexOf('EMPTY')!==-1) {
-                                    thisConditionApplies = actualValue.length === 0;
-                                } else {
-                                    thisConditionApplies = String(actualValue).toLowerCase() === conditionValue.toLowerCase();
-                                }
-                            }
-                        }
-                    }
-                    if ( invert ){
-                        thisConditionApplies = !thisConditionApplies;
-                    }
-                    if ( relation === 'AND' ) {
-                        conditionApplies = conditionApplies && thisConditionApplies;
-                    } else {
-                        conditionApplies = conditionApplies || thisConditionApplies;
-                    }
-                }
-
-                if ( relation === 'AND' ) {
-                    conditionApplies = conditionApplies && thisConditionApplies;
-                } else {
-                    conditionApplies = conditionApplies || thisConditionApplies;
-                }
-            }
-        }
+    if (typeof type === 'undefined') {
+        type = 'success';
     }
 
-    return conditionApplies ? 1 : 0;
+    if (type === 'error') {
+        toast.error(text);
+    }
+
+    if (type === 'warning') {
+        toast.warning(text);
+    }
+
+    if (type === 'info') {
+        toast.info(text);
+    }
+
+    if (type === 'success') {
+        toast.success(text);
+    }
 }

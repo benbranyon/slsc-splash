@@ -7,13 +7,13 @@ import useOnboardingData from "./OnboardingData";
 import OnboardingControls from "./OnboardingControls";
 import StepEmail from "./Steps/StepEmail";
 import StepConfig from "./Steps/StepConfig";
+import StepLicense from "./Steps/StepLicense";
 import StepFeatures from "./Steps/StepFeatures";
 import StepPlugins from "./Steps/StepPlugins";
 import StepPro from "./Steps/StepPro";
 import './PremiumItem.scss';
 import './checkbox.scss';
 import './onboarding.scss';
-
 import DOMPurify from 'dompurify';
 const Onboarding = ({isModal}) => {
     const { fetchFieldsData, fieldsLoaded} = useFields();
@@ -26,45 +26,24 @@ const Onboarding = ({isModal}) => {
         processing,
         currentStep,
         currentStepIndex,
-        setCurrentStepIndex,
         networkActivationStatus,
         networkProgress,
         activateSSLNetworkWide,
+        emailVerified
     } = useOnboardingData();
 
-    useEffect( () => {
-        if (networkwide && networkActivationStatus==='main_site_activated') {
-            //run networkwide activation with a delay
-            setTimeout( () => {
-                activateSSLNetworkWide();
-            }, 1000);
-        }
-    }, [networkActivationStatus, networkProgress])
-
+    // Single effect to initialize
     useEffect(() => {
-        if ( !fieldsLoaded ) {
-            fetchFieldsData();
-        }
-    }, []);
-
-
-    useEffect( () => {
-        const run = async () => {
-            await getSteps(false);
-            if ( dataLoaded && sslEnabled && currentStepIndex===0) {
-                setCurrentStepIndex(1)
-            }
-        }
-        run();
-    }, [])
+        getSteps(false);
+    }, []); // Empty dependency array
 
     if (error){
         return (
             <Placeholder lines="3" error={error}></Placeholder>
         )
     }
-    let processingClass = '';//processing ? 'rsssl-processing' : '';
-    //get 'other_host_type' field from fields
+
+    let processingClass = '';
 
     return (
         <>
@@ -80,39 +59,39 @@ const Onboarding = ({isModal}) => {
             }
             {
                 dataLoaded &&
-                    <div className={ processingClass+" rsssl-"+currentStep.id }>
-                        { currentStep.id === 'activate_ssl' &&
-                          <>
-                              <StepConfig isModal={isModal}/>
-                          </>
-                        }
-                        { currentStep.id === 'features'&&
-                            <>
-                                <StepFeatures />
-                            </>
-                        }
-                        { currentStep.id === 'email'&&
-                            <>
-                                <StepEmail />
-                            </>
-                        }
-
-                        { currentStep.id === 'plugins' &&
-                            <>
-                                <StepPlugins />
-                            </>
-                        }
-
-                        { currentStep.id === 'pro' &&
-                            <>
-                                <StepPro />
-                            </>
-                        }
-
-                        { !isModal &&
-                            <OnboardingControls isModal={false}/>
-                        }
-                    </div>
+                <div className={ processingClass+" rsssl-"+currentStep.id }>
+                    { currentStep.id === 'activate_ssl' &&
+                        <>
+                            <StepConfig isModal={isModal}/>
+                        </>
+                    }
+                    { currentStep.id === 'activate_license' &&
+                        <>
+                            <StepLicense />
+                        </>
+                    }
+                    { currentStep.id === 'features'&&
+                        <>
+                            <StepFeatures />
+                        </>
+                    }
+                    {currentStep.id === 'email' && !emailVerified && (
+                        <StepEmail />
+                    )}
+                    { currentStep.id === 'plugins' &&
+                        <>
+                            <StepPlugins />
+                        </>
+                    }
+                    { currentStep.id === 'pro' &&
+                        <>
+                            <StepPro />
+                        </>
+                    }
+                    { !isModal &&
+                        <OnboardingControls isModal={false}/>
+                    }
+                </div>
             }
         </>
     )
